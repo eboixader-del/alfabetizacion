@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recursos de Aula · Infantil y Primaria</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f4ef; --card:#ffffff; --ink:#2b2b3a; --muted:#6b6b7d;
+    --infantil:#f59e0b; --infantil-soft:#fef3c7;
+    --primaria:#0ea5e9; --primaria-soft:#e0f2fe;
+    --secundaria:#8b5cf6; --secundaria-soft:#ede9fe;
+    --proyecto:#10b981; --proyecto-soft:#d1fae5;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Nunito',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+
+  header{
+    background:linear-gradient(120deg,#0ea5e9 0%,#8b5cf6 55%,#f59e0b 110%);
+    color:#fff;padding:44px 24px 60px;text-align:center;position:relative;overflow:hidden;
+  }
+  header::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:38px;
+    background:var(--bg);border-radius:100% 100% 0 0 / 38px 38px 0 0;}
+  header h1{font-size:clamp(1.6rem,4vw,2.6rem);font-weight:900;letter-spacing:-.5px}
+  header h1 .emoji{filter:drop-shadow(0 2px 4px rgba(0,0,0,.2))}
+  header p{margin-top:8px;font-size:1.05rem;opacity:.92;max-width:640px;margin-inline:auto}
+  .stats{display:flex;gap:10px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+  .stat{background:rgba(255,255,255,.18);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.35);
+    padding:6px 16px;border-radius:999px;font-weight:700;font-size:.85rem}
+
+  .toolbar{max-width:1080px;margin:-18px auto 0;padding:0 20px;position:relative;z-index:2;
+    display:flex;gap:12px;align-items:stretch}
+  .search-box{flex:1;display:flex;align-items:center;gap:10px;background:var(--card);border-radius:999px;
+    padding:12px 20px;box-shadow:0 8px 24px rgba(43,43,58,.10);border:2px solid transparent;transition:.2s}
+  .search-box:focus-within{border-color:var(--primaria)}
+  .search-box svg{flex-shrink:0;opacity:.45}
+  .search-box input{border:none;outline:none;font:inherit;font-size:1rem;width:100%;background:transparent;color:var(--ink)}
+  .btn-add{border:none;cursor:pointer;font:inherit;font-weight:800;font-size:.95rem;color:#fff;
+    background:var(--ink);border-radius:999px;padding:12px 22px;box-shadow:0 8px 24px rgba(43,43,58,.15);
+    transition:.18s;white-space:nowrap}
+  .btn-add:hover{transform:translateY(-2px);background:#000}
+
+  .tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:22px auto 6px;padding:0 20px;max-width:1080px}
+  .tab{border:none;cursor:pointer;font:inherit;font-weight:800;font-size:.92rem;padding:9px 20px;
+    border-radius:999px;background:#fff;color:var(--muted);box-shadow:0 2px 6px rgba(43,43,58,.07);transition:.18s}
+  .tab:hover{transform:translateY(-1px)}
+  .tab.active{color:#fff}
+  .tab[data-etapa="todas"].active{background:var(--ink)}
+  .tab[data-etapa="infantil"].active{background:var(--infantil)}
+  .tab[data-etapa="primaria"].active{background:var(--primaria)}
+  .tab[data-etapa="secundaria"].active{background:var(--secundaria)}
+  .tab[data-etapa="proyecto"].active{background:var(--proyecto)}
+
+  .chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px auto 4px;padding:0 20px;max-width:1080px}
+  .chip{border:1.5px solid #ddd8ce;background:transparent;cursor:pointer;font:inherit;font-size:.8rem;
+    font-weight:700;color:var(--muted);padding:5px 14px;border-radius:999px;transition:.15s}
+  .chip:hover{border-color:var(--ink);color:var(--ink)}
+  .chip.active{background:var(--ink);border-color:var(--ink);color:#fff}
+
+  .count{max-width:1080px;margin:14px auto 0;padding:0 24px;font-size:.85rem;color:var(--muted);font-weight:600}
+
+  .grid{max-width:1080px;margin:12px auto 60px;padding:0 20px;display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+
+  .card{background:var(--card);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;
+    gap:10px;box-shadow:0 3px 12px rgba(43,43,58,.06);border-top:5px solid;transition:.2s;position:relative}
+  .card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(43,43,58,.13)}
+  .card.infantil{border-color:var(--infantil)} .card.primaria{border-color:var(--primaria)}
+  .card.secundaria{border-color:var(--secundaria)} .card.proyecto{border-color:var(--proyecto)}
+
+  .flag{position:absolute;top:12px;right:14px;font-size:.68rem;font-weight:900;letter-spacing:.5px;
+    padding:3px 9px;border-radius:999px}
+  .flag.nuevo{background:#dcfce7;color:#15803d}
+  .flag.mio{background:#fce7f3;color:#be185d}
+
+  .card-top{display:flex;align-items:flex-start;gap:12px}
+  .icon{font-size:1.9rem;line-height:1;flex-shrink:0;width:52px;height:52px;display:grid;place-items:center;border-radius:14px}
+  .infantil .icon{background:var(--infantil-soft)} .primaria .icon{background:var(--primaria-soft)}
+  .secundaria .icon{background:var(--secundaria-soft)} .proyecto .icon{background:var(--proyecto-soft)}
+  .card h3{font-size:1.05rem;font-weight:800;line-height:1.25;padding-right:44px}
+  .card .desc{font-size:.88rem;color:var(--muted);line-height:1.5;flex-grow:1}
+
+  .badges{display:flex;gap:6px;flex-wrap:wrap}
+  .badge{font-size:.72rem;font-weight:800;padding:3px 10px;border-radius:999px}
+  .badge.edad{background:#f1efe8;color:#57534e}
+  .badge.cat{background:#eef2ff;color:#4f46e5}
+  .badge.etapa{color:#fff}
+  .infantil .badge.etapa{background:var(--infantil)} .primaria .badge.etapa{background:var(--primaria)}
+  .secundaria .badge.etapa{background:var(--secundaria)} .proyecto .badge.etapa{background:var(--proyecto)}
+
+  .links{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;align-items:center}
+  a.go{display:inline-flex;align-items:center;gap:6px;text-decoration:none;font-weight:800;font-size:.85rem;
+    padding:8px 16px;border-radius:12px;color:#fff;transition:.15s}
+  a.go:hover{filter:brightness(1.1);transform:translateY(-1px)}
+  .infantil a.go{background:var(--infantil)} .primaria a.go{background:var(--primaria)}
+  .secundaria a.go{background:var(--secundaria)} .proyecto a.go{background:var(--proyecto)}
+  a.go.alt{background:transparent;border:2px solid currentColor}
+  .infantil a.go.alt{color:var(--infantil)} .primaria a.go.alt{color:var(--primaria)}
+  .secundaria a.go.alt{color:var(--secundaria)} .proyecto a.go.alt{color:var(--proyecto)}
+  .btn-del{margin-left:auto;border:none;background:transparent;cursor:pointer;font-size:1rem;opacity:.4;transition:.15s}
+  .btn-del:hover{opacity:1;transform:scale(1.15)}
+
+  .empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted)}
+  .empty .big{font-size:3rem;margin-bottom:10px}
+
+  /* ===== Modal ===== */
+  .overlay{position:fixed;inset:0;background:rgba(30,30,45,.55);display:none;align-items:center;
+    justify-content:center;z-index:50;padding:20px;backdrop-filter:blur(3px)}
+  .overlay.open{display:flex}
+  .modal{background:#fff;border-radius:22px;max-width:520px;width:100%;max-height:90vh;overflow:auto;
+    padding:28px;box-shadow:0 24px 60px rgba(0,0,0,.25)}
+  .modal h2{font-size:1.3rem;font-weight:900;margin-bottom:4px}
+  .modal .sub{font-size:.85rem;color:var(--muted);margin-bottom:18px}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:.8rem;font-weight:800;margin-bottom:5px;color:#44444f}
+  .field input,.field select,.field textarea{width:100%;font:inherit;font-size:.92rem;padding:10px 14px;
+    border:1.5px solid #e2ddd2;border-radius:12px;outline:none;background:#fbfaf7;transition:.15s}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--primaria);background:#fff}
+  .field textarea{resize:vertical;min-height:70px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+  .btn{border:none;cursor:pointer;font:inherit;font-weight:800;padding:11px 22px;border-radius:12px;transition:.15s}
+  .btn.primary{background:var(--primaria);color:#fff} .btn.primary:hover{filter:brightness(1.1)}
+  .btn.ghost{background:#f1efe8;color:var(--muted)} .btn.ghost:hover{background:#e6e3d8}
+  .form-error{color:#dc2626;font-size:.8rem;font-weight:700;display:none;margin-top:8px}
+
+  footer{text-align:center;padding:24px;font-size:.8rem;color:var(--muted)}
+  @media (max-width:560px){.toolbar{flex-direction:column}.row2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1><span class="emoji">🎒</span> Mis Recursos de Aula</h1>
+  <p>Herramientas y actividades con IA para Infantil y Primaria, organizadas y listas para usar.</p>
+  <div class="stats" id="stats"></div>
+</header>
+
+<div class="toolbar">
+  <div class="search-box">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="search" type="search" placeholder="Buscar recurso… (ej. música, cuentos, programación)">
+  </div>
+  <button class="btn-add" id="btnAdd">➕ Añadir recurso</button>
+</div>
+
+<nav class="tabs" id="tabs">
+  <button class="tab active" data-etapa="todas">✨ Todas</button>
+  <button class="tab" data-etapa="infantil">🧸 Infantil</button>
+  <button class="tab" data-etapa="primaria">✏️ Primaria</button>
+  <button class="tab" data-etapa="proyecto">🚀 Proyectos</button>
+</nav>
+
+<div class="chips" id="chips"></div>
+<div class="count" id="count"></div>
+<main class="grid" id="grid"></main>
+
+<footer>Recopilación personal de recursos educativos · Los recursos añadidos manualmente se guardan en este navegador</footer>
+
+<!-- Modal añadir recurso -->
+<div class="overlay" id="overlay">
+  <form class="modal" id="formAdd">
+    <h2>➕ Añadir un recurso</h2>
+    <p class="sub">Se guardará en tu navegador y aparecerá con la etiqueta <strong>MÍO</strong>.</p>
+    <div class="row2">
+      <div class="field"><label>Nombre *</label><input id="fNombre" required maxlength="80" placeholder="Ej. Mi actividad de IA"></div>
+      <div class="field"><label>Emoji (icono)</label><input id="fIcon" maxlength="4" placeholder="⭐"></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Etapa *</label>
+        <select id="fEtapa" required>
+          <option value="infantil">🧸 Infantil</option>
+          <option value="primaria" selected>✏️ Primaria</option>
+          <option value="proyecto">🚀 Proyecto</option>
+        </select>
+      </div>
+      <div class="field"><label>Edad recomendada</label><input id="fEdad" maxlength="30" placeholder="Ej. 6-8 años"></div>
+    </div>
+    <div class="field"><label>Categoría</label>
+      <input id="fCat" list="catList" maxlength="40" placeholder="Ej. IA y pensamiento computacional">
+      <datalist id="catList"></datalist>
+    </div>
+    <div class="field"><label>Descripción</label><textarea id="fDesc" maxlength="400" placeholder="¿Para qué lo usas en el aula?"></textarea></div>
+    <div class="field"><label>Enlace (URL) *</label><input id="fUrl" type="url" required placeholder="https://…"></div>
+    <p class="form-error" id="formError">Revisa los campos obligatorios (el enlace debe empezar por http).</p>
+    <div class="modal-actions">
+      <button type="button" class="btn ghost" id="btnCancel">Cancelar</button>
+      <button type="submit" class="btn primary">Guardar recurso</button>
+    </div>
+  </form>
+</div>
+
+<script>
+const ETAPAS = {infantil:'Infantil', primaria:'Primaria', secundaria:'Secundaria', proyecto:'Proyecto'};
+
+const RECURSOS = [
+  // ══════════ INFANTIL (3-6 años) ══════════
+  {etapa:'infantil', icon:'🖍️', nombre:'Animated Drawings', cat:'Arte y creatividad', edad:'3-6 años',
+   desc:'La IA anima los dibujos que hacen los alumnos: suben su dibujo y cobra vida moviéndose y bailando. Motivación asegurada.',
+   links:[{txt:'Abrir', url:'https://sketch.metademolab.com/'}]},
+  {etapa:'infantil', icon:'🎤', nombre:'Speechnotes', cat:'Lenguaje y lectoescritura', edad:'3-6 años',
+   desc:'Convierte audio a texto. Útil para que los peques "escriban" hablando y vean cómo sus palabras se transforman en letras.',
+   links:[{txt:'Abrir', url:'https://speechnotes.co/es/'}]},
+  {etapa:'infantil', icon:'🔊', nombre:'TTSMaker', cat:'Lenguaje y lectoescritura', edad:'3-6 años',
+   desc:'Convierte texto a audio con voces naturales. Ideal para crear audiocuentos o consignas sonoras para rincones.',
+   links:[{txt:'Abrir', url:'https://ttsmaker.com/'}]},
+  {etapa:'infantil', icon:'🎵', nombre:'Suno', cat:'Música', edad:'3-6 años',
+   desc:'Crea canciones personalizadas con IA: canciones de rutinas, de cumpleaños, de proyectos… con la letra que tú elijas.',
+   links:[{txt:'Abrir', url:'https://www.suno.ai/'}]},
+  {etapa:'infantil', icon:'🎨', nombre:'Copilot (imágenes para colorear)', cat:'Arte y creatividad', edad:'3-6 años',
+   desc:'Genera imágenes para colorear a gusto de los niños: pide un dibujo de línea sobre cualquier tema y imprímelo al momento.',
+   links:[{txt:'Abrir', url:'https://copilot.microsoft.com/'}]},
+  {etapa:'infantil', icon:'✏️', nombre:'Quick, Draw!', cat:'Alfabetización en IA', edad:'3-6 años',
+   desc:'Dibujan en la pizarra digital y la IA intenta adivinar qué es. Primer contacto con el reconocimiento de imágenes, con muchas risas.',
+   links:[{txt:'Abrir', url:'https://quickdraw.withgoogle.com/'}]},
+  {etapa:'infantil', icon:'📚', nombre:'Khan Academy Kids', cat:'Multiárea', edad:'3-6 años',
+   desc:'Amplia variedad de actividades educativas: matemáticas, lectura, escritura y habilidades socioemocionales. Gratuito y en español.',
+   links:[{txt:'Abrir', url:'https://es.khanacademy.org/kids'}]},
+  {etapa:'infantil', icon:'🎹', nombre:'AI Duet (Piano virtual)', cat:'Música', edad:'3-6 años',
+   desc:'Piano virtual que responde: el niño toca unas notas y la IA improvisa un dueto con él. Exploración musical libre.',
+   links:[{txt:'Abrir', url:'https://experiments.withgoogle.com/ai/ai-duet/view/'}]},
+  {etapa:'infantil', icon:'🐼', nombre:'Scarlett Panda', cat:'Lenguaje y lectoescritura', edad:'3-6 años',
+   desc:'Generador de cuentos personalizados: crea historias con los nombres de los alumnos y los temas del proyecto de aula.',
+   links:[{txt:'Abrir', url:'https://www.scarlettpanda.com/'}]},
+  {etapa:'infantil', icon:'🖤', nombre:'PineTools · Blanco y negro', cat:'Utilidades', edad:'3-6 años',
+   desc:'Convierte cualquier imagen a blanco y negro en segundos. Práctico para preparar fichas para colorear a partir de fotos.',
+   links:[{txt:'Abrir', url:'https://pinetools.com/es/convertir-blanco-y-negro'}]},
+  {etapa:'infantil', icon:'🎼', nombre:'Musical Canvas', cat:'Arte y creatividad', edad:'3-6 años',
+   desc:'Realizan un dibujo y la IA lo transforma en música. Une plástica y música en una misma experiencia sensorial.',
+   links:[{txt:'Abrir', url:'https://artsandculture.google.com/experiment/musical-canvas'}]},
+  {etapa:'infantil', icon:'🪄', nombre:'Semi-Conductor', cat:'Música', edad:'3-6 años',
+   desc:'Los niños/as se convierten en directores de orquesta: la cámara analiza sus movimientos y la orquesta les obedece.',
+   links:[{txt:'Abrir', url:'https://semiconductor.withgoogle.com/'}]},
+
+  // ── Nuevos · Infantil · Alfabetización en IA ──
+  {etapa:'infantil', icon:'✨', nombre:'AutoDraw', cat:'Alfabetización en IA', edad:'3-6 años', nuevo:true,
+   desc:'Dibujan un garabato y la IA sugiere dibujos "perfeccionados" de lo que ha reconocido. Ideal para hablar de cómo la máquina "adivina" lo que vemos.',
+   links:[{txt:'Abrir', url:'https://www.autodraw.com/'}]},
+  {etapa:'infantil', icon:'🔎', nombre:'Emoji Scavenger Hunt', cat:'Alfabetización en IA', edad:'4-6 años', nuevo:true,
+   desc:'La app muestra un emoji y hay que encontrar el objeto real antes de que acabe el tiempo: la cámara lo reconoce con IA. Interfaz en inglés pero casi sin texto.',
+   links:[{txt:'Jugar', url:'https://emojiscavengerhunt.withgoogle.com/'}]},
+  {etapa:'infantil', icon:'🎭', nombre:'Blob Opera', cat:'Música', edad:'3-6 años', nuevo:true,
+   desc:'Cuatro "blobs" cantarines entrenados con voces de ópera reales. Los niños dirigen el coro arrastrándolos. Muy útil para explicar que la IA "aprende" de ejemplos.',
+   links:[{txt:'Jugar', url:'https://artsandculture.google.com/experiment/blob-opera/AAHWrq360NcGbw'}]},
+
+  // ══════════ PRIMARIA · 6-8 años ══════════
+  {etapa:'primaria', icon:'🈺', nombre:'Las palabras misteriosas', cat:'Alfabetización en IA', edad:'6-8 años',
+   desc:'Descubren cómo funciona una IA de Procesamiento de Lenguaje Natural (PLN) traduciendo palabras a otro idioma. Actividad completa con materiales.',
+   links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1vAUspRuZkxt5efoDmeV-ks4HrwiWiqyN?usp=drive_link'}]},
+  {etapa:'primaria', icon:'🖼️', nombre:'En busca del arte perdido', cat:'Alfabetización en IA', edad:'6-8 años',
+   desc:'Aprenden cómo funciona un chatbot a través de una búsqueda con temática artística. Actividad guiada con materiales descargables.',
+   links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1RTOnJQZXERw9ugS2y59Ekft5s4Wfh_hv?usp=drive_link'}]},
+  {etapa:'primaria', icon:'😊', nombre:'La Inteligencia Artificial Feliz', cat:'Emociones', edad:'6-8 años',
+   desc:'Descubren que la IA puede servir para reconocer emociones. Conecta tecnología con educación emocional.',
+   links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1eXLYTC1YzVLQDOmYbJPwvS7OiTQdoArq?usp=drive_link'}]},
+  {etapa:'primaria', icon:'💃', nombre:'K-Pop Dance Challenge', cat:'Movimiento y baile', edad:'6-9 años',
+   desc:'Imitan coreografías por niveles de dificultad y la IA puntúa sus movimientos. Genial para descansos activos o Educación Física.',
+   links:[{txt:'Jugar', url:'https://artsandculture.google.com/experiment/k-pop-dance-challenge/ugGuLJ2ruXjWlg'}]},
+
+  // ── Nuevo · 6-12 ──
+  {etapa:'primaria', icon:'🧞', nombre:'Akinator', cat:'Alfabetización en IA', edad:'6-12 años', nuevo:true,
+   desc:'El genio adivina el personaje en el que piensan haciendo preguntas. Perfecto para debatir después: ¿cómo lo hace? Introduce los árboles de decisión sin nombrarlos.',
+   links:[{txt:'Jugar', url:'https://es.akinator.com/'}]},
+
+  // ══════════ PRIMARIA · 9-12 años ══════════
+  {etapa:'primaria', icon:'🪐', nombre:'¿De qué planeta eres?', cat:'Alfabetización en IA', edad:'9-12 años',
+   desc:'Los alumnos comienzan a trabajar tal y como lo hace un tipo de inteligencia artificial. Actividad de iniciación con materiales completos.',
+   links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1I2egIdaB43EkRO-c3qP977aSXIqaAv93?usp=sharing'}]},
+  {etapa:'primaria', icon:'🔷', nombre:'El camino de los rombos', cat:'Programación', edad:'9-12 años',
+   desc:'Conocen aspectos básicos de los fundamentos de la programación mediante una actividad desenchufada y guiada.',
+   links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1Ztu3fgECkOXO8UD_9NEJrJucZj7uMnKr?usp=drive_link'}]},
+  {etapa:'primaria', icon:'🌿', nombre:'Conociendo nuestro entorno con la IA', cat:'Ciencias naturales', edad:'9-12 años',
+   desc:'Usan una herramienta de IA que reconoce plantas y animales. Perfecta para salidas al entorno natural del cole.',
+   links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1g1hjqZ9nmWNSExfcTaMywpd5gCJyiKRB?usp=drive_link'}]},
+  {etapa:'primaria', icon:'🔍', nombre:'¿Qué es qué?', cat:'Alfabetización en IA', edad:'9-12 años',
+   desc:'Aprenden qué es la inteligencia artificial y cómo clasifica las imágenes, con dinámicas prácticas.',
+   links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1IxEdLHhqOnhtOz_CrCIm8Y5eMb5NQOsf?usp=drive_link'}]},
+  {etapa:'primaria', icon:'💬', nombre:'Chateando con una IA: descubre ChatGPT', cat:'Alfabetización en IA', edad:'9-12 años',
+   desc:'Aprenden a usar ChatGPT interactuando con él y debatiendo sobre sus usos y limitaciones. Fomenta el espíritu crítico.',
+   links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1ya6qOYXvpj77vUyjOrJ-TuHypOS_poVR?usp=drive_link'}]},
+  {etapa:'primaria', icon:'🛡️', nombre:'El VigilaChat', cat:'Seguridad digital', edad:'9-12 años',
+   desc:'Entrenan una IA con Machine Learning for Kids y la implementan en Scratch para detectar si alguien expone datos personales al chatear en Internet.',
+   links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1zVbK1RNj45CkwKZGtyHsP-owfKnBvFCW?usp=drive_link'}]},
+  {etapa:'primaria', icon:'🤖', nombre:'Entrenamos una IA', cat:'Alfabetización en IA', edad:'9-12 años',
+   desc:'Descubren cómo funciona una IA que identifica dibujos y entrenan la suya propia para reconocer gatos y manzanas, usando imágenes con licencia Creative Commons.',
+   links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/104p0bBj1_JQotqQEUEmZ52rBEFMLxyzD?usp=drive_link'}]},
+  {etapa:'primaria', icon:'🎭', nombre:'Galería Virtual Familiar', cat:'Arte y creatividad', edad:'9-12 años',
+   desc:'A partir de un dibujo del alumno, la IA lo convierte en una obra al estilo de un pintor reconocido. Termina en exposición de aula.',
+   links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1264zwVi3Haq-Y5fsvTDrRJfiI79gOveT?usp=drive_link'}]},
+  {etapa:'primaria', icon:'🧠', nombre:'Google Teachable Machine', cat:'Alfabetización en IA', edad:'9-12 años',
+   desc:'Crean modelos sencillos de IA que clasifican imágenes, sonidos o posturas. Sin programar y con resultados inmediatos.',
+   links:[{txt:'Abrir', url:'https://teachablemachine.withgoogle.com/'}]},
+  {etapa:'primaria', icon:'🕵️', nombre:'Odd One Out', cat:'Alfabetización en IA', edad:'9-12 años',
+   desc:'Los jugadores deben identificar los «impostores» generados por IA ocultos entre obras de arte reales. Agudiza la observación y el pensamiento crítico.',
+   links:[{txt:'Jugar', url:'https://artsandculture.google.com/experiment/odd-one-out/wAHNn4JsVTFOiw'}]},
+  {etapa:'primaria', icon:'⚙️', nombre:'Machine Learning for Kids', cat:'Alfabetización en IA', edad:'9-12 años',
+   desc:'Plataforma para introducir el aprendizaje automático de forma accesible y divertida, con herramientas visuales y proyectos prácticos conectados a Scratch.',
+   links:[{txt:'Abrir', url:'https://machinelearningforkids.co.uk/'}]},
+  {etapa:'primaria', icon:'📸', nombre:'INTEF · Reconocimiento de imágenes', cat:'Alfabetización en IA', edad:'9-12 años',
+   desc:'Propuesta didáctica oficial del INTEF para trabajar el reconocimiento de imágenes utilizando la IA.',
+   links:[{txt:'Abrir', url:'https://code.intef.es/prop_didacticas/reconocimiento-de-imagenes-utilizando-la-ia/'}]},
+  {etapa:'primaria', icon:'🧙', nombre:'Reto Gandalf', cat:'Seguridad digital', edad:'9-12 años',
+   desc:'Se ponen en la piel de un "atacante" que intenta sonsacar una contraseña a un asistente LLM que no debe revelarla. ¿Superarán los 8 niveles? Muy útil para hablar de ciberseguridad.',
+   links:[{txt:'Jugar', url:'https://gandalf.lakera.ai/intro'}]},
+
+  // ── Nuevos · Primaria · Alfabetización en IA ──
+  {etapa:'primaria', icon:'🐠', nombre:'AI for Oceans (Code.org)', cat:'Alfabetización en IA', edad:'8-12 años', nuevo:true,
+   desc:'Entrenan una IA para clasificar peces y basura marina, y descubren qué son los datos de entrenamiento y los sesgos. En español, con vídeos y guía docente. Un clásico imprescindible.',
+   links:[{txt:'Abrir', url:'https://code.org/oceans'}]},
+  {etapa:'primaria', icon:'🇪🇸', nombre:'LearningML', cat:'Alfabetización en IA', edad:'9-12 años', nuevo:true,
+   desc:'Plataforma española (y en español) para entrenar modelos de reconocimiento de textos e imágenes y usarlos luego en proyectos de Scratch. Alternativa cercana a ML for Kids.',
+   links:[{txt:'Abrir', url:'https://learningml.org/'}]},
+  {etapa:'primaria', icon:'🔌', nombre:'AI Unplugged', cat:'Alfabetización en IA', edad:'9-12 años', nuevo:true,
+   desc:'Colección de actividades "desenchufadas" (sin ordenador) para entender cómo decide una IA: árboles de decisión, aprendizaje por refuerzo… Con versión en español descargable.',
+   links:[{txt:'Abrir', url:'https://www.aiunplugged.org/'}]},
+  {etapa:'primaria', icon:'😮', nombre:'Scratch Lab · Face Sensing', cat:'Alfabetización en IA', edad:'9-12 años', nuevo:true,
+   desc:'Bloques experimentales de Scratch que detectan la cara con la cámara: programan juegos controlados con gestos y comprenden qué "ve" un modelo de visión.',
+   links:[{txt:'Abrir', url:'https://lab.scratch.mit.edu/face/'}]},
+  {etapa:'primaria', icon:'🗨️', nombre:'Say What You See', cat:'Alfabetización en IA', edad:'10-12 años', nuevo:true,
+   desc:'Juego de Google Arts & Culture para aprender a describir imágenes con precisión hasta que la IA genere una parecida. Introducción perfecta al arte del "prompting".',
+   links:[{txt:'Jugar', url:'https://artsandculture.google.com/experiment/say-what-you-see/jwG3m7wQShZngw'}]},
+
+  // ══════════ PROYECTOS ══════════
+  {etapa:'proyecto', icon:'🐝', nombre:'Hello BEBRAS', cat:'Pensamiento computacional', edad:'Primaria a Bachillerato',
+   desc:'Interesante propuesta de EduCaixa para trabajar el pensamiento computacional. Abarca todas las áreas desde Primaria hasta Bachillerato.',
+   links:[{txt:'Abrir', url:'https://educaixa.org/es/-/hellobebras?s=03'}]},
+  {etapa:'proyecto', icon:'🍓', nombre:'Experience AI', cat:'Alfabetización en IA', edad:'11-14 años', nuevo:true,
+   desc:'Programa gratuito de la Raspberry Pi Foundation y Google DeepMind: lecciones completas (presentaciones, fichas, vídeos) sobre qué es la IA, modelos y sesgos. Disponible en español.',
+   links:[{txt:'Abrir', url:'https://experience-ai.org/'}]},
+  {etapa:'proyecto', icon:'🎓', nombre:'Day of AI', cat:'Alfabetización en IA', edad:'Desde 5 años', nuevo:true,
+   desc:'Currículo gratuito del MIT con itinerarios por edades (desde Infantil): qué es la IA, deepfakes, chatbots, ciudadanía digital… Requiere registro docente gratuito.',
+   links:[{txt:'Abrir', url:'https://dayofai.org/'}]},
+];
+
+/* ===== Recursos personalizados (localStorage) ===== */
+const LS_KEY='recursosPersonalizados';
+function loadCustom(){
+  try{ return JSON.parse(localStorage.getItem(LS_KEY)) || []; }catch(e){ return []; }
+}
+function saveCustom(arr){ try{ localStorage.setItem(LS_KEY, JSON.stringify(arr)); }catch(e){} }
+let customs = loadCustom();
+function allRecursos(){ return RECURSOS.concat(customs); }
+
+let etapaActiva='todas', catActiva='todas', query='';
+const grid=document.getElementById('grid'), chipsEl=document.getElementById('chips'),
+      countEl=document.getElementById('count'), statsEl=document.getElementById('stats');
+
+function norm(s){return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');}
+function esc(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
+
+function catsVisibles(){
+  const set=new Set();
+  allRecursos().forEach(r=>{ if(etapaActiva==='todas'||r.etapa===etapaActiva) set.add(r.cat); });
+  return [...set].sort();
+}
+
+function renderChips(){
+  const cats=catsVisibles();
+  if(!cats.includes(catActiva)) catActiva='todas';
+  chipsEl.innerHTML='';
+  const all=document.createElement('button');
+  all.className='chip'+(catActiva==='todas'?' active':''); all.textContent='Todas las categorías';
+  all.onclick=()=>{catActiva='todas';render();};
+  chipsEl.appendChild(all);
+  cats.forEach(c=>{
+    const b=document.createElement('button');
+    b.className='chip'+(catActiva===c?' active':''); b.textContent=c;
+    b.onclick=()=>{catActiva=(catActiva===c?'todas':c);render();};
+    chipsEl.appendChild(b);
+  });
+}
+
+function renderStats(){
+  const rs=allRecursos();
+  const n=e=>rs.filter(r=>r.etapa===e).length;
+  statsEl.innerHTML=`
+    <span class="stat">📦 ${rs.length} recursos</span>
+    <span class="stat">🧸 ${n('infantil')} Infantil</span>
+    <span class="stat">✏️ ${n('primaria')} Primaria</span>
+    <span class="stat">🚀 ${n('proyecto')} Proyectos</span>`;
+}
+
+function render(){
+  renderChips(); renderStats();
+  const q=norm(query);
+  const items=allRecursos().filter(r=>
+    (etapaActiva==='todas'||r.etapa===etapaActiva) &&
+    (catActiva==='todas'||r.cat===catActiva) &&
+    (!q || norm(r.nombre+' '+r.desc+' '+r.cat+' '+r.edad).includes(q))
+  );
+  countEl.textContent=items.length===1?'1 recurso encontrado':items.length+' recursos encontrados';
+  grid.innerHTML='';
+  if(!items.length){
+    grid.innerHTML='<div class="empty"><div class="big">🔍</div><strong>No hay resultados.</strong><br>Prueba con otra búsqueda o quita algún filtro.</div>';
+    return;
+  }
+  items.forEach(r=>{
+    const card=document.createElement('article');
+    card.className='card '+r.etapa;
+    const flag = r.custom ? '<span class="flag mio">MÍO</span>' : (r.nuevo ? '<span class="flag nuevo">NUEVO</span>' : '');
+    card.innerHTML=`
+      ${flag}
+      <div class="card-top">
+        <div class="icon">${esc(r.icon)||'⭐'}</div>
+        <div>
+          <h3>${esc(r.nombre)}</h3>
+          <div class="badges" style="margin-top:6px">
+            <span class="badge etapa">${ETAPAS[r.etapa]}</span>
+            ${r.edad?`<span class="badge edad">👶 ${esc(r.edad)}</span>`:''}
+          </div>
+        </div>
+      </div>
+      <p class="desc">${esc(r.desc)}</p>
+      <div class="badges">${r.cat?`<span class="badge cat">${esc(r.cat)}</span>`:''}</div>
+      <div class="links">${r.links.map(l=>
+        `<a class="go${l.alt?' alt':''}" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.txt)} ↗</a>`).join('')}
+        ${r.custom?`<button class="btn-del" title="Eliminar este recurso" data-id="${r.id}">🗑️</button>`:''}
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+/* ===== Eliminar personalizados ===== */
+grid.addEventListener('click',e=>{
+  const b=e.target.closest('.btn-del'); if(!b) return;
+  if(confirm('¿Eliminar este recurso añadido por ti?')){
+    customs=customs.filter(c=>c.id!==b.dataset.id);
+    saveCustom(customs); render();
+  }
+});
+
+/* ===== Modal ===== */
+const overlay=document.getElementById('overlay'), formAdd=document.getElementById('formAdd'),
+      formError=document.getElementById('formError');
+document.getElementById('btnAdd').onclick=()=>{
+  // rellenar datalist de categorías
+  const dl=document.getElementById('catList');
+  dl.innerHTML=[...new Set(allRecursos().map(r=>r.cat))].sort().map(c=>`<option value="${esc(c)}">`).join('');
+  formError.style.display='none';
+  overlay.classList.add('open');
+  document.getElementById('fNombre').focus();
+};
+document.getElementById('btnCancel').onclick=()=>overlay.classList.remove('open');
+overlay.addEventListener('click',e=>{ if(e.target===overlay) overlay.classList.remove('open'); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') overlay.classList.remove('open'); });
+
+formAdd.addEventListener('submit',e=>{
+  e.preventDefault();
+  const nombre=document.getElementById('fNombre').value.trim();
+  const url=document.getElementById('fUrl').value.trim();
+  if(!nombre || !/^https?:\/\//i.test(url)){ formError.style.display='block'; return; }
+  customs.push({
+    id:'c'+Date.now(),
+    custom:true,
+    etapa:document.getElementById('fEtapa').value,
+    icon:document.getElementById('fIcon').value.trim()||'⭐',
+    nombre,
+    cat:document.getElementById('fCat').value.trim()||'Sin categoría',
+    edad:document.getElementById('fEdad').value.trim(),
+    desc:document.getElementById('fDesc').value.trim(),
+    links:[{txt:'Abrir', url}]
+  });
+  saveCustom(customs);
+  formAdd.reset();
+  overlay.classList.remove('open');
+  render();
+});
+
+/* ===== Navegación ===== */
+document.getElementById('tabs').addEventListener('click',e=>{
+  const t=e.target.closest('.tab'); if(!t) return;
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active'); etapaActiva=t.dataset.etapa; render();
+});
+document.getElementById('search').addEventListener('input',e=>{query=e.target.value;render();});
+
+render();
+</script>
+</body>
+</html>
