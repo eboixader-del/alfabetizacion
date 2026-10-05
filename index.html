@@ -223,6 +223,8 @@
     border-radius:12px;text-decoration:none;transition:.15s}
   .rub-actions .pri{background:var(--rubrica);color:#fff} .rub-actions .pri:hover{filter:brightness(1.1)}
   .rub-actions .sec{background:#f1efe8;color:var(--ink)} .rub-actions .sec:hover{background:#e6e3d8}
+  .rub-intro .nb-tip{margin-top:12px;padding:10px 14px;border-radius:12px;background:var(--rubrica-soft);color:var(--ink)}
+  .nb-tip a{color:var(--rubrica);font-weight:800}
   .fund{font-size:.78rem;color:var(--muted);line-height:1.5;margin-top:14px}
 
   @media (max-width:760px){
@@ -282,6 +284,7 @@
   <div class="rub-intro">
     <h2>⚖️ ¿Es adecuada esta IA para esta edad?</h2>
     <p>Dos rúbricas complementarias que se aplican en orden. Primero se valida <strong>la herramienta</strong> (aspectos legales, de datos y de edad mínima) y, después, <strong>la actividad concreta</strong> que se quiere hacer con ella (aspectos pedagógicos). Marca las casillas y el semáforo calcula el dictamen automáticamente.</p>
+    <p class="nb-tip">💬 <strong>¿Dudas al aplicarlas?</strong> Pregunta al <a href="https://notebook.google.com/notebook/54c403dc-e190-4c6c-bfb1-77b207a53b6f" target="_blank" rel="noopener">cuaderno de Gemini NotebookLM con las rúbricas ↗</a></p>
     <div class="rub-flow">
       <button class="rub-pick" data-rub="herramienta">
         <div class="step">1</div>
@@ -677,6 +680,7 @@ function renderRubrica(){
         ${rubActiva==='herramienta'?'<button class="pri" data-accion="siguiente">Siguiente: valorar la actividad →</button>':'<button class="sec" data-accion="anterior">← Volver a la herramienta</button>'}
         <button class="sec" data-accion="imprimir">🖨️ Imprimir / guardar PDF</button>
         <a class="sec" href="${R.pdf}" target="_blank" rel="noopener">📄 Rúbrica original (PDF)</a>
+        <a class="pri" href="https://notebook.google.com/notebook/54c403dc-e190-4c6c-bfb1-77b207a53b6f" target="_blank" rel="noopener">💬 ¿Dudas? Pregunta al cuaderno</a>
         <button class="sec" data-accion="reiniciar">↺ Reiniciar</button>
       </div>
       ${R.fund?`<p class="fund">${R.fund}</p>`:''}
