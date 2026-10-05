@@ -129,13 +129,131 @@
 
   footer{text-align:center;padding:24px;font-size:.8rem;color:var(--muted)}
   @media (max-width:560px){.toolbar{flex-direction:column}.row2{grid-template-columns:1fr}}
+
+  /* ===== Botón valorar en tarjetas ===== */
+  .btn-eval{border:1.5px solid #e2ddd2;background:#fff;cursor:pointer;font:inherit;font-weight:800;font-size:.78rem;
+    color:var(--muted);padding:6px 12px;border-radius:12px;transition:.15s}
+  .btn-eval:hover{border-color:var(--rubrica);color:var(--rubrica)}
+
+  /* ===== Rúbricas ===== */
+  :root{--rubrica:#e11d48;--rubrica-soft:#ffe4e6;
+    --ok:#15803d;--ok-soft:#dcfce7;--med:#a16207;--med-soft:#fef9c3;--no:#b91c1c;--no-soft:#fee2e2;}
+  .tab[data-etapa="rubricas"].active{background:var(--rubrica)}
+  .rub{max-width:1080px;margin:18px auto 60px;padding:0 20px;display:none}
+  .rub.show{display:block}
+  .rub-intro{background:#fff;border-radius:var(--radius);padding:22px 24px;box-shadow:0 3px 12px rgba(43,43,58,.06);
+    border-top:5px solid var(--rubrica)}
+  .rub-intro h2{font-size:1.35rem;font-weight:900}
+  .rub-intro p{color:var(--muted);font-size:.92rem;line-height:1.55;margin-top:6px}
+  .rub-flow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+  .rub-pick{border:2px solid #ece8df;background:#fbfaf7;border-radius:16px;padding:16px 18px;text-align:left;
+    cursor:pointer;font:inherit;color:var(--ink);transition:.18s;display:flex;gap:14px;align-items:flex-start}
+  .rub-pick:hover{border-color:#d6d0c3;transform:translateY(-2px)}
+  .rub-pick.active{border-color:var(--rubrica);background:var(--rubrica-soft)}
+  .rub-pick .step{flex-shrink:0;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+    font-weight:900;background:#fff;border:2px solid currentColor;color:var(--rubrica)}
+  .rub-pick strong{display:block;font-size:1rem;font-weight:900}
+  .rub-pick span{display:block;font-size:.82rem;color:var(--muted);margin-top:3px;line-height:1.45}
+
+  .rub-block{background:#fff;border-radius:var(--radius);padding:20px 22px;margin-top:16px;
+    box-shadow:0 3px 12px rgba(43,43,58,.06)}
+  .rub-block h3{font-size:1.05rem;font-weight:900;display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .rub-block h3 .num{background:var(--ink);color:#fff;border-radius:8px;font-size:.8rem;padding:2px 9px}
+  .rub-block .hint{font-size:.84rem;color:var(--muted);line-height:1.5;margin-bottom:12px}
+  .rub-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+  .rub-fields .field{margin:0}
+
+  .tramos{display:flex;gap:8px;flex-wrap:wrap}
+  .tramo{border:2px solid #ece8df;background:#fff;cursor:pointer;font:inherit;font-weight:800;font-size:.86rem;
+    padding:8px 16px;border-radius:999px;color:var(--muted);transition:.15s}
+  .tramo:hover{border-color:#cfc9bb}
+  .tramo.active{color:#fff;border-color:transparent}
+  .tramo.active[data-t="A"]{background:var(--infantil)} .tramo.active[data-t="B"]{background:var(--primaria)}
+  .tramo.active[data-t="C"]{background:var(--secundaria)} .tramo.active[data-t="D"]{background:var(--proyecto)}
+  .principio{margin-top:12px;padding:12px 16px;border-radius:12px;background:#f6f4ef;font-size:.9rem;line-height:1.5}
+  .principio b{font-weight:900}
+
+  .filtro{display:grid;grid-template-columns:200px 1fr auto;gap:14px;align-items:center;padding:12px 0;
+    border-top:1px solid #f0ece3}
+  .filtro:first-of-type{border-top:none}
+  .filtro .fn{font-weight:800;font-size:.9rem}
+  .filtro .fr{font-size:.86rem;color:var(--muted);line-height:1.45}
+  .yn{display:flex;gap:6px}
+  .yn button{border:2px solid #ece8df;background:#fff;cursor:pointer;font:inherit;font-weight:800;font-size:.8rem;
+    padding:6px 12px;border-radius:10px;color:var(--muted);transition:.15s;white-space:nowrap}
+  .yn button.si.on{background:var(--ok);border-color:var(--ok);color:#fff}
+  .yn button.no.on{background:var(--no);border-color:var(--no);color:#fff}
+
+  .dims{display:grid;grid-template-columns:170px repeat(3,1fr);gap:8px}
+  .dims .hd{font-size:.76rem;font-weight:900;text-transform:uppercase;letter-spacing:.4px;padding:6px 10px;border-radius:8px}
+  .dims .hd.ok{background:var(--ok-soft);color:var(--ok)} .dims .hd.med{background:var(--med-soft);color:var(--med)}
+  .dims .hd.no{background:var(--no-soft);color:var(--no)} .dims .hd.dm{color:var(--muted)}
+  .dim-name{font-weight:900;font-size:.88rem;padding:10px 4px;line-height:1.3}
+  .dim-name small{display:block;font-weight:600;color:var(--muted);font-size:.76rem;margin-top:3px}
+  .cell{border:2px solid #ece8df;background:#fff;border-radius:12px;padding:10px 12px;font:inherit;font-size:.83rem;
+    line-height:1.45;text-align:left;cursor:pointer;color:var(--ink);transition:.15s;position:relative}
+  .cell .lbl{display:none;font-size:.7rem;font-weight:900;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
+  .cell.ok:hover{border-color:#86efac} .cell.med:hover{border-color:#fde047} .cell.no:hover{border-color:#fca5a5}
+  .cell.sel.ok{background:var(--ok-soft);border-color:var(--ok)}
+  .cell.sel.med{background:var(--med-soft);border-color:var(--med)}
+  .cell.sel.no{background:var(--no-soft);border-color:var(--no)}
+  .cell.sel::after{content:"✓";position:absolute;top:6px;right:9px;font-weight:900}
+  .cell.sel.ok::after{color:var(--ok)} .cell.sel.med::after{color:var(--med)} .cell.sel.no::after{color:var(--no)}
+  .rowsep{grid-column:1/-1;height:1px;background:#f0ece3;margin:4px 0}
+
+  .nota{margin-top:14px;border-left:4px solid var(--primaria);background:var(--primaria-soft);border-radius:0 12px 12px 0;
+    padding:4px 16px;font-size:.85rem;line-height:1.55}
+  .nota summary{cursor:pointer;font-weight:900;padding:8px 0}
+  .nota ol{margin:6px 0 8px 20px} .nota p{margin:6px 0}
+
+  .veredicto{display:flex;gap:16px;align-items:center;border-radius:16px;padding:18px 20px;border:2px solid #ece8df;background:#fbfaf7}
+  .veredicto .luz{width:46px;height:46px;border-radius:50%;flex-shrink:0;background:#d6d3cb;box-shadow:inset 0 -4px 0 rgba(0,0,0,.12)}
+  .veredicto .vt{font-weight:900;font-size:1.15rem;letter-spacing:.2px}
+  .veredicto .va{font-size:.88rem;line-height:1.5;color:var(--ink);margin-top:3px}
+  .veredicto .vp{font-size:.8rem;color:var(--muted);margin-top:4px}
+  .veredicto.ok{background:var(--ok-soft);border-color:var(--ok)} .veredicto.ok .luz{background:#22c55e} .veredicto.ok .vt{color:var(--ok)}
+  .veredicto.med{background:var(--med-soft);border-color:#eab308} .veredicto.med .luz{background:#eab308} .veredicto.med .vt{color:var(--med)}
+  .veredicto.no{background:var(--no-soft);border-color:var(--no)} .veredicto.no .luz{background:#ef4444} .veredicto.no .vt{color:var(--no)}
+  .motivos{margin:10px 0 0 18px;font-size:.84rem;line-height:1.5}
+  .leyenda{width:100%;border-collapse:collapse;margin-top:14px;font-size:.82rem}
+  .leyenda td{padding:8px 10px;border-top:1px solid #f0ece3;vertical-align:top;line-height:1.45}
+  .leyenda td:first-child{font-weight:900;white-space:nowrap}
+  .rub-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .rub-actions a,.rub-actions button{border:none;cursor:pointer;font:inherit;font-weight:800;font-size:.86rem;padding:10px 18px;
+    border-radius:12px;text-decoration:none;transition:.15s}
+  .rub-actions .pri{background:var(--rubrica);color:#fff} .rub-actions .pri:hover{filter:brightness(1.1)}
+  .rub-actions .sec{background:#f1efe8;color:var(--ink)} .rub-actions .sec:hover{background:#e6e3d8}
+  .fund{font-size:.78rem;color:var(--muted);line-height:1.5;margin-top:14px}
+
+  @media (max-width:760px){
+    .rub-flow,.rub-fields{grid-template-columns:1fr}
+    .filtro{grid-template-columns:1fr;gap:6px}
+    .dims{grid-template-columns:1fr}
+    .dims .hd{display:none}
+    .dim-name{padding:12px 2px 0}
+    .cell .lbl{display:block}
+    .leyenda,.leyenda tbody,.leyenda tr,.leyenda td{display:block;width:100%}
+    .leyenda tr{border-top:1px solid #f0ece3;padding:6px 0}
+    .leyenda td{border:none;padding:3px 4px}
+    .leyenda td:first-child{white-space:normal}
+    .cell.ok .lbl{color:var(--ok)} .cell.med .lbl{color:var(--med)} .cell.no .lbl{color:var(--no)}
+  }
+  @media print{
+    body{background:#fff}
+    header,.toolbar,.tabs,.chips,.count,.grid,footer,.rub-flow,.rub-actions,.no-print{display:none!important}
+    .rub{display:block!important;margin:0;padding:0;max-width:none}
+    .rub-intro,.rub-block{box-shadow:none;border:1px solid #ddd;break-inside:avoid;padding:12px 14px;margin-top:10px}
+    .cell:not(.sel){opacity:.45}
+    .tramo:not(.active){display:none}
+    .field input,.field textarea{border:none;border-bottom:1px solid #999;border-radius:0;background:#fff}
+  }
 </style>
 </head>
 <body>
 
 <header>
   <h1><span class="emoji">🎒</span> Mis Recursos de Aula</h1>
-  <p>Herramientas y actividades con IA para Infantil y Primaria, organizadas y listas para usar.</p>
+  <p>Herramientas y actividades con IA para Infantil y Primaria, organizadas y listas para usar, con rúbricas para valorar si son adecuadas a cada edad.</p>
   <div class="stats" id="stats"></div>
 </header>
 
@@ -152,11 +270,33 @@
   <button class="tab" data-etapa="infantil">🧸 Infantil</button>
   <button class="tab" data-etapa="primaria">✏️ Primaria</button>
   <button class="tab" data-etapa="proyecto">🚀 Proyectos</button>
+  <button class="tab" data-etapa="rubricas">⚖️ Rúbricas IA</button>
 </nav>
 
 <div class="chips" id="chips"></div>
 <div class="count" id="count"></div>
 <main class="grid" id="grid"></main>
+
+<!-- ===== Sección de rúbricas ===== -->
+<section class="rub" id="rub">
+  <div class="rub-intro">
+    <h2>⚖️ ¿Es adecuada esta IA para esta edad?</h2>
+    <p>Dos rúbricas complementarias que se aplican en orden. Primero se valida <strong>la herramienta</strong> (aspectos legales, de datos y de edad mínima) y, después, <strong>la actividad concreta</strong> que se quiere hacer con ella (aspectos pedagógicos). Marca las casillas y el semáforo calcula el dictamen automáticamente.</p>
+    <div class="rub-flow">
+      <button class="rub-pick" data-rub="herramienta">
+        <div class="step">1</div>
+        <div><strong>🛠️ Herramienta · rúbrica institucional</strong>
+        <span>Para el equipo directivo o la comisión. ¿Puede usarse esta herramienta con alumnado de esta etapa? RGPD, consentimiento, términos de servicio.</span></div>
+      </button>
+      <button class="rub-pick" data-rub="actividad">
+        <div class="step">2</div>
+        <div><strong>🎯 Actividad · rúbrica pedagógica</strong>
+        <span>Para el docente o el departamento. ¿Esta actividad concreta con IA es adecuada a la edad y no sustituye el esfuerzo cognitivo del alumnado?</span></div>
+      </button>
+    </div>
+  </div>
+  <div id="rubBody"></div>
+</section>
 
 <footer>Recopilación personal de recursos educativos · Los recursos añadidos manualmente se guardan en este navegador</footer>
 
@@ -335,6 +475,263 @@ const RECURSOS = [
    links:[{txt:'Abrir', url:'https://dayofai.org/'}]},
 ];
 
+/* ══════════════════ RÚBRICAS DE IDONEIDAD ══════════════════ */
+const TRAMOS = {
+  A:{nombre:'Infantil', edad:'0-6 años', icon:'🧸'},
+  B:{nombre:'Primaria', edad:'6-12 años', icon:'✏️'},
+  C:{nombre:'ESO', edad:'12-16 años', icon:'🎒'},
+  D:{nombre:'Bachillerato y FP', edad:'16-18+ años', icon:'🎓'}
+};
+
+const RUBRICAS = {
+  herramienta:{
+    titulo:'Rúbrica de evaluación institucional de herramientas de IA',
+    quien:'Equipo directivo o comisión responsable del centro',
+    pdf:'rubricas/Rubrica_evaluacion_IA_centro.pdf',
+    criterioCol:true,
+    campos:[['herramienta','Herramienta de IA'],['etapa','Etapa / curso'],['quien','Comisión / responsable'],['fecha','Fecha']],
+    filtrosTitulo:'Filtros transversales de obligatorio cumplimiento',
+    filtrosHint:'Antes de valorar la edad, la herramienta debe superar estos cuatro criterios legales y éticos no negociables. Si uno no se cumple, la herramienta no es apta.',
+    filtros:[
+      ['Cumplimiento RGPD / LOPDGDD','Servidores en la UE o garantías explícitas de transferencia internacional. No reutilización de datos para entrenar modelos sin base jurídica.'],
+      ['Reserva de Humanidad','Ninguna herramienta puede tomar decisiones académicas automatizadas, calificaciones finales o perfilados del alumnado sin supervisión docente real.'],
+      ['Protección Biométrica e Íntima','Prohibido el uso de reconocimiento facial, análisis emocional, seguimiento biométrico o clasificación de neurotipos.'],
+      ['Información a Familias','Notificación previa a las familias sobre la finalidad educativa, herramienta utilizada y medidas de seguridad.']
+    ],
+    tramos:{
+      A:{edad:'0 a 6 años', principio:'<b>Uso exclusivamente docente.</b> Interacción directa del alumnado no autorizada.', dims:[
+        ['Acceso y Registro','Exigencia de creación de cuentas o introducción de datos.','Sin registro del alumnado; el docente opera la herramienta.','Uso colectivo en pantalla común sin datos individuales.','El alumnado crea cuenta o interactúa de forma autónoma.'],
+        ['Datos e Imagen','Introducción de fotos, dibujos con rostro o voz de niños/as.','Cero datos personales o biométricos procesados.','Uso de recursos genéricos o anónimos creados previamente.','Se suben imágenes, audios o datos reales del alumnado.'],
+        ['Finalidad Pedagógica','Sustitución de habilidades motrices/creativas.','El docente genera material de apoyo (cuentos, imágenes) sin sustituir la actividad manipulativa.','Proyección puntual en aula guiada 100% por el docente.','Generación automática sustituyendo el dibujo a mano o el juego activo.']
+      ]},
+      B:{edad:'6 a 12 años / menores de 14', principio:'<b>Uso educativo guiado y sin chatbots abiertos con cuentas personales.</b> El consentimiento requiere autorización de padres/tutores.', dims:[
+        ['Términos de Servicio (TDS)','Edad mínima legal fijada por el proveedor.','Entornos educativos cerrados o simuladores didácticos sin límite de edad (ej. <i>Machine Learning for Kids</i>, <i>Code.org</i>).','Herramientas institucionales con cuenta de centro cuyo proveedor delega en el centro la decisión por edad (p. ej. Gemini en Google Workspace for Education), configuradas por el administrador y previa información/autorización de las familias.','Chatbots de uso general con cuentas personales o de consumo, fuera del control del centro, o cuyos términos exigen una edad mínima que el alumnado no cumple.'],
+        ['Consentimiento y Datos','Art. 7 LOPDGDD (consentimiento paterno &lt;14 años).','Modalidad sin registro o cuenta institucional protegida.','Consentimiento expreso e informado de padres/tutores recibido.','Registro individual con correos personales sin autorización de tutores.'],
+        ['Supervisión Pedagógica','Autonomía en la interacción con IA.','Interacción indirecta o en grupos reducidos con plantilla prefijada por el docente.','Trabajo en aula bajo supervisión física continua del docente.','Tareas autónomas en casa requiriendo uso independiente de IA generativa.']
+      ], nota:`<details><summary>ℹ️ Nota sobre herramientas con autorización delegada en el centro (caso Gemini)</summary>
+        <p>Algunos proveedores no fijan edad mínima cuando la herramienta se usa con <b>cuenta institucional</b> y dejan la decisión en manos del centro. Es el caso de <b>Gemini en Google Workspace for Education</b>: Google lo ofrece a usuarios de todas las edades, con protección de datos de nivel empresarial (no se usan para entrenar modelos), políticas de contenido más estrictas y funciones bloqueadas para menores de 18 años. Además, en Google Classroom está <b>activado por defecto</b> para alumnado de todas las edades desde agosto de 2026, y es el administrador quien decide a qué usuarios se le da acceso.</p>
+        <p>Por tanto, su uso con menores de 14 años <b>no es «no apto» por sí mismo</b>: es una decisión legítima del centro, que debe tomarse de forma <b>expresa y documentada</b>:</p>
+        <ol><li>Acuerdo del equipo directivo, recogido en el Plan Digital de Centro.</li>
+        <li>Configuración por el administrador por unidades organizativas (etapa o edad), desactivando el acceso donde no se haya autorizado. Si el centro no decide, la herramienta queda activa por defecto.</li>
+        <li>Información a las familias y, cuando proceda, su autorización.</li>
+        <li>Uso exclusivo con la cuenta del centro, nunca con cuentas personales.</li></ol>
+        <p>Que el proveedor lo permita no significa que cualquier actividad sea adecuada: eso se valora con la <i>Rúbrica de adecuación pedagógica de actividades con IA</i> (paso 2).</p></details>`},
+      C:{edad:'12/13 a 16 años', principio:'<b>Uso asistido supervisado.</b> Consentimiento válido del menor a partir de los 14 años.', dims:[
+        ['Términos y Registro','Verificación de edad mínima (13+ vs 18+).','Cumple Términos de Servicio para 13+ o plataformas con cuenta de centro configuradas por el administrador (p. ej. Gemini en Workspace for Education).','Uso de herramientas 18+ únicamente mediante demostración o cuenta del docente en aula.','Alumnado menor de edad registrado en plataformas que exigen estrictamente +18 años (ej. Claude).'],
+        ['Transparencia y Citación','Honestidad académica y pensamiento crítico.','Exigencia explícita de declarar, citar y contrastar lo generado por IA.','Utilización como borrador inicial o asistente de revisión con registro del <i>prompt</i>.','Entrega de resultados de IA sin atribución ni contraste de fuentes.'],
+        ['Sesgos y Pensamiento Crítico','Verificación de respuestas e ilusionismo analítico.','Actividades diseñadas para detectar errores, sesgos o «alucinaciones» de la IA.','Uso supervisado para resúmenes o tutoría de dudas puntual.','Aceptación de respuestas generadas por IA como verdad absoluta sin validación.']
+      ]},
+      D:{edad:'16 a 18+ años', principio:'<b>Autonomía crítica, auditoría y creación ética.</b>', dims:[
+        ['Auditoría Ética y Técnica','Nivel de competencia y análisis del sistema.','Proyectos de análisis crítico, evaluación de modelos, sesgos y explicabilidad.','Uso avanzado de asistentes para programación o redacción con justificación técnica.','Dependencia pasiva que sustituye la capacidad de síntesis o razonamiento.'],
+        ['Gobernanza y Propiedad','Derechos de autor y licencias de uso.','Cumplimiento estricto de propiedad intelectual y citación en formato académico.','Uso en entornos de prueba con datos simulados no reales.','Introducción de datos de terceros o trabajos no citados vulnerando derechos.']
+      ]}
+    },
+    dictamen:{
+      ok:['APROBADA','Incluir en el Plan Digital de Centro (PDC) y en el catálogo interno de herramientas autorizadas.','Cumple todos los filtros transversales y la columna Apta (Sí) en su tramo de edad.'],
+      med:['APROBADA CON RESTRICCIONES','Aplicar únicamente bajo el protocolo especificado (ej. uso en pantalla común, consentimiento previo firmado o cuentas institucionales).','Cumple filtros transversales pero requiere mediación docente o consentimiento de familias.'],
+      no:['NO APTA','Prohibir su uso en la actividad o etapa evaluada. Buscar alternativas homologadas o sin registro.','Incumple algún filtro transversal o cae en la columna No apta para ese tramo de edad.']
+    },
+    fund:''
+  },
+
+  actividad:{
+    titulo:'Rúbrica de adecuación pedagógica de actividades con IA',
+    quien:'Docente, departamento o comisión de transformación digital',
+    pdf:'rubricas/Rubrica_adecuacion_actividades_IA.pdf',
+    criterioCol:false,
+    campos:[['actividad','Actividad / situación de aprendizaje'],['etapa','Etapa / curso / materia'],['herramienta','Herramienta de IA'],['quien','Docente proponente / fecha']],
+    filtrosTitulo:'Filtros previos de obligatorio cumplimiento',
+    filtrosHint:'Si uno no se cumple, la actividad no es apta y no hace falta seguir. Garantizan que la IA actúe como catalizador del aprendizaje sin sustituir el esfuerzo cognitivo ni la autonomía del alumnado.',
+    filtros:[
+      ['Herramienta validada','La herramienta figura como <i>Aprobada</i> o <i>Aprobada con restricciones</i> en la rúbrica institucional (RGPD, edad mínima, consentimiento), y la actividad respeta esas restricciones.'],
+      ['Vinculación curricular','La actividad responde a competencias específicas y criterios de evaluación concretos, identificados en la programación.'],
+      ['Valor añadido pedagógico','La IA aporta una mejora clara al aprendizaje (personalización, accesibilidad, análisis crítico, simulación, feedback) que no se lograría igual sin ella. No es un adorno tecnológico.'],
+      ['Preservación del núcleo cognitivo','La IA no realiza aquello que el criterio de evaluación pretende medir. El alumnado investiga, compara, crea, debate o decide.'],
+      ['Datos en la actividad','La consigna no pide introducir datos personales, imágenes o voz del alumnado ni de terceros en la herramienta.'],
+      ['Equidad y alternativa','Ningún estudiante queda excluido por brecha digital, falta de consentimiento o necesidades de apoyo: existe una alternativa equivalente en objetivos de aprendizaje (DUA).']
+    ],
+    tramos:{
+      A:{edad:'0 a 6 años', principio:'<b>La IA es del docente, la experiencia es del niño.</b> Familiarización guiada e iniciación al pensamiento computacional, sin interacción autónoma.', dims:[
+        ['Rol del alumnado','','Protagonista de experiencias manipulativas, sensoriales o de juego; la IA solo las prepara o enriquece (p. ej. narración aumentada).','Experiencia colectiva breve en pantalla común, gestionada 100% por el docente y seguida de actividad corporal o verbal.','Interactúa de forma autónoma con dispositivos o asistentes de IA, o queda como espectador pasivo de pantalla.'],
+        ['Desarrollo competencial','','Refuerza el lenguaje oral, la expresión corporal, la curiosidad y el dibujo manual.','El docente genera recursos gráficos que el alumnado colorea, recorta o manipula físicamente.','Sustituye la motricidad fina, el trazo manual o el juego sensoriomotor libre.'],
+        ['Imagen de la IA','','Se presenta como máquina creada por personas que no piensa ni siente. Juegos desenchufados de patrones e instrucciones.','Se usa sin explicitarlo, pero el discurso docente sobre ella está controlado.','Se presenta como personaje con sentimientos, amigo o autoridad que «lo sabe todo».'],
+        ['Tiempo y relación','','Exposición mínima y compartida, centrada en la interacción con el adulto y entre iguales.','Sesiones puntuales y breves en gran grupo, sin rutina diaria.','Uso individual, prolongado o recurrente frente a la pantalla.']
+      ]},
+      B:{edad:'6 a 12 años', principio:'<b>Primero pienso yo, después la IA.</b> Exploración estructurada y alfabetización inicial, sin chatbots abiertos.', dims:[
+        ['Proceso cognitivo','','El alumnado piensa, crea o resuelve primero; la IA aparece después para contrastar, ampliar o generar preguntas.','La IA ofrece un punto de partida (ejemplo, estímulo) que el alumnado transforma de forma sustancial.','La IA produce la respuesta o el producto que el alumnado entrega.'],
+        ['Diseño e interacción','','Modelos didácticos cerrados en aula (entrenar o clasificar patrones: <i>Machine Learning for Kids</i>, <i>Code.org</i>) o interacción a través del docente.','Pequeño grupo con supervisión presencial y guía escrita que indica cuándo usar y cuándo apagar la herramienta, con preguntas prefijadas.','Chatbot abierto de uso individual, consignas del tipo «usa la IA para resolverlo» o tareas para casa con IA generativa.'],
+        ['Veracidad y comprensión','','Descubrir que la IA se equivoca y por qué (datos, patrones) y verificar con libros o fuentes fiables.','Comparación guiada entre el resultado de la IA y el libro de texto.','Las respuestas de la IA se dan por válidas sin contraste; caja negra infalible.'],
+        ['Evidencias de aprendizaje','','Se evalúa lo elaborado por el alumnado y su explicación del proceso.','Se evalúa el producto junto con alguna evidencia oral o escrita del proceso.','Se evalúa un producto cuyo contenido esencial lo ha generado la IA.']
+      ]},
+      C:{edad:'12 a 16 años', principio:'<b>La IA como andamiaje, nunca como sustituto.</b> Uso asistido y supervisado, co-creación, análisis crítico y transparencia de autoría.', dims:[
+        ['Uso de la IA en la tarea','','Andamiaje tras un primer intento propio: feedback, tutoría socrática de dudas, revisión o corrección de código explicada.','Tareas periféricas (formato, ortografía, lluvia de ideas) o borrador inicial que el alumnado reescribe y justifica.','La IA hace lo que el criterio evalúa: resúmenes, redacciones o problemas resueltos íntegramente, o sustitución de la lectura.'],
+        ['Pensamiento crítico y sesgos','','Auditar respuestas, cazar «alucinaciones», comparar modelos o detectar sesgos contrastando con fuentes fiables.','Verificación puntual o comparación guiada de dos textos generados para corregir errores.','Se acepta el primer resultado de la IA como producto final.'],
+        ['Transparencia y citación','','Declaración de uso (herramienta, finalidad y <i>prompts</i>) con cita adaptada al nivel.','Ficha de uso que indica qué partes del trabajo contaron con ayuda de IA.','Uso no declarado o que simula autoría humana completa.'],
+        ['Evaluación y autoría','','Evidencias de proceso (borradores, <i>prompts</i>, defensa oral, trabajo en aula) y reflexión metacognitiva.','Producto final combinado con alguna evidencia de proceso.','Solo se evalúa un producto final realizado fuera del aula.']
+      ]},
+      D:{edad:'16 a 18+ años', principio:'<b>La IA amplía capacidades, el juicio es del alumnado.</b> Autonomía ética, investigación avanzada, auditoría de modelos y autorregulación.', dims:[
+        ['Nivel de complejidad','','La IA actúa como pareja de debate, tutor académico o generador de hipótesis que el alumnado valida, critica y mejora.','Asistentes avanzados de programación o redacción, con diario de desarrollo y justificación de decisiones.','Se delega en la IA el razonamiento crítico, la síntesis o la toma de postura.'],
+        ['Transferencia','','Simula usos reales del sector profesional o del ámbito universitario, con sus criterios de calidad.','Uso genérico con conexión parcial con el perfil profesional o académico.','Uso sin conexión con el perfil ni con situaciones reales.'],
+        ['Ética, impacto y propiedad','','Citación académica (APA/IEEE), respeto a licencias y reflexión sobre sesgos, derechos de autor e impacto social y ambiental.','Debate breve previo a la entrega sobre las implicaciones del modelo empleado.','Plagio, datos de terceros o tarea aislada de cualquier consideración ética, legal o social.'],
+        ['Trazabilidad','','Historial de <i>prompts</i>, versiones y defensa del trabajo que permiten seguir el razonamiento.','Evidencia parcial del proceso de trabajo.','No es posible distinguir la aportación propia de la generada.']
+      ]}
+    },
+    medNote:'La columna <i>Apta con mediación</i> solo vale si esa mediación está <b>escrita en la consigna o en la situación de aprendizaje</b>, no si se deja a la improvisación.',
+    dictamen:{
+      ok:['ACTIVIDAD AUTORIZADA','Aprobar e incorporar al repositorio de buenas prácticas del Plan Digital de Centro (PDC).','Cumple todos los filtros previos y todas las dimensiones de su tramo están en Apta.'],
+      med:['AUTORIZADA CON MEDIACIÓN','Autorizar cuando la mediación quede escrita en la consigna (pauta de contraste, guía de uso, supervisión, ficha de declaración). Revisar tras aplicarla.','Cumple los filtros previos; alguna dimensión está en Apta con mediación y ninguna en No apta.'],
+      no:['ACTIVIDAD DESESTIMADA','Rediseñar centrando la evaluación en el proceso y la metacognición, o prescindir de la IA en esta actividad.','Incumple algún filtro previo o alguna dimensión está en No apta: la IA sustituye el pensamiento del alumnado o facilita el plagio.']
+    },
+    fund:'<b>Fundamentación:</b> UNESCO, <i>Guía para la IA generativa en la educación y la investigación</i> (2023) y <i>Marcos de competencias en IA para estudiantes y para docentes</i> (2024) · Reglamento (UE) 2024/1689 de Inteligencia Artificial · RGPD y LOPDGDD (art. 7, consentimiento de menores) · Marco de Referencia de la Competencia Digital Docente (INTEF) · Diseño Universal para el Aprendizaje (DUA).'
+  }
+};
+
+/* Estado de cada rúbrica (se recuerda en este navegador) */
+const RS_KEY='rubricasEstado';
+function nuevoEstado(){ return {tramo:'B', filtros:{}, dims:{}, campos:{}, obs:''}; }
+let rubState = (()=>{ try{ const s=JSON.parse(localStorage.getItem(RS_KEY)); if(s&&s.herramienta&&s.actividad) return s; }catch(e){} return {herramienta:nuevoEstado(), actividad:nuevoEstado()}; })();
+let rubActiva='herramienta';
+function saveRub(){ try{ localStorage.setItem(RS_KEY, JSON.stringify(rubState)); }catch(e){} }
+
+const rubSection=document.getElementById('rub'), rubBody=document.getElementById('rubBody');
+
+function calcDictamen(key){
+  const R=RUBRICAS[key], S=rubState[key], T=R.tramos[S.tramo];
+  const motivos=[];
+  let pend=0, hayMed=false, hayNo=false;
+  R.filtros.forEach((f,i)=>{ const v=S.filtros[i]; if(v==='no'){hayNo=true;motivos.push('No cumple el filtro «'+f[0]+'».');} else if(v!=='si') pend++; });
+  T.dims.forEach((d,i)=>{ const v=S.dims[S.tramo+i];
+    if(v==='no'){hayNo=true;motivos.push('«'+d[0]+'» está en No apta.');}
+    else if(v==='med'){hayMed=true;motivos.push('«'+d[0]+'» requiere mediación.');}
+    else if(v!=='ok') pend++; });
+  const total=R.filtros.length+T.dims.length;
+  if(hayNo) return {estado:'no', motivos:motivos.filter(m=>!m.includes('mediación')), pend, total};
+  if(pend) return {estado:'pend', motivos, pend, total};
+  return {estado: hayMed?'med':'ok', motivos, pend, total};
+}
+
+function renderVeredicto(){
+  const R=RUBRICAS[rubActiva], d=calcDictamen(rubActiva), box=document.getElementById('veredicto');
+  if(!box) return;
+  box.className='veredicto '+(d.estado==='pend'?'':d.estado);
+  if(d.estado==='pend'){
+    box.innerHTML=`<div class="luz"></div><div><div class="vt">Dictamen pendiente</div>
+      <div class="va">Faltan ${d.pend} de ${d.total} elementos por valorar.${d.motivos.length?' De momento:':''}</div>
+      ${d.motivos.length?`<ul class="motivos">${d.motivos.map(m=>`<li>${esc(m)}</li>`).join('')}</ul>`:''}</div>`;
+  } else {
+    const [t,acc]=R.dictamen[d.estado];
+    box.innerHTML=`<div class="luz"></div><div><div class="vt">${t}</div>
+      <div class="va"><b>Acción requerida:</b> ${acc}</div>
+      ${d.motivos.length?`<ul class="motivos">${d.motivos.map(m=>`<li>${esc(m)}</li>`).join('')}</ul>`:''}
+      ${d.estado==='no'&&d.pend?`<div class="vp">Basta un incumplimiento para este dictamen; quedan ${d.pend} elementos sin valorar.</div>`:''}</div>`;
+  }
+}
+
+function renderRubrica(){
+  document.querySelectorAll('.rub-pick').forEach(b=>b.classList.toggle('active', b.dataset.rub===rubActiva));
+  const R=RUBRICAS[rubActiva], S=rubState[rubActiva], T=R.tramos[S.tramo];
+  const camposHTML=R.campos.map(([k,l])=>`<div class="field"><label>${l}</label><input data-campo="${k}" value="${esc(S.campos[k]||'')}"></div>`).join('');
+  const filtrosHTML=R.filtros.map((f,i)=>{ const v=S.filtros[i];
+    return `<div class="filtro"><div class="fn">${f[0]}</div><div class="fr">${f[1]}</div>
+      <div class="yn"><button class="si${v==='si'?' on':''}" data-filtro="${i}" data-v="si">✓ Cumple</button>
+      <button class="no${v==='no'?' on':''}" data-filtro="${i}" data-v="no">✗ No cumple</button></div></div>`; }).join('');
+  const tramosHTML=Object.entries(TRAMOS).map(([k,t])=>
+    `<button class="tramo${S.tramo===k?' active':''}" data-t="${k}">${t.icon} ${k} · ${t.nombre} <span style="opacity:.75;font-weight:600">(${R.tramos[k].edad})</span></button>`).join('');
+  const dimsHTML=T.dims.map((d,i)=>{ const v=S.dims[S.tramo+i];
+    const c=(cls,txt,lbl)=>`<button class="cell ${cls}${v===cls?' sel':''}" data-dim="${i}" data-v="${cls}"><span class="lbl">${lbl}</span>${txt}</button>`;
+    return `<div class="dim-name">${d[0]}${R.criterioCol&&d[1]?`<small>${d[1]}</small>`:''}</div>
+      ${c('ok',d[2],'Apta')}${c('med',d[3],'Apta con mediación')}${c('no',d[4],'No apta')}`; }).join('<div class="rowsep"></div>');
+  const leyenda=['ok','med','no'].map(k=>{ const [t,acc,cond]=R.dictamen[k];
+    const col={ok:'var(--ok)',med:'var(--med)',no:'var(--no)'}[k], dot={ok:'🟢',med:'🟡',no:'🔴'}[k];
+    return `<tr><td style="color:${col}">${dot} ${t}</td><td>${cond}</td><td>${acc}</td></tr>`; }).join('');
+
+  rubBody.innerHTML=`
+    <div class="rub-block">
+      <h3>${rubActiva==='herramienta'?'🛠️':'🎯'} ${R.titulo}</h3>
+      <p class="hint">Responsable: ${R.quien}. ${rubActiva==='actividad'?'Complementa la rúbrica institucional de validación de herramientas.':'Si la herramienta resulta apta, continúa con la rúbrica pedagógica de la actividad.'}</p>
+      <div class="rub-fields">${camposHTML}</div>
+    </div>
+    <div class="rub-block">
+      <h3><span class="num">1</span> ${R.filtrosTitulo}</h3>
+      <p class="hint">${R.filtrosHint}</p>
+      ${filtrosHTML}
+    </div>
+    <div class="rub-block">
+      <h3><span class="num">2</span> Adecuación por tramo de edad</h3>
+      <p class="hint">Elige el tramo y marca <b>una sola columna por dimensión</b>. Manda la dimensión peor valorada.${R.medNote?' '+R.medNote:''}</p>
+      <div class="tramos">${tramosHTML}</div>
+      <div class="principio">Principio: ${T.principio}</div>
+      <div class="dims" style="margin-top:14px">
+        <div class="hd dm">Dimensión</div><div class="hd ok">Apta</div><div class="hd med">Apta con mediación</div><div class="hd no">No apta</div>
+        ${dimsHTML}
+      </div>
+      ${T.nota?`<div class="nota">${T.nota}</div>`:''}
+    </div>
+    <div class="rub-block">
+      <h3><span class="num">3</span> Dictamen final (semáforo)</h3>
+      <div class="veredicto" id="veredicto"></div>
+      <table class="leyenda no-print">${leyenda}</table>
+      <div class="field" style="margin-top:14px"><label>Observaciones y ajustes requeridos</label>
+        <textarea data-obs="1" placeholder="Mediación prevista, restricciones, alternativas…">${esc(S.obs||'')}</textarea></div>
+      <div class="rub-actions">
+        ${rubActiva==='herramienta'?'<button class="pri" data-accion="siguiente">Siguiente: valorar la actividad →</button>':'<button class="sec" data-accion="anterior">← Volver a la herramienta</button>'}
+        <button class="sec" data-accion="imprimir">🖨️ Imprimir / guardar PDF</button>
+        <a class="sec" href="${R.pdf}" target="_blank" rel="noopener">📄 Rúbrica original (PDF)</a>
+        <button class="sec" data-accion="reiniciar">↺ Reiniciar</button>
+      </div>
+      ${R.fund?`<p class="fund">${R.fund}</p>`:''}
+    </div>`;
+  renderVeredicto();
+}
+
+/* Interacción con las rúbricas */
+document.querySelectorAll('.rub-pick').forEach(b=>b.onclick=()=>{rubActiva=b.dataset.rub;renderRubrica();});
+rubBody.addEventListener('click',e=>{
+  const S=rubState[rubActiva];
+  const f=e.target.closest('[data-filtro]');
+  if(f){ const i=f.dataset.filtro; S.filtros[i]=(S.filtros[i]===f.dataset.v?undefined:f.dataset.v); saveRub(); renderRubrica(); return; }
+  const t=e.target.closest('.tramo');
+  if(t){ S.tramo=t.dataset.t; saveRub(); renderRubrica(); return; }
+  const c=e.target.closest('.cell');
+  if(c){ const k=S.tramo+c.dataset.dim; S.dims[k]=(S.dims[k]===c.dataset.v?undefined:c.dataset.v); saveRub(); renderRubrica(); return; }
+  const a=e.target.closest('[data-accion]'); if(!a) return;
+  if(a.dataset.accion==='imprimir') window.print();
+  if(a.dataset.accion==='siguiente'||a.dataset.accion==='anterior'){
+    const otra=rubActiva==='herramienta'?'actividad':'herramienta';
+    const A=rubState[otra];
+    ['herramienta','etapa'].forEach(k=>{ if(!A.campos[k]&&S.campos[k]) A.campos[k]=S.campos[k]; });
+    if(a.dataset.accion==='siguiente') A.tramo=S.tramo;
+    rubActiva=otra; saveRub(); renderRubrica(); rubSection.scrollIntoView({behavior:'smooth'});
+  }
+  if(a.dataset.accion==='reiniciar'){
+    rubState[rubActiva]=nuevoEstado(); rubState[rubActiva].tramo=S.tramo; saveRub(); renderRubrica();
+  }
+});
+rubBody.addEventListener('input',e=>{
+  const S=rubState[rubActiva];
+  if(e.target.dataset.campo){ S.campos[e.target.dataset.campo]=e.target.value; saveRub(); }
+  if(e.target.dataset.obs){ S.obs=e.target.value; saveRub(); }
+});
+
+/* Abrir la rúbrica desde una tarjeta de recurso */
+function tramoDeRecurso(r){
+  if(r.etapa==='infantil') return 'A';
+  if(r.etapa==='primaria') return 'B';
+  const m=(r.edad||'').match(/(\d+)/); const n=m?+m[1]:8;
+  return n<6?'A':n<12?'B':n<16?'C':'D';
+}
+function abrirRubrica(r){
+  const t=tramoDeRecurso(r);
+  ['herramienta','actividad'].forEach(k=>{
+    rubState[k]=nuevoEstado(); rubState[k].tramo=t;
+    rubState[k].campos.herramienta=r.nombre;
+    rubState[k].campos.etapa=ETAPAS[r.etapa]+(r.edad?' · '+r.edad:'');
+  });
+  rubActiva='herramienta'; saveRub();
+  setEtapa('rubricas');
+  window.scrollTo({top:document.getElementById('tabs').offsetTop-10,behavior:'smooth'});
+}
+
 /* ===== Recursos personalizados (localStorage) ===== */
 const LS_KEY='recursosPersonalizados';
 function loadCustom(){
@@ -380,11 +777,17 @@ function renderStats(){
     <span class="stat">📦 ${rs.length} recursos</span>
     <span class="stat">🧸 ${n('infantil')} Infantil</span>
     <span class="stat">✏️ ${n('primaria')} Primaria</span>
-    <span class="stat">🚀 ${n('proyecto')} Proyectos</span>`;
+    <span class="stat">🚀 ${n('proyecto')} Proyectos</span>
+    <span class="stat">⚖️ 2 rúbricas</span>`;
 }
 
 function render(){
-  renderChips(); renderStats();
+  const enRub=etapaActiva==='rubricas';
+  rubSection.classList.toggle('show',enRub);
+  [chipsEl,countEl,grid].forEach(el=>el.style.display=enRub?'none':'');
+  renderStats();
+  if(enRub){ renderRubrica(); return; }
+  renderChips();
   const q=norm(query);
   const items=allRecursos().filter(r=>
     (etapaActiva==='todas'||r.etapa===etapaActiva) &&
@@ -398,6 +801,7 @@ function render(){
     return;
   }
   items.forEach(r=>{
+    const idx=allRecursos().indexOf(r);
     const card=document.createElement('article');
     card.className='card '+r.etapa;
     const flag = r.custom ? '<span class="flag mio">MÍO</span>' : (r.nuevo ? '<span class="flag nuevo">NUEVO</span>' : '');
@@ -417,6 +821,7 @@ function render(){
       <div class="badges">${r.cat?`<span class="badge cat">${esc(r.cat)}</span>`:''}</div>
       <div class="links">${r.links.map(l=>
         `<a class="go${l.alt?' alt':''}" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.txt)} ↗</a>`).join('')}
+        <button class="btn-eval" title="Valorar su idoneidad con las rúbricas" data-idx="${idx}">⚖️ Valorar</button>
         ${r.custom?`<button class="btn-del" title="Eliminar este recurso" data-id="${r.id}">🗑️</button>`:''}
       </div>`;
     grid.appendChild(card);
@@ -425,6 +830,8 @@ function render(){
 
 /* ===== Eliminar personalizados ===== */
 grid.addEventListener('click',e=>{
+  const ev=e.target.closest('.btn-eval');
+  if(ev){ abrirRubrica(allRecursos()[+ev.dataset.idx]); return; }
   const b=e.target.closest('.btn-del'); if(!b) return;
   if(confirm('¿Eliminar este recurso añadido por ti?')){
     customs=customs.filter(c=>c.id!==b.dataset.id);
@@ -470,12 +877,19 @@ formAdd.addEventListener('submit',e=>{
 });
 
 /* ===== Navegación ===== */
+function setEtapa(et){
+  etapaActiva=et;
+  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.etapa===et));
+  render();
+}
 document.getElementById('tabs').addEventListener('click',e=>{
-  const t=e.target.closest('.tab'); if(!t) return;
-  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-  t.classList.add('active'); etapaActiva=t.dataset.etapa; render();
+  const t=e.target.closest('.tab'); if(!t) return; setEtapa(t.dataset.etapa);
 });
-document.getElementById('search').addEventListener('input',e=>{query=e.target.value;render();});
+document.getElementById('search').addEventListener('input',e=>{
+  query=e.target.value;
+  if(etapaActiva==='rubricas') setEtapa('todas'); else render();
+});
+if(location.hash==='#rubricas') setEtapa('rubricas');
 
 render();
 </script>
