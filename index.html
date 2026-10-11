@@ -249,13 +249,41 @@
     .tramo:not(.active){display:none}
     .field input,.field textarea{border:none;border-bottom:1px solid #999;border-radius:0;background:#fff}
   }
+
+  /* ===== Asistente de recomendaciones ===== */
+  .reco{max-width:1080px;margin:18px auto 0;padding:0 20px}
+  .reco-box{background:var(--card);border-radius:22px;box-shadow:0 6px 20px rgba(43,43,58,.08);padding:20px 22px;border:2px solid #ede9fe}
+  .reco-head{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;user-select:none}
+  .reco-head h2{font-size:1.15rem;font-weight:900;display:flex;align-items:center;gap:8px}
+  .reco-head p{font-size:.85rem;color:var(--muted);margin-top:2px}
+  .reco-toggle{border:none;background:#f3e8ff;color:#6d28d9;font:inherit;font-weight:800;font-size:.85rem;padding:8px 16px;border-radius:999px;cursor:pointer;white-space:nowrap}
+  .reco-body{margin-top:16px;display:none}
+  .reco.open .reco-body{display:block}
+  .rq{margin-bottom:14px}
+  .rq-t{font-size:.82rem;font-weight:900;color:#44444f;margin-bottom:7px;letter-spacing:.2px}
+  .rq-t span{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#7c3aed;color:#fff;font-size:.72rem;margin-right:6px}
+  .rq-opts{display:flex;gap:8px;flex-wrap:wrap}
+  .rq-opt{border:1.5px solid #e2ddd2;background:#fbfaf7;cursor:pointer;font:inherit;font-size:.85rem;font-weight:700;color:#44444f;padding:7px 14px;border-radius:999px;transition:.15s}
+  .rq-opt:hover{border-color:#7c3aed;color:#7c3aed}
+  .rq-opt.sel{background:#7c3aed;border-color:#7c3aed;color:#fff}
+  .reco-msg{font-size:.88rem;color:var(--muted);padding:10px 2px}
+  .reco-res{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-top:6px}
+  .rc{border:1.5px solid #ece8de;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:7px;background:#fff;transition:.15s}
+  .rc:hover{border-color:#c4b5fd;transform:translateY(-2px)}
+  .rc-src{font-size:.68rem;font-weight:900;letter-spacing:.3px;padding:3px 9px;border-radius:999px;align-self:flex-start}
+  .rc h4{font-size:.95rem;font-weight:800;line-height:1.25}
+  .rc p{font-size:.82rem;color:var(--muted);line-height:1.45;flex-grow:1}
+  .rc-why{font-size:.74rem;font-weight:700;color:#6d28d9}
+  .rc a,.rc button.go2{align-self:flex-start;text-decoration:none;font:inherit;font-weight:800;font-size:.8rem;padding:6px 13px;border-radius:10px;color:#fff;background:#7c3aed;border:none;cursor:pointer}
+  .reco-more{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;font-size:.82rem;align-items:center;color:var(--muted);font-weight:700}
+  .reco-more a{color:#6d28d9;font-weight:800;text-decoration:none;background:#f3e8ff;padding:5px 12px;border-radius:999px}
 </style>
 </head>
 <body>
 
 <header>
   <h1><span class="emoji">🎒</span> Mis Recursos de Aula</h1>
-  <p>Herramientas y actividades con IA para Infantil y Primaria, organizadas y listas para usar, con rúbricas para valorar si son adecuadas a cada edad.</p>
+  <p>Herramientas, cursos y actividades con IA de Infantil a Bachillerato, organizadas y listas para usar, con rúbricas para valorar si son adecuadas a cada edad.</p>
   <div class="stats" id="stats"></div>
 </header>
 
@@ -266,6 +294,24 @@
   </div>
   <button class="btn-add" id="btnAdd">➕ Añadir recurso</button>
 </div>
+
+<section class="reco open" id="reco">
+  <div class="reco-box">
+    <div class="reco-head" id="recoHead">
+      <div>
+        <h2>🧭 ¿Qué quieres conseguir?</h2>
+        <p>Responde tres preguntas y te recomiendo recursos de toda la web: mis recursos, Code.org, Raspberry Pi y actividades de pensamiento crítico.</p>
+      </div>
+      <button class="reco-toggle" id="recoToggle" type="button">Ocultar</button>
+    </div>
+    <div class="reco-body">
+      <div class="rq"><div class="rq-t"><span>1</span>¿Con quién vas a trabajar?</div><div class="rq-opts" data-q="etapa"></div></div>
+      <div class="rq"><div class="rq-t"><span>2</span>¿Cuál es tu objetivo?</div><div class="rq-opts" data-q="obj"></div></div>
+      <div class="rq"><div class="rq-t"><span>3</span>¿Cuánto tiempo tienes?</div><div class="rq-opts" data-q="dur"></div></div>
+      <div id="recoOut"><p class="reco-msg">👆 Elige con quién vas a trabajar y tu objetivo para ver recomendaciones.</p></div>
+    </div>
+  </div>
+</section>
 
 <nav class="tabs" id="tabs">
   <button class="tab active" data-etapa="todas">✨ Todas</button>
@@ -485,6 +531,9 @@ const RECURSOS = [
   {etapa:'proyecto', icon:'🇪🇸', nombre:'Code INTEF · Pensamiento computacional e IA', cat:'Pensamiento computacional', edad:'Infantil a Bachillerato', nuevo:true,
    desc:'Portal del Ministerio (INTEF) con propuestas didácticas de programación, robótica e IA en castellano, el programa Código Escuela 4.0, formación docente y el Observatorio de la IA.',
    links:[{txt:'Propuestas didácticas', url:'https://code.intef.es/recursos/?recurso=prop_didacticas'},{txt:'Portal', url:'https://code.intef.es/', alt:true}]},
+  {etapa:'proyecto', icon:'🧠', nombre:'Pensamiento crítico en la era de la IA', cat:'Alfabetización en IA', edad:'Primaria a Bachillerato y profesorado', nuevo:true,
+   desc:'13 actividades prácticas (10-30 min) para que el alumnado cuestione, verifique y debata lo que produce la IA: detective de alucinaciones, preguntas socráticas, debate a favor y en contra, comparación a ciegas… Traducidas y adaptadas de Med Kharbach (CC BY-NC-SA).',
+   links:[{txt:'Ver actividades', url:'pensamiento-critico.html'}]},
 ];
 
 /* ══════════════════ RÚBRICAS DE IDONEIDAD ══════════════════ */
@@ -905,6 +954,150 @@ document.getElementById('search').addEventListener('input',e=>{
 if(location.hash==='#rubricas') setEtapa('rubricas');
 
 render();
+
+/* ===== Asistente de recomendaciones ===== */
+(function(){
+  const Q={
+    etapa:[['inf','🧸 Infantil (3-6)'],['pri','✏️ Primaria (6-12)'],['eso','🎓 ESO'],['bach','📚 Bachillerato / FP'],['doc','👩‍🏫 Profesorado']],
+    obj:[['descubrir','🤖 Descubrir qué es la IA'],['critico','🧠 Pensar críticamente sobre la IA'],['prompts','✍️ Aprender a pedirle bien las cosas (prompts)'],
+         ['programar','💻 Aprender a programar'],['crear','🎨 Crear: arte, música, historias'],['robotica','🔌 Robótica y electrónica'],
+         ['seguridad','🔐 Seguridad y ciudadanía digital'],['docente','🛠️ Rediseñar mis tareas y evaluar herramientas']],
+    dur:[['sesion','⚡ Una sesión'],['semanas','📅 Unas semanas'],['largo','🗓️ Un trimestre o más'],['any','🤷 Me da igual']]
+  };
+  const ETQ={inf:'Infantil',pri:'Primaria',eso:'ESO',bach:'Bachillerato/FP',doc:'profesorado'};
+  const OBJ=Object.fromEntries(Q.obj);
+  const SRC={mis:['MIS RECURSOS','#dcfce7','#15803d'],codeorg:['CODE.ORG','#cffafe','#0e7490'],rpi:['RASPBERRY PI','#ffe4e6','#be123c'],pc:['PENSAMIENTO CRÍTICO','#f3e8ff','#6d28d9']};
+  const KEY='reco-eleccion';
+  let sel={etapa:null,obj:null,dur:'any'};
+  try{ const s=JSON.parse(localStorage.getItem(KEY)); if(s) sel=Object.assign(sel,s); }catch(e){}
+  let ext=null, cargando=null;
+  const box=document.getElementById('reco'), out=document.getElementById('recoOut');
+  const esc2=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  document.getElementById('recoHead').addEventListener('click',()=>{
+    box.classList.toggle('open');
+    document.getElementById('recoToggle').textContent=box.classList.contains('open')?'Ocultar':'Mostrar';
+  });
+  document.querySelectorAll('.rq-opts').forEach(el=>{
+    const k=el.dataset.q;
+    el.innerHTML=Q[k].map(([v,t])=>`<button type="button" class="rq-opt${sel[k]===v?' sel':''}" data-v="${v}">${t}</button>`).join('');
+    el.addEventListener('click',e=>{
+      const b=e.target.closest('.rq-opt'); if(!b) return;
+      sel[k]=b.dataset.v;
+      el.querySelectorAll('.rq-opt').forEach(x=>x.classList.toggle('sel',x===b));
+      try{ localStorage.setItem(KEY,JSON.stringify(sel)); }catch(e){}
+      mostrar();
+    });
+  });
+
+  function cargar(){
+    if(ext) return Promise.resolve(ext);
+    if(!cargando) cargando=fetch('data/recomendador.json').then(r=>r.ok?r.json():[]).catch(()=>[]).then(d=>(ext=d));
+    return cargando;
+  }
+
+  // Normaliza los recursos propios de esta página
+  function etapasDe(r){
+    if(r.etapa==='infantil') return ['inf'];
+    if(r.etapa==='primaria') return ['pri'];
+    if(r.etapa==='secundaria') return ['eso','bach'];
+    const t=(r.edad||'')+' ';
+    const rangos={inf:[3,5],pri:[6,11],eso:[12,15],bach:[16,18]};
+    let lo=99,hi=-1;
+    if(/infantil/i.test(t)){lo=Math.min(lo,3);hi=Math.max(hi,5);}
+    if(/primaria/i.test(t)){lo=Math.min(lo,6);hi=Math.max(hi,11);}
+    if(/eso|secundaria/i.test(t)){lo=Math.min(lo,12);hi=Math.max(hi,15);}
+    if(/bachiller/i.test(t)){lo=Math.min(lo,16);hi=Math.max(hi,18);}
+    const nums=(t.match(/\d+/g)||[]).map(Number);
+    if(nums.length){ lo=Math.min(lo,nums[0]); hi=Math.max(hi,/desde/i.test(t)?18:nums[nums.length-1]); }
+    if(hi<0) return ['pri','eso','bach'];
+    return Object.entries(rangos).filter(([k,[a,b]])=>a<=hi&&b>=lo).map(([k])=>k);
+  }
+  function objsDe(r){
+    const o=new Set(), txt=(r.nombre+' '+r.desc).toLowerCase();
+    const c=r.cat||'';
+    if(/Alfabetización en IA/.test(c)) o.add('descubrir');
+    if(/Pensamiento computacional|Programación/.test(c)) o.add('programar');
+    if(/Arte|Música|Lenguaje|Movimiento|Emociones/.test(c)) o.add('crear');
+    if(/Seguridad/.test(c)){ o.add('seguridad'); o.add('critico'); }
+    if(/prompt/.test(txt)) o.add('prompts');
+    if(/sesgo|crític|deepfake|fiab|verific|ética/.test(txt)) o.add('critico');
+    if(/robot|micro:bit/.test(txt)) o.add('robotica');
+    if(/currículo|lecciones completas|propuestas didácticas|formación docente/.test(txt)) o.add('docente');
+    return [...o];
+  }
+  function propios(){
+    return allRecursos().filter(r=>r.links&&r.links[0]&&!/^(codeorg|raspberrypi|pensamiento-critico)\.html/.test(r.links[0].url))
+      .map(r=>({t:r.nombre,d:r.desc,u:r.links[0].url,f:'mis',e:etapasDe(r),o:objsDe(r),r:r.etapa==='proyecto'?'semanas':'sesion',x:r.edad||'',es:1}));
+  }
+  const ESPECIALES=[
+    {t:'Rúbricas de idoneidad de IA',d:'Valora si una herramienta de IA es adecuada para una edad y si una actividad con IA está bien planteada, con dictamen final tipo semáforo.',accion:'rubricas',f:'mis',e:['doc'],o:['docente','critico','seguridad'],r:'sesion',x:'Dentro de esta web',es:1}
+  ];
+
+  function puntuar(it){
+    if(!it.e.includes(sel.etapa)) return -1;
+    if(!it.o.includes(sel.obj)) return -1;
+    let s=10;
+    const d=sel.dur;
+    if(d!=='any'){
+      const m={sesion:{sesion:3,semanas:1,largo:-3},semanas:{semanas:3,sesion:1,largo:1},largo:{largo:3,semanas:2,sesion:0}};
+      s+=m[d][it.r]??0;
+    }
+    if(it.es) s+=(sel.etapa==='inf'||sel.etapa==='pri')?3:1;
+    if(it.f==='mis') s+=2;
+    if(it.e.length<=2) s+=1;
+    if(it.o.length<=2) s+=1;
+    return s;
+  }
+
+  async function mostrar(){
+    if(!sel.etapa||!sel.obj){ out.innerHTML='<p class="reco-msg">👆 Elige con quién vas a trabajar y tu objetivo para ver recomendaciones.</p>'; return; }
+    out.innerHTML='<p class="reco-msg">Buscando…</p>';
+    const todos=ESPECIALES.concat(propios(), await cargar());
+    // el profesorado también puede usar los recursos y actividades de aula de cualquier etapa
+    const cand=todos.map(it=>{
+      let it2=it;
+      if(sel.etapa==='doc'&&!it.e.includes('doc')&&(it.f==='pc'||it.f==='mis')) it2=Object.assign({},it,{e:it.e.concat('doc')});
+      return [puntuar(it2),it];
+    }).filter(([s])=>s>=0).sort((a,b)=>b[0]-a[0]||a[1].t.localeCompare(b[1].t,'es'));
+    // diversidad: máx. 2 por fuente en la primera vuelta
+    const elegidos=[], cuenta={};
+    for(const [s,it] of cand){ if(elegidos.length>=6) break; if((cuenta[it.f]||0)<2){ elegidos.push(it); cuenta[it.f]=(cuenta[it.f]||0)+1; } }
+    for(const [s,it] of cand){ if(elegidos.length>=6) break; if(!elegidos.includes(it)) elegidos.push(it); }
+    if(!elegidos.length){
+      out.innerHTML=`<p class="reco-msg">No he encontrado recursos para <strong>${esc2(OBJ[sel.obj])}</strong> con ${ETQ[sel.etapa]}. Prueba con otro objetivo o con otra etapa cercana.</p>`;
+      return;
+    }
+    const porque=it=>{
+      const p=[OBJ[sel.obj].replace(/^\S+\s/,'')];
+      p.push(it.f==='mis'?'seleccionado en esta web':ETQ[sel.etapa]==='profesorado'?'para profesorado':'adecuado para '+ETQ[sel.etapa]);
+      if(it.x) p.push(it.x);
+      return p.join(' · ');
+    };
+    const tarjetas=elegidos.map((it,i)=>{
+      const [n,bg,fg]=SRC[it.f];
+      const ext=/^https?:/.test(it.u||'');
+      const btn=it.accion==='rubricas'
+        ? `<button class="go2" type="button" data-accion="rubricas">Abrir rúbricas</button>`
+        : `<a href="${esc2(it.u)}"${ext?' target="_blank" rel="noopener"':''}>Abrir ${ext?'↗':'→'}</a>`;
+      return `<div class="rc"><span class="rc-src" style="background:${bg};color:${fg}">${n}</span>
+        <h4>${esc2(it.t)}</h4><p>${esc2(it.d)}</p><span class="rc-why">✔ ${esc2(porque(it))}</span>${btn}</div>`;
+    }).join('');
+    const total=cand.length;
+    const mas=[];
+    if(cand.some(([s,it])=>it.f==='codeorg')) mas.push('<a href="codeorg.html">Catálogo de Code.org</a>');
+    if(cand.some(([s,it])=>it.f==='rpi')) mas.push('<a href="raspberrypi.html">Proyectos de Raspberry Pi</a>');
+    if(cand.some(([s,it])=>it.f==='pc')) mas.push('<a href="pensamiento-critico.html">Actividades de pensamiento crítico</a>');
+    out.innerHTML=`<div class="reco-res">${tarjetas}</div>`+
+      (total>elegidos.length?`<div class="reco-more">Hay ${total} recursos que encajan. Explora más en: ${mas.join(' ')}</div>`:'');
+  }
+  out.addEventListener('click',e=>{
+    const b=e.target.closest('[data-accion="rubricas"]'); if(!b) return;
+    setEtapa('rubricas');
+    window.scrollTo({top:document.getElementById('tabs').offsetTop-10,behavior:'smooth'});
+  });
+  if(sel.etapa&&sel.obj) mostrar();
+})();
 </script>
 </body>
 </html>
