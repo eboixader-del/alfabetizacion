@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verificar lo que dice la IA · Recursos de Aula</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f4ef; --card:#ffffff; --ink:#2b2b3a; --muted:#6b6b7d;
+    --pc:#0369a1; --pc2:#0d9488; --soft:#e0f2fe;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Nunito',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+  header{background:linear-gradient(120deg,#0369a1 0%,#0ea5e9 50%,#14b8a6 115%);
+    color:#fff;padding:28px 24px 60px;text-align:center;position:relative;overflow:hidden}
+  header::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:38px;
+    background:var(--bg);border-radius:100% 100% 0 0 / 38px 38px 0 0}
+  .back{display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;font-weight:800;
+    font-size:.88rem;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);
+    padding:6px 14px;border-radius:999px;margin-bottom:16px;transition:.15s}
+  .back:hover{background:rgba(255,255,255,.3)}
+  header h1{font-size:clamp(1.6rem,4vw,2.6rem);font-weight:900;letter-spacing:-.5px}
+  header p{margin-top:8px;font-size:1.05rem;opacity:.95;max-width:700px;margin-inline:auto}
+  .stats{display:flex;gap:10px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+  .stat{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:6px 16px;border-radius:999px;font-weight:700;font-size:.85rem}
+
+  .toolbar{max-width:1080px;margin:-18px auto 0;padding:0 20px;position:relative;z-index:2;display:flex;gap:12px;flex-wrap:wrap}
+  .search-box{flex:1 1 320px;display:flex;align-items:center;gap:10px;background:var(--card);border-radius:999px;
+    padding:12px 20px;box-shadow:0 8px 24px rgba(43,43,58,.10);border:2px solid transparent;transition:.2s}
+  .search-box:focus-within{border-color:var(--pc)}
+  .search-box svg{flex-shrink:0;opacity:.45}
+  .search-box input{border:none;outline:none;font:inherit;font-size:1rem;width:100%;background:transparent;color:var(--ink)}
+  select.sel{border:none;font:inherit;font-weight:800;font-size:.9rem;color:var(--ink);background:var(--card);
+    border-radius:999px;padding:12px 18px;box-shadow:0 8px 24px rgba(43,43,58,.10);cursor:pointer;outline:none}
+
+  .tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:22px auto 6px;padding:0 20px;max-width:1080px}
+  .tab{border:none;cursor:pointer;font:inherit;font-weight:800;font-size:.92rem;padding:9px 18px;border-radius:999px;
+    background:#fff;color:var(--muted);box-shadow:0 2px 6px rgba(43,43,58,.07);transition:.18s}
+  .tab:hover{transform:translateY(-1px)}
+  .tab.active{color:#fff;background:var(--pc)}
+  .chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px auto 4px;padding:0 20px;max-width:1080px}
+  .chip{border:1.5px solid #ddd8ce;background:transparent;cursor:pointer;font:inherit;font-size:.8rem;font-weight:700;
+    color:var(--muted);padding:5px 14px;border-radius:999px;transition:.15s}
+  .chip:hover{border-color:var(--ink);color:var(--ink)}
+  .chip.active{background:var(--ink);border-color:var(--ink);color:#fff}
+
+  .note{max-width:1040px;margin:14px auto 0;padding:12px 16px;font-size:.85rem;color:#57534e;background:#fff;
+    border-radius:12px;border-left:4px solid var(--pc);line-height:1.55}
+  .count{max-width:1080px;margin:14px auto 0;padding:0 24px;font-size:.85rem;color:var(--muted);font-weight:600}
+  .grid{max-width:1080px;margin:12px auto 40px;padding:0 20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+  .card{background:var(--card);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;gap:10px;
+    box-shadow:0 3px 12px rgba(43,43,58,.06);border-top:5px solid var(--pc);transition:.2s;position:relative}
+  .card.profesorado{border-color:var(--pc2)}
+  .card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(43,43,58,.13)}
+  .card-top{display:flex;gap:12px;align-items:flex-start}
+  .icon{font-size:1.8rem;width:50px;height:50px;flex-shrink:0;display:grid;place-items:center;border-radius:14px;background:var(--soft)}
+  .num{font-size:.72rem;font-weight:900;color:var(--muted);letter-spacing:.4px}
+  .card h3{font-size:1.06rem;font-weight:800;line-height:1.25}
+  .orig{font-size:.75rem;color:var(--muted);font-style:italic}
+  .desc{font-size:.88rem;color:#4b4b5c;line-height:1.5}
+  .badges{display:flex;gap:6px;flex-wrap:wrap}
+  .badge{font-size:.72rem;font-weight:800;padding:3px 10px;border-radius:999px}
+  .badge.t{background:#ecfeff;color:#0e7490}
+  .badge.p{background:#f1efe8;color:#57534e}
+  .badge.h{background:#e0f2fe;color:#075985}
+  details{background:#faf9f6;border-radius:12px;padding:10px 14px}
+  summary{cursor:pointer;font-weight:800;font-size:.86rem;color:var(--pc)}
+  ol{margin:8px 0 0 20px;font-size:.86rem;line-height:1.55;color:#3f3f4f}
+  ol li{margin-bottom:4px}
+  .src{font-size:.75rem;color:var(--muted);line-height:1.45}
+  .src a{color:var(--pc);font-weight:700}
+
+  .cierre{max-width:1040px;margin:0 auto 30px;padding:0 20px}
+  .cierre .box{background:#fff;border-radius:var(--radius);padding:22px;box-shadow:0 3px 12px rgba(43,43,58,.06)}
+  .cierre h2{font-size:1.15rem;font-weight:900;margin-bottom:8px}
+  .cierre p,.cierre li{font-size:.9rem;line-height:1.55;color:#3f3f4f}
+  .cierre ul{margin:8px 0 0 20px}
+  .empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted)}
+  footer{text-align:center;padding:24px;font-size:.8rem;color:var(--muted);line-height:1.6}
+  footer a{color:inherit}
+  @media (max-width:560px){.toolbar{flex-direction:column}.search-box{flex:none}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="./">← Volver a Recursos de Aula</a>
+  <h1>🔎 Verificar lo que dice la IA</h1>
+  <p>12 actividades de verificación de datos (fact-checking) para que el alumnado compruebe afirmaciones, fuentes, citas, estadísticas e imágenes antes de repetir lo que dice la IA. Pensadas de 6.º de Primaria a Bachillerato.</p>
+  <div class="stats" id="stats"></div>
+</header>
+
+<div class="toolbar">
+  <label class="search-box">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="q" type="search" placeholder="Buscar actividad o palabra clave…" autocomplete="off">
+  </label>
+  <select class="sel" id="tiempo" aria-label="Duración">
+    <option value="todas">⏱️ Cualquier duración</option>
+    <option value="15">Hasta 15 min</option>
+    <option value="20">Hasta 20 min</option>
+    <option value="30">Hasta 30 min</option>
+    <option value="50">Hasta 50 min</option>
+  </select>
+</div>
+
+<div class="tabs" id="tabs">
+  <button class="tab active" data-k="todos">Todos los niveles</button>
+  <button class="tab" data-k="1">1 · Identificar</button>
+  <button class="tab" data-k="2">2 · Verificar</button>
+  <button class="tab" data-k="3">3 · Evaluar</button>
+</div>
+<p class="note">🧭 <strong>Cómo empezar:</strong> presenta primero la rutina de seis pasos y las etiquetas de verificación (más abajo), modela un ejemplo en voz alta y empieza por el nivel 1. Pide al alumnado que anote las fuentes que ha abierto, para que otra persona pueda repetir su comprobación. Al terminar, una breve reflexión: qué afirmación aceptaron al principio y luego corrigieron, qué paso les fue más útil y qué dudas quedaron.</p>
+<div class="count" id="count"></div>
+<main class="grid" id="grid"></main>
+
+<section class="cierre">
+  <div class="box">
+    <h2>🔁 Rutina de verificación en seis pasos</h2>
+    <ol id="rutina"></ol>
+  </div>
+</section>
+<section class="cierre">
+  <div class="box">
+    <h2>🏷️ Etiquetas de verificación</h2>
+    <p>Una etiqueta es una conclusión, no una corazonada: acompáñala siempre de una explicación y de las pruebas utilizadas.</p>
+    <ul id="etiquetas" style="list-style:none;margin-left:0"></ul>
+  </div>
+</section>
+<section class="cierre">
+  <div class="box">
+    <h2>📚 Para profundizar</h2>
+    <ul id="fuentes"></ul>
+  </div>
+</section>
+
+<footer>
+  Actividades basadas en <strong>Med Kharbach (2026), <em>AI Fact Checking Activities for Teachers and Students</em></strong>
+  (<a href="https://www.educatorstechnology.com" target="_blank" rel="noopener">educatorstechnology.com</a> · <a href="https://www.medkharbach.com" target="_blank" rel="noopener">medkharbach.com</a>).<br>
+  Aquí solo se resume cada actividad; las fichas imprimibles completas están en la publicación original del autor.
+</footer>
+
+<script>
+const NIV = {"1": "Nivel 1 · Identificar", "2": "Nivel 2 · Verificar", "3": "Nivel 3 · Evaluar"};
+const ACT = [{"n": 1, "id": "afirmacion-opinion", "icon": "⚖️", "titulo": "¿Afirmación u opinión?", "orig": "Claim or Opinion", "niv": "1", "min": 10, "max": 15, "grupo": "Individual o parejas", "resumen": "Antes de verificar hay que saber qué se puede verificar. El alumnado distingue en un texto las afirmaciones comprobables de las opiniones, predicciones y juicios de valor, y justifica los casos dudosos."}, {"n": 2, "id": "auditoria-afirmaciones", "icon": "🧾", "titulo": "Auditoría de afirmaciones de la IA", "orig": "AI Claim Audit", "niv": "1", "min": 20, "max": 20, "grupo": "Parejas", "resumen": "En vez de juzgar la respuesta de la IA «en bloque», se descompone en afirmaciones sueltas, se eligen las más importantes y se decide qué pruebas haría falta encontrar para cada una."}, {"n": 3, "id": "fuente-afirmacion", "icon": "🔗", "titulo": "De la fuente a la afirmación", "orig": "Source to Claim Check", "niv": "2", "min": 25, "max": 35, "grupo": "Individual", "resumen": "Que una afirmación lleve una cita no significa que la fuente diga eso. Se localiza el pasaje exacto de la fuente, se compara con lo que afirma la IA y se reescribe la afirmación si no coincide."}, {"n": 4, "id": "detective-citas", "icon": "🕵️", "titulo": "Detective de citas", "orig": "Citation Detective", "niv": "2", "min": 25, "max": 25, "grupo": "Parejas", "resumen": "La IA inventa referencias con facilidad. Se comprueba si una cita bibliográfica existe de verdad y si sus datos (autoría, año, título, revista, DOI…) son correctos, incompletos o inventados."}, {"n": 5, "id": "fuente-real-afirmacion-falsa", "icon": "🎯", "titulo": "Fuente real, afirmación falsa", "orig": "Real Source Wrong Claim", "niv": "3", "min": 30, "max": 30, "grupo": "Pequeños grupos", "resumen": "El error más sutil: una fuente auténtica citada para algo que no dice. Se busca el punto exacto en que la afirmación va más allá de la fuente (población, contexto, método, grado de certeza)."}, {"n": 6, "id": "error-pulido", "icon": "✨", "titulo": "El error bien escrito", "orig": "Polished Error Challenge", "niv": "1", "min": 15, "max": 20, "grupo": "Equipos", "resumen": "Un texto fluido y seguro de sí mismo no es una prueba. Los equipos detectan qué recursos de estilo dan apariencia de autoridad y priorizan qué afirmaciones habría que comprobar primero."}, {"n": 7, "id": "rastrear-estadistica", "icon": "📊", "titulo": "Rastrea la estadística", "orig": "Trace the Statistic", "niv": "2", "min": 25, "max": 35, "grupo": "Individual o parejas", "resumen": "Se sigue la pista de un dato numérico hasta su origen: quién se midió, cuándo, dónde y cómo. Después se valora si se ha redondeado, generalizado o sacado de contexto y se reescribe con más precisión."}, {"n": 8, "id": "comprobar-cita-textual", "icon": "💬", "titulo": "Comprueba la cita textual", "orig": "Quote Check", "niv": "2", "min": 20, "max": 30, "grupo": "Parejas", "resumen": "Muchas frases célebres están mal atribuidas o recortadas. Se verifica la redacción exacta, quién la dijo, cuándo y en qué contexto, y se decide si conservarla, corregirla, parafrasearla o eliminarla."}, {"n": 9, "id": "imagen-pie", "icon": "🖼️", "titulo": "Imagen y pie de foto", "orig": "Image and Caption Check", "niv": "3", "min": 30, "max": 30, "grupo": "Parejas", "resumen": "Se analiza si una imagen y su pie encajan y representan bien lo ocurrido: primero se describe solo lo que se ve y luego se investigan origen, fecha y lugar (por ejemplo, con búsqueda inversa de imágenes)."}, {"n": 10, "id": "comparar-respuestas", "icon": "🆚", "titulo": "Compara dos respuestas de IA", "orig": "Compare Two AI Answers", "niv": "3", "min": 30, "max": 40, "grupo": "Pequeños grupos", "resumen": "Dos respuestas de IA a la misma pregunta se comparan con pruebas, no por cuál «suena mejor». Se buscan coincidencias y discrepancias, se verifican los puntos clave y se decide cuál está mejor respaldada (o si ninguna lo está)."}, {"n": 11, "id": "contexto-ausente", "icon": "🧩", "titulo": "El contexto que falta", "orig": "Missing Context", "niv": "3", "min": 25, "max": 35, "grupo": "Individual", "resumen": "Un dato puede ser técnicamente cierto y aun así engañar si falta contexto. El alumnado identifica qué información necesitaría para interpretarlo, la investiga y reescribe la afirmación para que no induzca a error."}, {"n": 12, "id": "mejor-respuesta", "icon": "🏗️", "titulo": "Construye una respuesta mejor", "orig": "Build a Better Answer", "niv": "3", "min": 40, "max": 50, "grupo": "Individual o parejas", "resumen": "Actividad de cierre: se audita una respuesta poco fiable, se verifica cada afirmación central y se redacta una versión nueva con fuentes rastreables y una nota que reconozca lo que sigue siendo incierto."}];
+const RUTINA = [["Localiza la afirmación", "Elige una frase concreta que se pueda comprobar."], ["Piensa qué prueba haría falta", "¿Qué tipo de dato, estudio o documento la apoyaría o la desmentiría?"], ["Ve a la fuente original", "No te quedes en resúmenes: abre el estudio, el informe, los datos o el documento de origen."], ["Compara con cuidado", "¿Dice la fuente lo mismo? Revisa fechas, población, método, palabras exactas y contexto."], ["Pon una etiqueta", "Clasifica el resultado y explica en qué pruebas te basas."], ["Corrige o matiza", "Reescribe la afirmación para que no diga más de lo que las pruebas permiten."]];
+const ETIQ = [["✅", "Respaldada", "Las pruebas la apoyan de forma directa y suficiente."], ["🟡", "Parcialmente respaldada", "Una parte se sostiene, pero exagera, generaliza o le falta algo."], ["⚪", "Sin respaldo", "Las pruebas encontradas o citadas no la sostienen."], ["❌", "Desmentida", "Hay pruebas fiables que la contradicen."], ["❓", "No verificable", "No hay información accesible suficiente para concluir con responsabilidad."], ["⚠️", "Engañosa", "Usa datos ciertos pero omite contexto y eso cambia su sentido."]];
+const FUENTES = [["Stanford CRAFT: cómo verificar resultados de búsquedas con IA", "https://craft.stanford.edu/resource/how-do-i-fact-check-ai-search-results/"], ["Common Sense Education: cómo aplicar SIFT con IA", "https://www.commonsense.org/education/digital-literacy/how-to-sift-with-ai"], ["Digital Inquiry Group: Civic Online Reasoning (lectura lateral)", "https://cor.inquirygroup.org/"], ["Mike Caulfield: Web Literacy for Student Fact-Checkers", "https://pressbooks.pub/webliteracy/"]];
+let niv='todos', tiempo='todas', q='';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm=s=>String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+document.getElementById('stats').innerHTML=`<span class="stat">🧩 ${ACT.length} actividades</span><span class="stat">📶 3 niveles</span><span class="stat">⏱️ 10-50 min</span>`;
+document.getElementById('rutina').innerHTML=RUTINA.map(([a,b])=>`<li><strong>${esc(a)}.</strong> ${esc(b)}</li>`).join('');
+document.getElementById('etiquetas').innerHTML=ETIQ.map(([i,a,b])=>`<li style="margin-bottom:6px">${i} <strong>${esc(a)}:</strong> ${esc(b)}</li>`).join('');
+document.getElementById('fuentes').innerHTML=FUENTES.map(([a,u])=>`<li><a href="${esc(u)}" target="_blank" rel="noopener" style="color:var(--pc);font-weight:700">${esc(a)} ↗</a></li>`).join('');
+const tabs=document.getElementById('tabs');
+tabs.onclick=e=>{const b=e.target.closest('.tab'); if(!b) return; niv=b.dataset.k; tabs.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b)); render();};
+document.getElementById('q').addEventListener('input',e=>{q=e.target.value; render();});
+document.getElementById('tiempo').addEventListener('change',e=>{tiempo=e.target.value; render();});
+function render(){
+  const nq=norm(q);
+  const items=ACT.filter(a=>(niv==='todos'||a.niv===niv)&&(tiempo==='todas'||a.max<=+tiempo)&&(!nq||norm(a.titulo+' '+a.orig+' '+a.resumen).includes(nq)));
+  document.getElementById('count').textContent=items.length===1?'1 actividad encontrada':items.length+' actividades encontradas';
+  const grid=document.getElementById('grid');
+  if(!items.length){grid.innerHTML='<div class="empty"><strong>No hay resultados.</strong><br>Prueba con otra búsqueda o quita algún filtro.</div>';return;}
+  grid.innerHTML=items.map(a=>`
+    <article class="card" id="${a.id}">
+      <div class="card-top"><div class="icon">${a.icon}</div>
+        <div><div class="num">ACTIVIDAD ${a.n}</div><h3>${esc(a.titulo)}</h3><div class="orig">${esc(a.orig)}</div></div></div>
+      <div class="badges"><span class="badge h">${NIV[a.niv]}</span><span class="badge t">⏱️ ${a.min===a.max?a.min:a.min+'-'+a.max} min</span><span class="badge p">👥 ${esc(a.grupo)}</span></div>
+      <p class="desc">${esc(a.resumen)}</p>
+    </article>`).join('');
+}
+render();
+if(location.hash){const el=document.querySelector(location.hash); if(el) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'center'}),100);}
+</script>
+</body>
+</html>

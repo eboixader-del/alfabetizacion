@@ -300,7 +300,7 @@
     <div class="reco-head" id="recoHead">
       <div>
         <h2>🧭 ¿Qué quieres conseguir?</h2>
-        <p>Responde tres preguntas y te recomiendo recursos de toda la web: mis recursos, Code.org, Raspberry Pi y actividades de pensamiento crítico.</p>
+        <p>Responde tres preguntas y te recomiendo recursos de toda la web: mis recursos, Code.org, Raspberry Pi y actividades de pensamiento crítico y de verificación.</p>
       </div>
       <button class="reco-toggle" id="recoToggle" type="button">Ocultar</button>
     </div>
@@ -534,6 +534,9 @@ const RECURSOS = [
   {etapa:'proyecto', icon:'🧠', nombre:'Pensamiento crítico en la era de la IA', cat:'Alfabetización en IA', edad:'Primaria a Bachillerato y profesorado', nuevo:true,
    desc:'13 actividades prácticas (10-30 min) para que el alumnado cuestione, verifique y debata lo que produce la IA: detective de alucinaciones, preguntas socráticas, debate a favor y en contra, comparación a ciegas… Traducidas y adaptadas de Med Kharbach (CC BY-NC-SA).',
    links:[{txt:'Ver actividades', url:'pensamiento-critico.html'}]},
+  {etapa:'proyecto', icon:'🔎', nombre:'Verificar lo que dice la IA', cat:'Alfabetización en IA', edad:'6.º Primaria a Bachillerato', nuevo:true,
+   desc:'12 actividades de fact-checking en tres niveles para comprobar afirmaciones, fuentes, citas bibliográficas, estadísticas, citas textuales e imágenes, con una rutina de seis pasos y etiquetas de verificación. Basadas en Med Kharbach.',
+   links:[{txt:'Ver actividades', url:'verificacion-ia.html'}]},
 ];
 
 /* ══════════════════ RÚBRICAS DE IDONEIDAD ══════════════════ */
@@ -959,14 +962,14 @@ render();
 (function(){
   const Q={
     etapa:[['inf','🧸 Infantil (3-6)'],['pri','✏️ Primaria (6-12)'],['eso','🎓 ESO'],['bach','📚 Bachillerato / FP'],['doc','👩‍🏫 Profesorado']],
-    obj:[['descubrir','🤖 Descubrir qué es la IA'],['critico','🧠 Pensar críticamente sobre la IA'],['prompts','✍️ Aprender a pedirle bien las cosas (prompts)'],
+    obj:[['descubrir','🤖 Descubrir qué es la IA'],['critico','🧠 Pensar críticamente sobre la IA'],['verificar','🔎 Verificar información y detectar bulos'],['prompts','✍️ Aprender a pedirle bien las cosas (prompts)'],
          ['programar','💻 Aprender a programar'],['crear','🎨 Crear: arte, música, historias'],['robotica','🔌 Robótica y electrónica'],
          ['seguridad','🔐 Seguridad y ciudadanía digital'],['docente','🛠️ Rediseñar mis tareas y evaluar herramientas']],
     dur:[['sesion','⚡ Una sesión'],['semanas','📅 Unas semanas'],['largo','🗓️ Un trimestre o más'],['any','🤷 Me da igual']]
   };
   const ETQ={inf:'Infantil',pri:'Primaria',eso:'ESO',bach:'Bachillerato/FP',doc:'profesorado'};
   const OBJ=Object.fromEntries(Q.obj);
-  const SRC={mis:['MIS RECURSOS','#dcfce7','#15803d'],codeorg:['CODE.ORG','#cffafe','#0e7490'],rpi:['RASPBERRY PI','#ffe4e6','#be123c'],pc:['PENSAMIENTO CRÍTICO','#f3e8ff','#6d28d9']};
+  const SRC={mis:['MIS RECURSOS','#dcfce7','#15803d'],codeorg:['CODE.ORG','#cffafe','#0e7490'],rpi:['RASPBERRY PI','#ffe4e6','#be123c'],pc:['PENSAMIENTO CRÍTICO','#f3e8ff','#6d28d9'],ver:['VERIFICACIÓN','#e0f2fe','#075985']};
   const KEY='reco-eleccion';
   let sel={etapa:null,obj:null,dur:'any'};
   try{ const s=JSON.parse(localStorage.getItem(KEY)); if(s) sel=Object.assign(sel,s); }catch(e){}
@@ -1022,12 +1025,13 @@ render();
     if(/Seguridad/.test(c)){ o.add('seguridad'); o.add('critico'); }
     if(/prompt/.test(txt)) o.add('prompts');
     if(/sesgo|crític|deepfake|fiab|verific|ética/.test(txt)) o.add('critico');
+    if(/verific|bulo|fake|desinform|contrast/.test(txt)) o.add('verificar');
     if(/robot|micro:bit/.test(txt)) o.add('robotica');
     if(/currículo|lecciones completas|propuestas didácticas|formación docente/.test(txt)) o.add('docente');
     return [...o];
   }
   function propios(){
-    return allRecursos().filter(r=>r.links&&r.links[0]&&!/^(codeorg|raspberrypi|pensamiento-critico)\.html/.test(r.links[0].url))
+    return allRecursos().filter(r=>r.links&&r.links[0]&&!/^(codeorg|raspberrypi|pensamiento-critico|verificacion-ia)\.html/.test(r.links[0].url))
       .map(r=>({t:r.nombre,d:r.desc,u:r.links[0].url,f:'mis',e:etapasDe(r),o:objsDe(r),r:r.etapa==='proyecto'?'semanas':'sesion',x:r.edad||'',es:1}));
   }
   const ESPECIALES=[
@@ -1088,6 +1092,7 @@ render();
     if(cand.some(([s,it])=>it.f==='codeorg')) mas.push('<a href="codeorg.html">Catálogo de Code.org</a>');
     if(cand.some(([s,it])=>it.f==='rpi')) mas.push('<a href="raspberrypi.html">Proyectos de Raspberry Pi</a>');
     if(cand.some(([s,it])=>it.f==='pc')) mas.push('<a href="pensamiento-critico.html">Actividades de pensamiento crítico</a>');
+    if(cand.some(([s,it])=>it.f==='ver')) mas.push('<a href="verificacion-ia.html">Actividades de verificación</a>');
     out.innerHTML=`<div class="reco-res">${tarjetas}</div>`+
       (total>elegidos.length?`<div class="reco-more">Hay ${total} recursos que encajan. Explora más en: ${mas.join(' ')}</div>`:'');
   }
