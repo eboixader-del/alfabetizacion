@@ -383,6 +383,59 @@
     .ficha-foot{padding:10px 14px}
     .ficha-nav span{display:none}
   }
+
+  /* ===== Favoritos y listas ===== */
+  .card .flag{position:static;padding:3px 10px;font-size:.68rem}
+  .card h3{padding-right:40px}
+  .fav-btn{position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:50%;border:none;background:transparent;
+    cursor:pointer;font-size:1.35rem;line-height:1;color:var(--line-strong);transition:.15s;display:grid;place-items:center}
+  .fav-btn:hover{background:var(--chip-bg);color:#f59e0b;transform:scale(1.1)}
+  .fav-btn.on{color:#f59e0b}
+  .fav-btn:focus-visible{outline:3px solid #f59e0b;outline-offset:1px}
+  .ficha-fav{top:14px;right:58px;width:36px;height:36px}
+  .ficha-head{padding-right:104px}
+  .tab[data-etapa="favoritos"].active{background:#f59e0b}
+  .tab{padding:9px 16px}
+  .tab-n{display:inline-block;min-width:1.4em;font-size:.75rem;padding:1px 6px;border-radius:999px;background:var(--chip-bg);color:var(--ink);margin-left:2px}
+  .tab-n:empty{display:none}
+  .tab.active .tab-n{background:rgba(255,255,255,.3);color:#fff}
+  .tab-n.pulso{animation:pulso .45s ease}
+  @keyframes pulso{50%{transform:scale(1.35)}}
+
+  .lista-panel{max-width:1032px;margin:16px auto 0;background:var(--card);border-radius:18px;padding:18px 20px;
+    box-shadow:0 3px 12px rgba(43,43,58,.06);border-top:5px solid #f59e0b}
+  .lista-panel[hidden]{display:none}
+  .lista-panel.recibida{border-top-color:var(--secundaria)}
+  .lp-kicker{font-size:.76rem;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:var(--secundaria)}
+  .lista-panel h2{font-size:1.35rem;font-weight:900;margin:2px 0 4px}
+  .lp-tit{display:flex;flex-direction:column;gap:6px;font-size:.8rem;font-weight:800;color:var(--label);max-width:460px}
+  .lp-tit input{font:inherit;font-size:1rem;font-weight:700;padding:10px 14px;border:1.5px solid var(--line);border-radius:12px;
+    background:var(--field);color:var(--ink);outline:none}
+  .lp-tit input:focus{border-color:#f59e0b;background:var(--card)}
+  .lp-acc{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+  .lp-btn{border:1.5px solid var(--line);background:var(--card);cursor:pointer;font:inherit;font-weight:800;font-size:.86rem;
+    color:var(--ink);padding:9px 15px;border-radius:12px;transition:.15s;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+  .lp-btn:hover{border-color:var(--ink)}
+  .lp-btn.pri{background:#f59e0b;border-color:#f59e0b;color:#2b1d00}
+  .recibida .lp-btn.pri{background:var(--secundaria);border-color:var(--secundaria);color:#fff}
+  .lp-btn.pri:hover{filter:brightness(1.06)}
+  .lp-del{margin-left:auto;color:var(--muted)}
+  .lp-ok{font-weight:800;font-size:.86rem;color:var(--ok,#15803d)}
+  .lp-nota{font-size:.82rem;color:var(--muted);line-height:1.5;margin-top:10px}
+  .lp-vacio{text-align:center;padding:10px 10px 4px}
+  .lp-vacio .big{font-size:2.4rem;color:#f59e0b;line-height:1}
+  .lp-vacio p{max-width:520px;margin-inline:auto}
+  .qr-box{display:flex;gap:18px;align-items:center;margin-top:14px;padding:14px;border-radius:14px;background:var(--field);border:1.5px dashed var(--line)}
+  .qr-box[hidden]{display:none}
+  .qr-img{width:170px;flex-shrink:0;background:#fff;border-radius:10px;padding:6px}
+  .qr-img svg{display:block;width:100%;height:auto}
+  @media (max-width:1080px){.lista-panel{margin-left:20px;margin-right:20px}}
+  @media (max-width:560px){
+    .lista-panel{margin-left:16px;margin-right:16px;padding:16px}
+    .lp-del{margin-left:0}
+    .qr-box{flex-direction:column;text-align:center}
+  }
+  @media print{.lista-panel,.fav-btn{display:none!important}}
 </style>
 <link rel="stylesheet" href="tema.css">
 <script>(function(){var t=null;try{t=localStorage.getItem("tema")}catch(e){}var d=t?t==="oscuro":!!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.dataset.theme=d?"dark":"light";})();</script>
@@ -429,9 +482,11 @@
   <button class="tab" data-etapa="eso">🎓 ESO</button>
   <button class="tab" data-etapa="bach">📚 Bachillerato</button>
   <button class="tab" data-etapa="proyecto">🚀 Proyectos</button>
+  <button class="tab tab-fav" data-etapa="favoritos">⭐ Favoritos <span class="tab-n" id="favN"></span></button>
   <button class="tab" data-etapa="rubricas">⚖️ Rúbricas IA</button>
 </nav>
 
+<section class="lista-panel" id="listaPanel" hidden aria-live="polite"></section>
 <div class="chips" id="chips"></div>
 <div class="countbar" id="countBar">
   <div class="count" id="count"></div>
@@ -637,7 +692,7 @@ const RECURSOS = [
   {etapa:'primaria', icon:'🇪🇸', nombre:'LearningML', idea:"Proyecto de varias sesiones: entrenad un modelo que reconozca si un texto habla de deportes o de música y usadlo en un programa de Scratch.", idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años', nuevo:true,
    desc:'Plataforma española (y en español) para entrenar modelos de reconocimiento de textos e imágenes y usarlos luego en proyectos de Scratch. Alternativa cercana a ML for Kids.',
    links:[{txt:'Abrir', url:'https://learningml.org/'}]},
-  {etapa:'primaria', icon:'🔌', nombre:'AI Unplugged', idea:"Ideal cuando no hay ordenadores: elige una actividad (por ejemplo, árboles de decisión) y hazla con tarjetas en pequeños grupos. Los materiales están en inglés, así que prepara antes la traducción.", necesita:["desenchufada"], idioma:'en', cat:'Alfabetización en IA', edad:'9-12 años', nuevo:true,
+  {etapa:'primaria', icon:'🔌', nombre:'AI Unplugged', idea:"Ideal cuando no hay ordenadores: elige una actividad (por ejemplo, árboles de decisión) y hazla con tarjetas en pequeños grupos. Descarga la versión en español de las fichas.", necesita:["desenchufada"], idioma:'mix', cat:'Alfabetización en IA', edad:'9-12 años', nuevo:true,
    desc:'Colección de actividades "desenchufadas" (sin ordenador) para entender cómo decide una IA: árboles de decisión, aprendizaje por refuerzo… Con versión en español descargable.',
    links:[{txt:'Abrir', url:'https://www.aiunplugged.org/'}]},
   {etapa:'primaria', icon:'😮', nombre:'Scratch Lab · Face Sensing', idea:"Reto: crear un juego que se controle con la cara (abrir la boca para saltar). Antes, hablad de qué información de nuestra cara está leyendo la cámara.", necesita:["camara"], idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años', nuevo:true,
@@ -965,8 +1020,29 @@ function nivelesDe(r){
 }
 
 const NIVEL_TAB={infantil:'inf', primaria:'pri', eso:'eso', bach:'bach'};
+/* Favoritos (en este navegador) y listas compartidas por enlace */
+const FAV_KEY='favoritos', FAVT_KEY='favoritosTitulo';
+let favs=[], favTitulo='', listaCompartida=null;
+try{ favs=JSON.parse(localStorage.getItem(FAV_KEY))||[]; }catch(e){}
+try{ favTitulo=localStorage.getItem(FAVT_KEY)||''; }catch(e){}
+function saveFavs(){ try{ localStorage.setItem(FAV_KEY, JSON.stringify(favs)); }catch(e){} }
+function esFav(r){ return favs.includes(slug(r.nombre)); }
+function toggleFav(r){
+  const id=slug(r.nombre);
+  favs = favs.includes(id) ? favs.filter(x=>x!==id) : favs.concat(id);
+  saveFavs(); actualizarFavN(true);
+}
+function actualizarFavN(pulso){
+  const el=document.getElementById('favN'); if(!el) return;
+  el.textContent=favs.length||'';
+  if(pulso){ el.classList.remove('pulso'); void el.offsetWidth; el.classList.add('pulso'); }
+}
+function ordenLista(){ return etapaActiva==='favoritos'?favs:(etapaActiva==='lista'&&listaCompartida?listaCompartida.slugs:null); }
+
 function pasaEtapa(r,et=etapaActiva){
   if(et==='todas') return true;
+  if(et==='favoritos') return favs.includes(slug(r.nombre));
+  if(et==='lista') return !!listaCompartida && listaCompartida.slugs.includes(slug(r.nombre));
   if(et==='proyecto') return r.etapa==='proyecto';
   return NIVEL_TAB[et] ? nivelesDe(r).includes(NIVEL_TAB[et]) : r.etapa===et;
 }
@@ -1042,21 +1118,25 @@ function renderStats(){
 function render(){
   const enRub=etapaActiva==='rubricas';
   rubSection.classList.toggle('show',enRub);
-  [chipsEl,countBar,grid,notaEl].forEach(el=>el.style.display=enRub?'none':'');
+  [chipsEl,countBar,grid,notaEl,listaPanel].forEach(el=>el.style.display=enRub?'none':'');
   renderStats();
   if(enRub){ renderRubrica(); return; }
   renderChips();
   renderNotaEtapa();
+  renderListaPanel();
   const q=norm(query);
   const items=allRecursos().filter(r=>
     pasaEtapa(r) && pasaIdioma(r) &&
     (catActiva==='todas'||r.cat===catActiva) &&
     (!q || norm(r.nombre+' '+r.desc+' '+r.cat+' '+r.edad).includes(q))
   );
+  const orden=ordenLista();
+  if(orden) items.sort((a,b)=>orden.indexOf(slug(a.nombre))-orden.indexOf(slug(b.nombre)));
   itemsVisibles=items;
   countEl.textContent=items.length===1?'1 recurso encontrado':items.length+' recursos encontrados';
   grid.innerHTML='';
   if(!items.length){
+    if(etapaActiva==='favoritos'&&!favs.length){ grid.innerHTML=''; return; }
     grid.innerHTML='<div class="empty"><div class="big">🔍</div><strong>No hay resultados.</strong><br>Prueba con otra búsqueda o quita algún filtro'+(soloEs?' (por ejemplo, «Solo en castellano»)':'')+'.</div>';
     return;
   }
@@ -1066,14 +1146,16 @@ function render(){
     card.className='card '+r.etapa;
     card.dataset.idx=idx;
     const flag = r.custom ? '<span class="flag mio">MÍO</span>' : (r.nuevo ? '<span class="flag nuevo">NUEVO</span>' : '');
+    const fav=esFav(r);
     card.innerHTML=`
-      ${flag}
+      <button class="fav-btn${fav?' on':''}" type="button" data-fav="${idx}" aria-pressed="${fav}"
+        aria-label="${fav?'Quitar de favoritos':'Guardar en favoritos'}" title="${fav?'Quitar de favoritos':'Guardar en favoritos'}">${fav?'★':'☆'}</button>
       <div class="card-top">
         <div class="icon">${esc(r.icon)||'⭐'}</div>
         <div>
           <h3>${esc(r.nombre)}</h3>
           <div class="badges" style="margin-top:6px">
-            <span class="badge etapa">${ETAPAS[r.etapa]}</span>
+            <span class="badge etapa">${ETAPAS[r.etapa]}</span>${flag}
             ${r.edad?`<span class="badge edad">👶 ${esc(r.edad)}</span>`:''}
             ${IDIOMAS[r.idioma]?`<span class="badge idioma">${IDIOMAS[r.idioma]}</span>`:''}
           </div>
@@ -1093,6 +1175,14 @@ function render(){
 
 /* ===== Eliminar personalizados ===== */
 grid.addEventListener('click',e=>{
+  const fb=e.target.closest('.fav-btn');
+  if(fb){
+    toggleFav(allRecursos()[+fb.dataset.fav]);
+    if(etapaActiva==='favoritos') render();
+    else{ const on=esFav(allRecursos()[+fb.dataset.fav]); fb.classList.toggle('on',on); fb.textContent=on?'★':'☆';
+      fb.setAttribute('aria-pressed',on); fb.title=fb.ariaLabel=on?'Quitar de favoritos':'Guardar en favoritos'; fb.setAttribute('aria-label',fb.title); }
+    return;
+  }
   const fi=e.target.closest('.btn-ficha');
   if(fi){ abrirFicha(allRecursos()[+fi.dataset.idx]); return; }
   const cardEl=e.target.closest('.card');
@@ -1146,6 +1236,10 @@ formAdd.addEventListener('submit',e=>{
 
 /* ===== Navegación ===== */
 function setEtapa(et){
+  if(et!=='lista'&&listaCompartida){
+    listaCompartida=null;
+    if(/^#lista=/.test(location.hash)) history.replaceState(null,'',location.pathname+location.search);
+  }
   etapaActiva=et;
   document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.etapa===et));
   render();
@@ -1176,7 +1270,7 @@ function registrarValoracion(){
 }
 
 const fichaOv=document.getElementById('fichaOv'), fichaEl=document.getElementById('ficha');
-let fichaLista=[], fichaR=null, fichaFoco=null;
+let fichaLista=[], fichaR=null, fichaFoco=null, hashAntesFicha='';
 const NECESITA_TXT={camara:'📷 Cámara (tablet, móvil u ordenador con webcam)', micro:'🎙️ Micrófono', desenchufada:'✂️ No necesita ordenador: es una actividad desenchufada'};
 const NIVEL_TXT={inf:'Infantil', pri:'Primaria', eso:'ESO', bach:'Bachillerato'};
 function listaHumana(a){ return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' y '+a[a.length-1]; }
@@ -1205,6 +1299,8 @@ function renderFicha(){
   fichaEl.className='ficha '+r.etapa;
   fichaEl.innerHTML=`
     <button class="ficha-x" type="button" data-f="cerrar" aria-label="Cerrar la ficha">✕</button>
+    <button class="fav-btn ficha-fav${esFav(r)?' on':''}" type="button" data-f="fav" aria-pressed="${esFav(r)}"
+      aria-label="${esFav(r)?'Quitar de favoritos':'Guardar en favoritos'}" title="${esFav(r)?'Quitar de favoritos':'Guardar en favoritos'}">${esFav(r)?'★':'☆'}</button>
     <div class="ficha-head">
       <div class="icon">${esc(r.icon)||'⭐'}</div>
       <div>
@@ -1250,6 +1346,7 @@ function abrirFicha(r, lista){
   fichaR=r;
   if(!fichaOv.classList.contains('open')){
     fichaFoco=document.activeElement;
+    hashAntesFicha=/^#ficha=/.test(location.hash)?'':location.hash;
     fichaOv.classList.add('open'); fichaOv.setAttribute('aria-hidden','false');
     document.body.style.overflow='hidden';
   }
@@ -1261,7 +1358,7 @@ function cerrarFicha(){
   if(!fichaOv.classList.contains('open')) return;
   fichaOv.classList.remove('open'); fichaOv.setAttribute('aria-hidden','true');
   document.body.style.overflow='';
-  if(location.hash.startsWith('#ficha=')) history.replaceState(null,'',location.pathname+location.search);
+  if(location.hash.startsWith('#ficha=')) history.replaceState(null,'',location.pathname+location.search+hashAntesFicha);
   if(fichaFoco&&fichaFoco.focus) fichaFoco.focus({preventScroll:true});
 }
 function moverFicha(d){
@@ -1275,6 +1372,7 @@ fichaOv.addEventListener('click',e=>{
   const b=e.target.closest('[data-f]'); if(!b) return;
   const f=b.dataset.f;
   if(f==='cerrar') cerrarFicha();
+  else if(f==='fav'){ toggleFav(fichaR); renderFicha(); render(); }
   else if(f==='ant') moverFicha(-1);
   else if(f==='sig') moverFicha(1);
   else if(f==='valorar'){ const r=fichaR; cerrarFicha(); abrirRubrica(r); }
@@ -1297,6 +1395,119 @@ document.addEventListener('keydown',e=>{
     else if(!e.shiftKey&&document.activeElement===f[f.length-1]){ e.preventDefault(); f[0].focus(); }
   }
 });
+/* ══════════════════ FAVORITOS Y LISTAS COMPARTIDAS ══════════════════ */
+const listaPanel=document.getElementById('listaPanel');
+function urlLista(){
+  const ids=favs.filter(id=>RECURSOS.some(r=>slug(r.nombre)===id));
+  const t=favTitulo.trim();
+  return location.origin+location.pathname+'#lista='+ids.join(',')+(t?'&t='+encodeURIComponent(t):'');
+}
+function textoLista(){
+  const t=favTitulo.trim()||'Mi selección de recursos de IA para el aula';
+  const rs=favs.map(id=>RECURSOS.find(r=>slug(r.nombre)===id)).filter(Boolean);
+  return `⭐ ${t}\n\n`+rs.map(r=>`• ${r.nombre}${r.edad?' ('+r.edad+')':''}\n  ${new URL(r.links[0].url,location.href).href}`).join('\n')+
+    `\n\nVer la lista completa con fichas: ${urlLista()}`;
+}
+function copiar(texto,btn,etiqueta){
+  const ok=()=>{ btn.textContent='✅ Copiado'; setTimeout(()=>{ if(btn.isConnected) btn.textContent=etiqueta; },1800); };
+  if(navigator.clipboard&&window.isSecureContext) navigator.clipboard.writeText(texto).then(ok,()=>prompt('Copia este texto:',texto));
+  else prompt('Copia este texto:',texto);
+}
+let qrLib=null;
+function cargarQR(){
+  return qrLib || (qrLib=new Promise((ok,ko)=>{
+    if(window.qrcode) return ok(window.qrcode);
+    const sc=document.createElement('script'); sc.src='lib/qrcode.js';
+    sc.onload=()=>ok(window.qrcode); sc.onerror=ko; document.head.appendChild(sc);
+  }));
+}
+function mostrarQR(){
+  const box=document.getElementById('qrBox'); if(!box) return;
+  if(!box.hidden){ box.hidden=true; return; }
+  box.hidden=false; box.innerHTML='<p class="lp-nota">Generando el código…</p>';
+  cargarQR().then(qrcode=>{
+    const q=qrcode(0,'M'); q.addData(urlLista()); q.make();
+    const svg=q.createSvgTag({cellSize:5, margin:3, scalable:true, alt:'Código QR de la lista'});
+    const href='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+    box.innerHTML=`<div class="qr-img">${svg}</div>
+      <div><strong>${esc(favTitulo.trim()||'Mi selección')}</strong>
+      <p class="lp-nota">Proyéctalo en clase o en una formación: al escanearlo se abre esta lista en el móvil.</p>
+      <a class="lp-btn" href="${href}" download="${slug(favTitulo||'lista-recursos')||'lista-recursos'}-qr.svg">⬇️ Descargar QR</a></div>`;
+  }).catch(()=>{ box.innerHTML='<p class="lp-nota">No se ha podido generar el código QR.</p>'; });
+}
+
+function renderListaPanel(){
+  if(etapaActiva==='lista'&&listaCompartida){
+    const n=allRecursos().filter(r=>pasaEtapa(r,'lista')).length;
+    const nuevos=listaCompartida.slugs.filter(id=>!favs.includes(id)&&RECURSOS.some(r=>slug(r.nombre)===id)).length;
+    listaPanel.className='lista-panel recibida'; listaPanel.hidden=false;
+    listaPanel.innerHTML=`
+      <div class="lp-kicker">📋 Lista compartida</div>
+      <h2>${esc(listaCompartida.titulo||'Selección de recursos')}</h2>
+      <p class="lp-nota">${n} ${n===1?'recurso seleccionado':'recursos seleccionados'} por quien te ha enviado este enlace. Pulsa en cualquiera para ver su ficha.</p>
+      <div class="lp-acc">
+        ${nuevos?`<button class="lp-btn pri" type="button" data-l="guardar">⭐ Añadir ${nuevos===n?'todos':'los '+nuevos+' que te faltan'} a mis favoritos</button>`:'<span class="lp-ok">✅ Ya están todos en tus favoritos</span>'}
+        <button class="lp-btn" type="button" data-l="salir">Ver toda la web</button>
+      </div>`;
+    return;
+  }
+  if(etapaActiva!=='favoritos'){ listaPanel.hidden=true; listaPanel.innerHTML=''; return; }
+  listaPanel.className='lista-panel'; listaPanel.hidden=false;
+  if(!favs.length){
+    listaPanel.innerHTML=`<div class="lp-vacio"><div class="big">☆</div>
+      <strong>Todavía no tienes favoritos.</strong>
+      <p class="lp-nota">Pulsa la estrella ☆ de cualquier recurso para guardarlo aquí. Después podrás compartir tu selección con un enlace o un código QR, por ejemplo con tu equipo o en una formación.</p></div>`;
+    return;
+  }
+  const propios=favs.filter(id=>!RECURSOS.some(r=>slug(r.nombre)===id)).length;
+  listaPanel.innerHTML=`
+    <label class="lp-tit">Nombre de tu lista
+      <input id="favTitulo" maxlength="60" placeholder="Ej. IA en 5.º de Primaria" value="${esc(favTitulo)}"></label>
+    <div class="lp-acc">
+      <button class="lp-btn pri" type="button" data-l="enlace">🔗 Copiar enlace</button>
+      <button class="lp-btn" type="button" data-l="qr">📱 Código QR</button>
+      <button class="lp-btn" type="button" data-l="texto">📋 Copiar como texto</button>
+      <button class="lp-btn lp-del" type="button" data-l="vaciar">🗑️ Vaciar</button>
+    </div>
+    <p class="lp-nota">Tus favoritos se guardan en este navegador. Con el enlace, cualquiera puede ver tu selección sin registrarse${propios?`; los ${propios===1?'recurso añadido':propios+' recursos añadidos'} por ti no se incluyen porque solo existen en tu navegador`:''}.</p>
+    <div class="qr-box" id="qrBox" hidden></div>`;
+}
+listaPanel.addEventListener('input',e=>{
+  if(e.target.id!=='favTitulo') return;
+  favTitulo=e.target.value;
+  try{ localStorage.setItem(FAVT_KEY,favTitulo); }catch(err){}
+  const box=document.getElementById('qrBox'); if(box&&!box.hidden){ box.hidden=true; }
+});
+listaPanel.addEventListener('click',e=>{
+  const b=e.target.closest('[data-l]'); if(!b) return;
+  const a=b.dataset.l;
+  if(a==='enlace') copiar(urlLista(),b,'🔗 Copiar enlace');
+  else if(a==='texto') copiar(textoLista(),b,'📋 Copiar como texto');
+  else if(a==='qr') mostrarQR();
+  else if(a==='vaciar'){ if(confirm('¿Quitar todos los recursos de tus favoritos?')){ favs=[]; saveFavs(); actualizarFavN(); render(); } }
+  else if(a==='guardar'){
+    listaCompartida.slugs.forEach(id=>{ if(!favs.includes(id)&&RECURSOS.some(r=>slug(r.nombre)===id)) favs.push(id); });
+    if(!favTitulo.trim()&&listaCompartida.titulo){ favTitulo=listaCompartida.titulo; try{ localStorage.setItem(FAVT_KEY,favTitulo); }catch(err){} }
+    saveFavs(); actualizarFavN(true); render();
+  }
+  else if(a==='salir') setEtapa('todas');
+});
+function listaDesdeHash(){
+  if(!/^#lista=/.test(location.hash)) return false;
+  const pr=new URLSearchParams(location.hash.slice(1));
+  const slugs=(pr.get('lista')||'').split(',').map(x=>x.trim()).filter(Boolean);
+  listaCompartida={slugs, titulo:(pr.get('t')||'').slice(0,60)};
+  etapaActiva='lista';
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  render();
+  // quien recibe la lista va directo a ella: se pliega el recomendador
+  const reco=document.getElementById('reco');
+  if(reco&&reco.classList.contains('open')){ reco.classList.remove('open'); const t=document.getElementById('recoToggle'); if(t) t.textContent='Mostrar'; }
+  requestAnimationFrame(()=>listaPanel.scrollIntoView({block:'start'}));
+  return true;
+}
+window.addEventListener('hashchange',listaDesdeHash);
+
 function fichaDesdeHash(){
   const m=location.hash.match(/^#ficha=([a-z0-9-]+)/); if(!m) return;
   const r=allRecursos().find(x=>slug(x.nombre)===m[1]);
@@ -1313,7 +1524,8 @@ soloEsEl.addEventListener('change',()=>{
   render();
 });
 
-render();
+actualizarFavN();
+if(!listaDesdeHash()) render();
 fichaDesdeHash();
 
 /* ===== Asistente de recomendaciones ===== */
