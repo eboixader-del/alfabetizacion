@@ -85,6 +85,7 @@
 </style>
 <link rel="stylesheet" href="tema.css">
 <script>(function(){var t=null;try{t=localStorage.getItem("tema")}catch(e){}var d=t?t==="oscuro":!!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.dataset.theme=d?"dark":"light";})();</script>
+<script src="i18n.js" data-pagina="verificacion-ia"></script>
 </head>
 <body>
 <header>
@@ -115,7 +116,7 @@
   <button class="tab" data-k="2">2 · Verificar</button>
   <button class="tab" data-k="3">3 · Evaluar</button>
 </div>
-<p class="note">🧭 <strong>Cómo empezar:</strong> presenta primero la rutina de seis pasos y las etiquetas de verificación (más abajo), modela un ejemplo en voz alta y empieza por el nivel 1. Pide al alumnado que anote las fuentes que ha abierto, para que otra persona pueda repetir su comprobación. Al terminar, una breve reflexión: qué afirmación aceptaron al principio y luego corrigieron, qué paso les fue más útil y qué dudas quedaron.</p>
+<p class="note" data-i18n="nota">🧭 <strong>Cómo empezar:</strong> presenta primero la rutina de seis pasos y las etiquetas de verificación (más abajo), modela un ejemplo en voz alta y empieza por el nivel 1. Pide al alumnado que anote las fuentes que ha abierto, para que otra persona pueda repetir su comprobación. Al terminar, una breve reflexión: qué afirmación aceptaron al principio y luego corrigieron, qué paso les fue más útil y qué dudas quedaron.</p>
 <div class="count" id="count"></div>
 <main class="grid" id="grid"></main>
 
@@ -139,22 +140,28 @@
   </div>
 </section>
 
-<footer>
+<footer data-i18n="pie">
   Actividades basadas en <strong>Med Kharbach (2026), <em>AI Fact Checking Activities for Teachers and Students</em></strong>
   (<a href="https://www.educatorstechnology.com" target="_blank" rel="noopener">educatorstechnology.com</a> · <a href="https://www.medkharbach.com" target="_blank" rel="noopener">medkharbach.com</a>).<br>
   Aquí solo se resume cada actividad; las fichas imprimibles completas se descargan en <a href="https://www.educatorstechnology.com/2026/10/ai-fact-checking-activities-for-teachers-and-students.html" target="_blank" rel="noopener">la publicación original del autor</a>.
 </footer>
 
 <script>
+trDOM(document.body);
 const NIV = {"1": "Nivel 1 · Identificar", "2": "Nivel 2 · Verificar", "3": "Nivel 3 · Evaluar"};
 const ACT = [{"n": 1, "id": "afirmacion-opinion", "icon": "⚖️", "titulo": "¿Afirmación u opinión?", "orig": "Claim or Opinion", "niv": "1", "min": 10, "max": 15, "grupo": "Individual o parejas", "resumen": "Antes de verificar hay que saber qué se puede verificar. El alumnado distingue en un texto las afirmaciones comprobables de las opiniones, predicciones y juicios de valor, y justifica los casos dudosos."}, {"n": 2, "id": "auditoria-afirmaciones", "icon": "🧾", "titulo": "Auditoría de afirmaciones de la IA", "orig": "AI Claim Audit", "niv": "1", "min": 20, "max": 20, "grupo": "Parejas", "resumen": "En vez de juzgar la respuesta de la IA «en bloque», se descompone en afirmaciones sueltas, se eligen las más importantes y se decide qué pruebas haría falta encontrar para cada una."}, {"n": 3, "id": "fuente-afirmacion", "icon": "🔗", "titulo": "De la fuente a la afirmación", "orig": "Source to Claim Check", "niv": "2", "min": 25, "max": 35, "grupo": "Individual", "resumen": "Que una afirmación lleve una cita no significa que la fuente diga eso. Se localiza el pasaje exacto de la fuente, se compara con lo que afirma la IA y se reescribe la afirmación si no coincide."}, {"n": 4, "id": "detective-citas", "icon": "🕵️", "titulo": "Detective de citas", "orig": "Citation Detective", "niv": "2", "min": 25, "max": 25, "grupo": "Parejas", "resumen": "La IA inventa referencias con facilidad. Se comprueba si una cita bibliográfica existe de verdad y si sus datos (autoría, año, título, revista, DOI…) son correctos, incompletos o inventados."}, {"n": 5, "id": "fuente-real-afirmacion-falsa", "icon": "🎯", "titulo": "Fuente real, afirmación falsa", "orig": "Real Source Wrong Claim", "niv": "3", "min": 30, "max": 30, "grupo": "Pequeños grupos", "resumen": "El error más sutil: una fuente auténtica citada para algo que no dice. Se busca el punto exacto en que la afirmación va más allá de la fuente (población, contexto, método, grado de certeza)."}, {"n": 6, "id": "error-pulido", "icon": "✨", "titulo": "El error bien escrito", "orig": "Polished Error Challenge", "niv": "1", "min": 15, "max": 20, "grupo": "Equipos", "resumen": "Un texto fluido y seguro de sí mismo no es una prueba. Los equipos detectan qué recursos de estilo dan apariencia de autoridad y priorizan qué afirmaciones habría que comprobar primero."}, {"n": 7, "id": "rastrear-estadistica", "icon": "📊", "titulo": "Rastrea la estadística", "orig": "Trace the Statistic", "niv": "2", "min": 25, "max": 35, "grupo": "Individual o parejas", "resumen": "Se sigue la pista de un dato numérico hasta su origen: quién se midió, cuándo, dónde y cómo. Después se valora si se ha redondeado, generalizado o sacado de contexto y se reescribe con más precisión."}, {"n": 8, "id": "comprobar-cita-textual", "icon": "💬", "titulo": "Comprueba la cita textual", "orig": "Quote Check", "niv": "2", "min": 20, "max": 30, "grupo": "Parejas", "resumen": "Muchas frases célebres están mal atribuidas o recortadas. Se verifica la redacción exacta, quién la dijo, cuándo y en qué contexto, y se decide si conservarla, corregirla, parafrasearla o eliminarla."}, {"n": 9, "id": "imagen-pie", "icon": "🖼️", "titulo": "Imagen y pie de foto", "orig": "Image and Caption Check", "niv": "3", "min": 30, "max": 30, "grupo": "Parejas", "resumen": "Se analiza si una imagen y su pie encajan y representan bien lo ocurrido: primero se describe solo lo que se ve y luego se investigan origen, fecha y lugar (por ejemplo, con búsqueda inversa de imágenes)."}, {"n": 10, "id": "comparar-respuestas", "icon": "🆚", "titulo": "Compara dos respuestas de IA", "orig": "Compare Two AI Answers", "niv": "3", "min": 30, "max": 40, "grupo": "Pequeños grupos", "resumen": "Dos respuestas de IA a la misma pregunta se comparan con pruebas, no por cuál «suena mejor». Se buscan coincidencias y discrepancias, se verifican los puntos clave y se decide cuál está mejor respaldada (o si ninguna lo está)."}, {"n": 11, "id": "contexto-ausente", "icon": "🧩", "titulo": "El contexto que falta", "orig": "Missing Context", "niv": "3", "min": 25, "max": 35, "grupo": "Individual", "resumen": "Un dato puede ser técnicamente cierto y aun así engañar si falta contexto. El alumnado identifica qué información necesitaría para interpretarlo, la investiga y reescribe la afirmación para que no induzca a error."}, {"n": 12, "id": "mejor-respuesta", "icon": "🏗️", "titulo": "Construye una respuesta mejor", "orig": "Build a Better Answer", "niv": "3", "min": 40, "max": 50, "grupo": "Individual o parejas", "resumen": "Actividad de cierre: se audita una respuesta poco fiable, se verifica cada afirmación central y se redacta una versión nueva con fuentes rastreables y una nota que reconozca lo que sigue siendo incierto."}];
 const RUTINA = [["Localiza la afirmación", "Elige una frase concreta que se pueda comprobar."], ["Piensa qué prueba haría falta", "¿Qué tipo de dato, estudio o documento la apoyaría o la desmentiría?"], ["Ve a la fuente original", "No te quedes en resúmenes: abre el estudio, el informe, los datos o el documento de origen."], ["Compara con cuidado", "¿Dice la fuente lo mismo? Revisa fechas, población, método, palabras exactas y contexto."], ["Pon una etiqueta", "Clasifica el resultado y explica en qué pruebas te basas."], ["Corrige o matiza", "Reescribe la afirmación para que no diga más de lo que las pruebas permiten."]];
 const ETIQ = [["✅", "Respaldada", "Las pruebas la apoyan de forma directa y suficiente."], ["🟡", "Parcialmente respaldada", "Una parte se sostiene, pero exagera, generaliza o le falta algo."], ["⚪", "Sin respaldo", "Las pruebas encontradas o citadas no la sostienen."], ["❌", "Desmentida", "Hay pruebas fiables que la contradicen."], ["❓", "No verificable", "No hay información accesible suficiente para concluir con responsabilidad."], ["⚠️", "Engañosa", "Usa datos ciertos pero omite contexto y eso cambia su sentido."]];
 const FUENTES = [["Stanford CRAFT: cómo verificar resultados de búsquedas con IA", "https://craft.stanford.edu/resource/how-do-i-fact-check-ai-search-results/"], ["Common Sense Education: cómo aplicar SIFT con IA", "https://www.commonsense.org/education/digital-literacy/how-to-sift-with-ai"], ["Digital Inquiry Group: Civic Online Reasoning (lectura lateral)", "https://cor.inquirygroup.org/"], ["Mike Caulfield: Web Literacy for Student Fact-Checkers", "https://pressbooks.pub/webliteracy/"]];
+if(LANG==='va'&&VA.act){
+  Object.assign(NIV,VA.NIV);
+  RUTINA.splice(0,RUTINA.length,...VA.RUTINA); ETIQ.splice(0,ETIQ.length,...VA.ETIQ); FUENTES.splice(0,FUENTES.length,...VA.FUENTES);
+  ACT.forEach(a=>Object.assign(a,VA.act[a.id]||{}));
+}
 let niv='todos', tiempo='todas', q='';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const norm=s=>String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
-document.getElementById('stats').innerHTML=`<span class="stat">🧩 ${ACT.length} actividades</span><span class="stat">📶 3 niveles</span><span class="stat">⏱️ 10-50 min</span>`;
+document.getElementById('stats').innerHTML=`<span class="stat">🧩 ${tr('{n} actividades',{n:ACT.length})}</span><span class="stat">📶 ${tr('3 niveles')}</span><span class="stat">⏱️ 10-50 min</span>`;
 document.getElementById('rutina').innerHTML=RUTINA.map(([a,b])=>`<li><strong>${esc(a)}.</strong> ${esc(b)}</li>`).join('');
 document.getElementById('etiquetas').innerHTML=ETIQ.map(([i,a,b])=>`<li style="margin-bottom:6px">${i} <strong>${esc(a)}:</strong> ${esc(b)}</li>`).join('');
 document.getElementById('fuentes').innerHTML=FUENTES.map(([a,u])=>`<li><a href="${esc(u)}" target="_blank" rel="noopener" style="color:var(--pc);font-weight:700">${esc(a)} ↗</a></li>`).join('');
@@ -165,14 +172,14 @@ document.getElementById('tiempo').addEventListener('change',e=>{tiempo=e.target.
 function render(){
   const nq=norm(q);
   const items=ACT.filter(a=>(niv==='todos'||a.niv===niv)&&(tiempo==='todas'||a.max<=+tiempo)&&(!nq||norm(a.titulo+' '+a.orig+' '+a.resumen).includes(nq)));
-  document.getElementById('count').textContent=items.length===1?'1 actividad encontrada':items.length+' actividades encontradas';
+  document.getElementById('count').textContent=items.length===1?tr('1 actividad encontrada'):tr('{n} actividades encontradas',{n:items.length});
   const grid=document.getElementById('grid');
-  if(!items.length){grid.innerHTML='<div class="empty"><strong>No hay resultados.</strong><br>Prueba con otra búsqueda o quita algún filtro.</div>';return;}
+  if(!items.length){grid.innerHTML=`<div class="empty"><strong>${tr('No hay resultados.')}</strong><br>${tr('Prueba con otra búsqueda o quita algún filtro.')}</div>`;return;}
   grid.innerHTML=items.map(a=>`
     <article class="card" id="${a.id}">
       <div class="card-top"><div class="icon">${a.icon}</div>
-        <div><div class="num">ACTIVIDAD ${a.n}</div><h3>${esc(a.titulo)}</h3><div class="orig">${esc(a.orig)}</div></div></div>
-      <div class="badges"><span class="badge h">${NIV[a.niv]}</span><span class="badge t">⏱️ ${a.min===a.max?a.min:a.min+'-'+a.max} min</span><span class="badge p">👥 ${esc(a.grupo)}</span></div>
+        <div><div class="num">${tr('ACTIVIDAD {n}',{n:a.n})}</div><h3>${esc(a.titulo)}</h3><div class="orig">${esc(a.orig)}</div></div></div>
+      <div class="badges"><span class="badge h">${NIV[a.niv]}</span><span class="badge t">⏱️ ${a.min===a.max?a.min:a.min+'-'+a.max} min</span><span class="badge p">👥 ${esc(tr(a.grupo))}</span></div>
       <p class="desc">${esc(a.resumen)}</p>
     </article>`).join('');
 }
