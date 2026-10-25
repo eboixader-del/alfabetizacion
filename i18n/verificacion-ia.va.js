@@ -1,5 +1,6 @@
 /* Verificar lo que dice la IA · valenciano */
 Object.assign(VA.ui, {
+"Actividades": "Activitats",
  "Verificar lo que dice la IA · Recursos de Aula": "Verificar el que diu la IA · Recursos d'Aula",
  "← Volver a Recursos de Aula": "← Tornar a Recursos d'Aula",
  "🔎 Verificar lo que dice la IA": "🔎 Verificar el que diu la IA",
@@ -164,6 +165,6 @@ VA.act = {
  },
  "mejor-respuesta": {
   "titulo": "Construïx una resposta millor",
-  "resumen": "Activitat de tancament: s'audita una resposta poc fiable, es verifica cada afirmació central i es redacta una versió nova amb fonts rastrejables i una nota que reconega el que continua sent incert."
+  "resumen": "Activitat de tancament: s'audita una resposta poc fiable, es verifica cada afirmació central i es redacta una versió nova amb fonts que es puguen rastrejar i una nota que reconega el que continua sent incert."
  }
 };

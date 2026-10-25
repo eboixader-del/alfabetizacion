@@ -1,5 +1,6 @@
 /* Pensamiento crítico e IA · valenciano */
 Object.assign(VA.ui, {
+"Actividades": "Activitats",
  "Pensamiento crítico e IA · Recursos de Aula": "Pensament crític i IA · Recursos d'Aula",
  "← Volver a Recursos de Aula": "← Tornar a Recursos d'Aula",
  "🧠 Pensamiento crítico e IA": "🧠 Pensament crític i IA",
@@ -81,7 +82,7 @@ VA.act = {
    "L'alumnat els llig amb atenció i pren notes.",
    "Individualment, cada persona decidix quin creu que és d'IA i justifica per què.",
    "En grups xicotets comparen observacions i arguments.",
-   "Revela la resposta i debateu: quins patrons distingixen l'escriptura d'IA de l'humana?"
+   "Revela la resposta i debat: quins patrons distingixen l'escriptura d'IA de l'humana?"
   ],
   "fuente": "Activitat creada per Med Kharbach per als seus cursos (Mount Saint Vincent University)."
  },
@@ -149,7 +150,7 @@ VA.act = {
   "titulo": "Debat amb IA: múltiples perspectives",
   "resumen": "La IA argumenta a favor i en contra d'una mateixa postura. Cada grup rep un costat, verifica les seues afirmacions, detecta llacunes i afig proves pròpies. Si la IA defén les dues postures amb la mateixa seguretat, què ens diu realment eixa seguretat?",
   "pasos": [
-   "Tria un tema debatible de la teua matèria.",
+   "Tria un tema de la teua matèria que es puga debatre.",
    "Demana a ChatGPT que argumente A FAVOR i lliura el text al grup A.",
    "Demana a ChatGPT que argumente EN CONTRA i lliura el text al grup B.",
    "Cada grup verifica les afirmacions, assenyala llacunes i afig les seues pròpies proves i anàlisi.",

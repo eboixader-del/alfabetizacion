@@ -9,6 +9,7 @@
     if(btn){
       btn.textContent=oscuro?'☀️':'🌙';
       var t=oscuro?'Cambiar a modo claro':'Cambiar a modo oscuro';
+      if(window.tr) t=tr(t);
       btn.setAttribute('aria-label',t); btn.title=t;
     }
   }

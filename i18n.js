@@ -18,7 +18,9 @@
   if(L!=='va'&&L!=='es') L=/^(ca|va)\b/i.test(navigator.language||'')?'va':'es';
   window.LANG=L;
   document.documentElement.lang = L==='va' ? 'ca-ES-valencia' : 'es';
-  window.VA={ui:{}, html:{}};
+  window.VA={ui:{
+    'Cambiar a modo claro':'Canviar al mode clar', 'Cambiar a modo oscuro':'Canviar al mode fosc'
+  }, html:{}};
 
   var me=document.currentScript, pagina=me&&me.getAttribute('data-pagina');
   if(L==='va'&&pagina) document.write('<script src="i18n/'+pagina+'.va.js"><\/script>');

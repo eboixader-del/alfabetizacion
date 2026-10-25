@@ -123,7 +123,7 @@ Object.assign(VA.ui, {
  " (por ejemplo, «Solo en castellano»)": " (per exemple, «Només en castellà»)",
  "MÍO": "MEU",
  "NUEVO": "NOU",
- "Quitar de favoritos": "Llevar de preferits",
+ "Quitar de favoritos": "Llevar dels preferits",
  "Guardar en favoritos": "Guardar en preferits",
  "Ver la ficha completa": "Veure la fitxa completa",
  "Ficha": "Fitxa",
@@ -228,7 +228,7 @@ Object.assign(VA.ui, {
  "👩‍🏫 Profesorado": "👩‍🏫 Professorat",
  "🤖 Descubrir qué es la IA": "🤖 Descobrir què és la IA",
  "🧠 Pensar críticamente sobre la IA": "🧠 Pensar críticament sobre la IA",
- "🔎 Verificar información y detectar bulos": "🔎 Verificar informació i detectar bulos",
+ "🔎 Verificar información y detectar bulos": "🔎 Verificar informació i detectar notícies falses",
  "✍️ Aprender a pedirle bien las cosas (prompts)": "✍️ Aprendre a demanar-li bé les coses (prompts)",
  "💻 Aprender a programar": "💻 Aprendre a programar",
  "🎨 Crear: arte, música, historias": "🎨 Crear: art, música, històries",
@@ -309,7 +309,7 @@ VA.novedades = [
 /* Descripción e idea para el aula de cada recurso (clave: identificador del recurso) */
 VA.recursos = {
  "animated-drawings": {
-  "desc": "La IA anima els dibuixos que fa l'alumnat: pugen el dibuix i cobra vida movent-se i ballant. Motivació assegurada.",
+  "desc": "La IA anima els dibuixos de l'alumnat: es puja el dibuix i cobra vida movent-se i ballant. Motivació assegurada.",
   "idea": "Cada xiquet dibuixa un personatge del conte del projecte; el docent fotografia els dibuixos i en l'assemblea els veiem cobrar vida. Després: com ha sabut la màquina on estan els braços i les cames? Puja només el dibuix, mai fotos de l'alumnat."
  },
  "speechnotes": {

@@ -4,16 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cursos de Code.org · Recursos de Aula</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E🎒%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#f6f4ef; --card:#ffffff; --ink:#2b2b3a; --muted:#6b6b7d;
-    --infantil:#f59e0b; --infantil-soft:#fef3c7;
-    --primaria:#0ea5e9; --primaria-soft:#e0f2fe;
-    --eso:#8b5cf6; --eso-soft:#ede9fe;
-    --bach:#e11d48; --bach-soft:#ffe4e6;
-    --codeorg:#00adbc;
+    --infantil:#b45309; --infantil-soft:#fef3c7;
+    --primaria:#0369a1; --primaria-soft:#e0f2fe;
+    --eso:#7c3aed; --eso-soft:#ede9fe;
+    --bach:#be123c; --bach-soft:#ffe4e6;
+    --codeorg:#0e7490;
     --radius:18px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -118,6 +119,7 @@
 <div class="chips" id="chips"></div>
 <p class="note" data-i18n="nota">ℹ️ Los niveles son una <strong>equivalencia aproximada</strong> de los grados de EE. UU. Las horas son las que indica Code.org; los cursos de más de 100 h están pensados para clase diaria durante todo un año, así que lo habitual es usar solo algunas de sus unidades.</p>
 <div class="count" id="count"></div>
+<h2 class="sr-only">Cursos</h2>
 <main class="grid" id="grid"></main>
 
 <footer data-i18n="pie">Datos extraídos del <a href="https://studio.code.org/catalog" target="_blank" rel="noopener">catálogo oficial de Code.org</a> (octubre de 2026). Los cursos están en inglés; muchos tienen traducción al castellano desde la propia plataforma.</footer>
@@ -145,13 +147,13 @@ document.getElementById('stats').innerHTML=
   `<span class="stat">🆓 ${tr('Gratuitos')}</span>`;
 
 const tabs=document.getElementById('tabs');
-tabs.innerHTML=['todas',...ETAPAS].map(e=>`<button class="tab${e===etapa?' active':''}" data-e="${e}">${e==='todas'?tr('Todas'):tr(e)}</button>`).join('');
+tabs.innerHTML=['todas',...ETAPAS].map(e=>`<button type="button" class="tab${e===etapa?' active':''}" data-e="${e}">${e==='todas'?tr('Todas'):tr(e)}</button>`).join('');
 tabs.onclick=e=>{const b=e.target.closest('.tab'); if(!b) return;
   etapa=b.dataset.e; tabs.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b)); render();};
 
 const temas=[...new Set(CURSOS.flatMap(c=>c.temas))].sort((a,b)=>tr(a).localeCompare(tr(b),LANG==='va'?'ca':'es'));
 const chips=document.getElementById('chips');
-chips.innerHTML=['todos',...temas].map(t=>`<button class="chip${t===tema?' active':''}" data-t="${esc(t)}">${t==='todos'?tr('Todos los temas'):esc(tr(t))}</button>`).join('');
+chips.innerHTML=['todos',...temas].map(t=>`<button type="button" class="chip${t===tema?' active':''}" data-t="${esc(t)}">${t==='todos'?tr('Todos los temas'):esc(tr(t))}</button>`).join('');
 chips.onclick=e=>{const b=e.target.closest('.chip'); if(!b) return;
   tema=b.dataset.t; chips.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active',c===b)); render();};
 

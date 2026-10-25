@@ -1,5 +1,6 @@
 /* Proyectos de Raspberry Pi · valenciano */
 Object.assign(VA.ui, {
+"Proyectos": "Projectes",
 "← Volver a Recursos de Aula": "← Tornar a Recursos d'Aula",
 "⏱️ Cualquier duración": "⏱️ Qualsevol durada",
 "Duración": "Durada",
@@ -142,7 +143,7 @@ VA.desc = {
 "green-goals": "Programa una animació sobre els cinc Objectius de Desenvolupament Sostenible dedicats al medi ambient.",
 "grow-a-tree": "Queda't tan quiet com pugues per a fer créixer un arbre; la càmera de l'ordinador detecta el moviment.",
 "editor-happy-birthday": "Crea una targeta d'aniversari en una pàgina web (versió per a l'editor en línia).",
-"hobby-selector": "Deixa que la teua micro:bit tria una afició per tu.",
+"hobby-selector": "Deixa que la teua micro:bit trie una afició per tu.",
 "editor-holi": "Ompli la pantalla de color per a celebrar el Holi.",
 "how-are-you": "Pregunta a algú com està en un altre idioma i traduïx la seua resposta.",
 "interactive-badge": "Crea una xapa que mostra el teu estat d'ànim.",
@@ -168,7 +169,7 @@ VA.desc = {
 "ai-image-prompt": "Aprén a escriure bones instruccions per a generadors d'imatges amb IA.",
 "python-bytes-disgusting-dishes": "Inventa una recepta fastigosa amb print i emojis en Python.",
 "python-bytes-gross-groceries": "Escriu una recepta repugnant amb variables, f-strings i matemàtiques.",
-"python-bytes-recipe-wreckers": "Crea i sabota en secret una recepta amb format de text i mètodes de cadenes en Python.",
+"python-bytes-recipe-wreckers": "Crea i saboteja en secret una recepta amb format de text i mètodes de cadenes en Python.",
 "python-wild-dot-the-bug": "Dibuixa i decora un insecte de dibuixos animats amb formes i colors en Python (p5).",
 "python-wild-hop-the-frog": "Crea una granota animada que bota, s'estira i s'encongix en el teu codi.",
 "rate-your-mates": "Usa la micro:bit per a descobrir la teua compatibilitat amb els teus amics.",

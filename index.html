@@ -5,16 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Recursos de Aula · IA de Infantil a Bachillerato</title>
 <meta name="description" content="Herramientas, cursos y actividades con IA de Infantil a Bachillerato, con rúbricas para valorar si son adecuadas a cada edad.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E🎒%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#f6f4ef; --card:#ffffff; --ink:#2b2b3a; --muted:#6b6b7d;
-    --infantil:#f59e0b; --infantil-soft:#fef3c7;
-    --primaria:#0ea5e9; --primaria-soft:#e0f2fe;
-    --secundaria:#8b5cf6; --secundaria-soft:#ede9fe;
-    --proyecto:#10b981; --proyecto-soft:#d1fae5;
-    --bach:#6366f1; --bach-soft:#e0e7ff;
+    --infantil:#b45309; --infantil-soft:#fef3c7;
+    --primaria:#0369a1; --primaria-soft:#e0f2fe;
+    --secundaria:#7c3aed; --secundaria-soft:#ede9fe;
+    --proyecto:#047857; --proyecto-soft:#d1fae5;
+    --bach:#4f46e5; --bach-soft:#e0e7ff;
     --field:#fbfaf7; --line:#e2ddd2; --line-2:#ece8df; --line-strong:#cfc9bb; --line-soft:#f0ece3;
     --chip-bg:#f1efe8; --chip-hover:#e6e3d8; --label:#44444f; --on-ink:#fff;
     --nov:#0d9488; --nov-soft:#ccfbf1; --nov-ink:#0f766e; --nov-line:#ccebe6;
@@ -155,7 +156,7 @@
     cursor:pointer;font:inherit;color:var(--ink);transition:.18s;display:flex;gap:14px;align-items:flex-start}
   .rub-pick:hover{border-color:var(--line-strong);transform:translateY(-2px)}
   .rub-pick.active{border-color:var(--rubrica);background:var(--rubrica-soft)}
-  .rub-pick .step{flex-shrink:0;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+  .rub-pick .step{display:grid;flex-shrink:0;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
     font-weight:900;background:var(--card);border:2px solid currentColor;color:var(--rubrica)}
   .rub-pick strong{display:block;font-size:1rem;font-weight:900}
   .rub-pick span{display:block;font-size:.82rem;color:var(--muted);margin-top:3px;line-height:1.45}
@@ -230,7 +231,7 @@
   .rub-actions .sec{background:var(--chip-bg);color:var(--ink)} .rub-actions .sec:hover{background:var(--chip-hover)}
   .rub-actions button[disabled]{opacity:.6;cursor:wait}
   .rub-intro .nb-tip{margin-top:12px;padding:10px 14px;border-radius:12px;background:var(--rubrica-soft);color:var(--ink)}
-  .nb-tip a{color:var(--rubrica);font-weight:800}
+  .nb-tip a{color:#be123c;font-weight:800}
   .fund{font-size:.78rem;color:var(--muted);line-height:1.5;margin-top:14px}
 
   @media (max-width:760px){
@@ -282,7 +283,7 @@
   .rc{border:1.5px solid var(--line-2);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:7px;background:var(--card);transition:.15s}
   .rc:hover{border-color:#c4b5fd;transform:translateY(-2px)}
   .rc-src{font-size:.68rem;font-weight:900;letter-spacing:.3px;padding:3px 9px;border-radius:999px;align-self:flex-start}
-  .rc h4{font-size:.95rem;font-weight:800;line-height:1.25}
+  .rc h3{font-size:.95rem;font-weight:800;line-height:1.25}
   .rc p{font-size:.82rem;color:var(--muted);line-height:1.45;flex-grow:1}
   .rc-why{font-size:.74rem;font-weight:700;color:#6d28d9}
   .rc a,.rc button.go2{align-self:flex-start;text-decoration:none;font:inherit;font-weight:800;font-size:.8rem;padding:6px 13px;border-radius:10px;color:#fff;background:#7c3aed;border:none;cursor:pointer}
@@ -488,6 +489,14 @@
     .nov-badge{order:3;width:100%;text-align:center}
   }
   @media print{.nov{display:none!important}}
+
+  /* ===== Accesibilidad (revisión final) ===== */
+  .rub-pick .rp-txt{display:block;font-size:inherit;color:var(--ink);margin-top:0}
+  .rub-pick .step{font-size:1rem;margin-top:0}
+  .rub-pick.active span span,.veredicto .vp{color:#57534e}
+  .tab[data-etapa="favoritos"].active{background:#b45309}
+  .lp-btn.pri{background:#b45309;border-color:#b45309;color:#fff}
+  .fav-btn.on,.fav-btn:hover{color:#d97706}
 </style>
 <link rel="stylesheet" href="tema.css">
 <script>(function(){var t=null;try{t=localStorage.getItem("tema")}catch(e){}var d=t?t==="oscuro":!!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.dataset.theme=d?"dark":"light";})();</script>
@@ -501,13 +510,14 @@
   <div class="stats" id="stats"></div>
 </header>
 
+<main id="contenido">
 <div class="toolbar">
   <div class="search-box">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
     <input id="search" type="search" placeholder="Buscar recurso… (ej. música, cuentos, programación)">
   </div>
   <a class="btn-add btn-sug" href="https://docs.google.com/forms/d/e/1FAIpQLScXIdWQmBWoYu3mK4ap3EAeZCtEFbtjb1sVy2T3nXm9a5tOEQ/viewform" target="_blank" rel="noopener" title="Propón un recurso para que se publique en esta web">💡 Sugerir recurso</a>
-  <button class="btn-add btn-mio" id="btnAdd" title="Guarda un recurso solo en este navegador">➕ Añadir para mí</button>
+  <button type="button" class="btn-add btn-mio" id="btnAdd" title="Guarda un recurso solo en este navegador">➕ Añadir para mí</button>
 </div>
 
 <section class="nov" id="nov" aria-label="Novedades"></section>
@@ -531,14 +541,14 @@
 </section>
 
 <nav class="tabs" id="tabs">
-  <button class="tab active" data-etapa="todas">✨ Todas</button>
-  <button class="tab" data-etapa="infantil">🧸 Infantil</button>
-  <button class="tab" data-etapa="primaria">✏️ Primaria</button>
-  <button class="tab" data-etapa="eso">🎓 ESO</button>
-  <button class="tab" data-etapa="bach">📚 Bachillerato</button>
-  <button class="tab" data-etapa="proyecto">🚀 Proyectos</button>
-  <button class="tab tab-fav" data-etapa="favoritos">⭐ Favoritos <span class="tab-n" id="favN"></span></button>
-  <button class="tab" data-etapa="rubricas">⚖️ Rúbricas IA</button>
+  <button type="button" class="tab active" data-etapa="todas">✨ Todas</button>
+  <button type="button" class="tab" data-etapa="infantil">🧸 Infantil</button>
+  <button type="button" class="tab" data-etapa="primaria">✏️ Primaria</button>
+  <button type="button" class="tab" data-etapa="eso">🎓 ESO</button>
+  <button type="button" class="tab" data-etapa="bach">📚 Bachillerato</button>
+  <button type="button" class="tab" data-etapa="proyecto">🚀 Proyectos</button>
+  <button type="button" class="tab tab-fav" data-etapa="favoritos">⭐ Favoritos <span class="tab-n" id="favN"></span></button>
+  <button type="button" class="tab" data-etapa="rubricas">⚖️ Rúbricas IA</button>
 </nav>
 
 <section class="lista-panel" id="listaPanel" hidden aria-live="polite"></section>
@@ -550,7 +560,7 @@
   </label>
 </div>
 <div class="etapa-nota" id="etapaNota" hidden></div>
-<main class="grid" id="grid"></main>
+<div class="grid" id="grid"></div>
 
 <!-- ===== Sección de rúbricas ===== -->
 <section class="rub" id="rub">
@@ -559,26 +569,28 @@
     <p data-i18n="rubIntro">Dos rúbricas complementarias que se aplican en orden. Primero se valida <strong>la herramienta</strong> (aspectos legales, de datos y de edad mínima) y, después, <strong>la actividad concreta</strong> que se quiere hacer con ella (aspectos pedagógicos). Marca las casillas y el semáforo calcula el dictamen automáticamente.</p>
     <p class="nb-tip" data-i18n="nbTip">💬 <strong>¿Dudas al aplicarlas?</strong> Pregunta al <a href="https://notebook.google.com/notebook/54c403dc-e190-4c6c-bfb1-77b207a53b6f" target="_blank" rel="noopener">cuaderno de Gemini NotebookLM con las rúbricas ↗</a></p>
     <div class="rub-flow">
-      <button class="rub-pick" data-rub="herramienta">
-        <div class="step">1</div>
-        <div><strong>🛠️ Herramienta · rúbrica institucional</strong>
-        <span>Para el equipo directivo o la comisión. ¿Puede usarse esta herramienta con alumnado de esta etapa? RGPD, consentimiento, términos de servicio.</span></div>
+      <button type="button" class="rub-pick" data-rub="herramienta">
+        <span class="step">1</span>
+        <span class="rp-txt"><strong>🛠️ Herramienta · rúbrica institucional</strong>
+        <span>Para el equipo directivo o la comisión. ¿Puede usarse esta herramienta con alumnado de esta etapa? RGPD, consentimiento, términos de servicio.</span></span>
       </button>
-      <button class="rub-pick" data-rub="actividad">
-        <div class="step">2</div>
-        <div><strong>🎯 Actividad · rúbrica pedagógica</strong>
-        <span>Para el docente o el departamento. ¿Esta actividad concreta con IA es adecuada a la edad y no sustituye el esfuerzo cognitivo del alumnado?</span></div>
+      <button type="button" class="rub-pick" data-rub="actividad">
+        <span class="step">2</span>
+        <span class="rp-txt"><strong>🎯 Actividad · rúbrica pedagógica</strong>
+        <span>Para el docente o el departamento. ¿Esta actividad concreta con IA es adecuada a la edad y no sustituye el esfuerzo cognitivo del alumnado?</span></span>
       </button>
     </div>
   </div>
   <div id="rubBody"></div>
 </section>
 
+</main>
+
 <footer>Recopilación personal de recursos educativos · Los recursos añadidos manualmente se guardan en este navegador</footer>
 
 <!-- Ficha de recurso -->
 <div class="overlay ficha-ov" id="fichaOv" aria-hidden="true">
-  <article class="ficha" id="ficha" role="dialog" aria-modal="true" aria-labelledby="fichaTitulo" tabindex="-1"></article>
+  <div class="ficha" id="ficha" role="dialog" aria-modal="true" aria-labelledby="fichaTitulo" tabindex="-1"></div>
 </div>
 
 <!-- Modal añadir recurso -->
@@ -587,11 +599,11 @@
     <h2>➕ Añadir un recurso</h2>
     <p class="sub" data-i18n="modalSub">Se guardará <strong>solo en este navegador</strong> y aparecerá con la etiqueta <strong>MÍO</strong>; nadie más lo verá. Si quieres que se publique en la web para todo el mundo, <a href="https://docs.google.com/forms/d/e/1FAIpQLScXIdWQmBWoYu3mK4ap3EAeZCtEFbtjb1sVy2T3nXm9a5tOEQ/viewform" target="_blank" rel="noopener">sugiérelo aquí</a>.</p>
     <div class="row2">
-      <div class="field"><label>Nombre *</label><input id="fNombre" required maxlength="80" placeholder="Ej. Mi actividad de IA"></div>
-      <div class="field"><label>Emoji (icono)</label><input id="fIcon" maxlength="4" placeholder="⭐"></div>
+      <div class="field"><label for="fNombre">Nombre *</label><input type="text" id="fNombre" required maxlength="80" placeholder="Ej. Mi actividad de IA"></div>
+      <div class="field"><label for="fIcon">Emoji (icono)</label><input type="text" id="fIcon" maxlength="4" placeholder="⭐"></div>
     </div>
     <div class="row2">
-      <div class="field"><label>Etapa *</label>
+      <div class="field"><label for="fEtapa">Etapa *</label>
         <select id="fEtapa" required>
           <option value="infantil">🧸 Infantil</option>
           <option value="primaria" selected>✏️ Primaria</option>
@@ -600,14 +612,14 @@
           <option value="proyecto">🚀 Proyecto</option>
         </select>
       </div>
-      <div class="field"><label>Edad recomendada</label><input id="fEdad" maxlength="30" placeholder="Ej. 6-8 años"></div>
+      <div class="field"><label for="fEdad">Edad recomendada</label><input type="text" id="fEdad" maxlength="30" placeholder="Ej. 6-8 años"></div>
     </div>
     <div class="row2">
-      <div class="field"><label>Categoría</label>
-        <input id="fCat" list="catList" maxlength="40" placeholder="Ej. IA y pensamiento computacional">
+      <div class="field"><label for="fCat">Categoría</label>
+        <input type="text" id="fCat" list="catList" maxlength="40" placeholder="Ej. IA y pensamiento computacional">
         <datalist id="catList"></datalist>
       </div>
-      <div class="field"><label>Idioma</label>
+      <div class="field"><label for="fIdioma">Idioma</label>
         <select id="fIdioma">
           <option value="es" selected>Castellano</option>
           <option value="mix">Castellano e inglés</option>
@@ -616,8 +628,8 @@
         </select>
       </div>
     </div>
-    <div class="field"><label>Descripción</label><textarea id="fDesc" maxlength="400" placeholder="¿Para qué lo usas en el aula?"></textarea></div>
-    <div class="field"><label>Enlace (URL) *</label><input id="fUrl" type="url" required placeholder="https://…"></div>
+    <div class="field"><label for="fDesc">Descripción</label><textarea id="fDesc" maxlength="400" placeholder="¿Para qué lo usas en el aula?"></textarea></div>
+    <div class="field"><label for="fUrl">Enlace (URL) *</label><input id="fUrl" type="url" required placeholder="https://…"></div>
     <p class="form-error" id="formError">Revisa los campos obligatorios (el enlace debe empezar por http).</p>
     <div class="modal-actions">
       <button type="button" class="btn ghost" id="btnCancel">Cancelar</button>
@@ -1000,13 +1012,13 @@ function renderVeredicto(){
 function renderRubrica(){
   document.querySelectorAll('.rub-pick').forEach(b=>b.classList.toggle('active', b.dataset.rub===rubActiva));
   const R=RUBRICAS[rubActiva], S=rubState[rubActiva], T=R.tramos[S.tramo];
-  const camposHTML=R.campos.map(([k,l])=>`<div class="field"><label>${l}</label><input data-campo="${k}" value="${esc(S.campos[k]||'')}"></div>`).join('');
+  const camposHTML=R.campos.map(([k,l])=>`<div class="field"><label for="campo-${k}">${l}</label><input type="text" id="campo-${k}" data-campo="${k}" value="${esc(S.campos[k]||'')}"></div>`).join('');
   const filtrosHTML=R.filtros.map((f,i)=>{ const v=S.filtros[i];
     return `<div class="filtro"><div class="fn">${f[0]}</div><div class="fr">${f[1]}</div>
       <div class="yn"><button class="si${v==='si'?' on':''}" data-filtro="${i}" data-v="si">✓ ${tr('Cumple')}</button>
       <button class="no${v==='no'?' on':''}" data-filtro="${i}" data-v="no">✗ ${tr('No cumple')}</button></div></div>`; }).join('');
   const tramosHTML=Object.entries(TRAMOS).map(([k,t])=>
-    `<button class="tramo${S.tramo===k?' active':''}" data-t="${k}">${t.icon} ${k} · ${t.nombre} <span style="opacity:.75;font-weight:600">(${R.tramos[k].edad})</span></button>`).join('');
+    `<button class="tramo${S.tramo===k?' active':''}" data-t="${k}">${t.icon} ${k} · ${t.nombre} <span style="font-weight:600">(${R.tramos[k].edad})</span></button>`).join('');
   const dimsHTML=T.dims.map((d,i)=>{ const v=S.dims[S.tramo+i];
     const c=(cls,txt,lbl)=>`<button class="cell ${cls}${v===cls?' sel':''}" data-dim="${i}" data-v="${cls}"><span class="lbl">${lbl}</span>${txt}</button>`;
     return `<div class="dim-name">${d[0]}${R.criterioCol&&d[1]?`<small>${d[1]}</small>`:''}</div>
@@ -1041,8 +1053,8 @@ function renderRubrica(){
       <h3><span class="num">3</span> ${tr('Dictamen final (semáforo)')}</h3>
       <div class="veredicto" id="veredicto"></div>
       <table class="leyenda no-print">${leyenda}</table>
-      <div class="field" style="margin-top:14px"><label>${tr('Observaciones y ajustes requeridos')}</label>
-        <textarea data-obs="1" placeholder="${tr('Mediación prevista, restricciones, alternativas…')}">${esc(S.obs||'')}</textarea></div>
+      <div class="field" style="margin-top:14px"><label for="rubObs">${tr('Observaciones y ajustes requeridos')}</label>
+        <textarea id="rubObs" data-obs="1" placeholder="${tr('Mediación prevista, restricciones, alternativas…')}">${esc(S.obs||'')}</textarea></div>
       <div class="rub-actions">
         ${rubActiva==='herramienta'?`<button class="pri" data-accion="siguiente">${tr('Siguiente: valorar la actividad →')}</button>`:`<button class="sec" data-accion="anterior">${tr('← Volver a la herramienta')}</button>`}
         <button class="sec" data-accion="pdf">📄 ${tr('Descargar informe (PDF)')}</button>
@@ -1533,7 +1545,7 @@ formAdd.addEventListener('submit',e=>{
     etapa:document.getElementById('fEtapa').value,
     icon:document.getElementById('fIcon').value.trim()||'⭐',
     nombre,
-    cat:document.getElementById('fCat').value.trim()||tr('Sin categoría'),
+    cat:document.getElementById('fCat').value.trim()||'Sin categoría',
     edad:document.getElementById('fEdad').value.trim(),
     idioma:document.getElementById('fIdioma').value,
     desc:document.getElementById('fDesc').value.trim(),
@@ -2019,7 +2031,7 @@ fichaDesdeHash();
         ? `<button class="go2" type="button" data-accion="rubricas">${tr('Abrir rúbricas')}</button>`
         : `<a href="${esc2(it.u)}"${ext?' target="_blank" rel="noopener"':''}>${tr('Abrir')} ${ext?'↗':'→'}</a>`;
       return `<div class="rc"><span class="rc-src" style="background:${bg};color:${fg}">${n}</span>
-        <h4>${esc2(it.t)}</h4><p>${esc2(it.d)}</p><span class="rc-why">✔ ${esc2(porque(it))}</span>${btn}</div>`;
+        <h3>${esc2(it.t)}</h3><p>${esc2(it.d)}</p><span class="rc-why">✔ ${esc2(porque(it))}</span>${btn}</div>`;
     }).join('');
     const total=cand.length;
     const mas=[];
