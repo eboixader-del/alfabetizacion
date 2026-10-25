@@ -13,7 +13,12 @@
   background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);transition:.15s}
 .theme-btn:hover{background:rgba(255,255,255,.32);transform:scale(1.06)}
 .theme-btn:focus-visible{outline:3px solid #fff;outline-offset:2px}
-@media print{.theme-btn{display:none}}
+.lang-btn{position:absolute;top:14px;left:14px;z-index:3;height:40px;min-width:40px;padding:0 12px;border-radius:999px;
+  font:inherit;font-weight:900;font-size:.82rem;letter-spacing:.5px;cursor:pointer;color:#fff;
+  background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);transition:.15s}
+.lang-btn:hover{background:rgba(255,255,255,.32);transform:scale(1.04)}
+.lang-btn:focus-visible{outline:3px solid #fff;outline-offset:2px}
+@media print{.theme-btn,.lang-btn{display:none}}
 
 /* ════════════════════════ MODO OSCURO ════════════════════════ */
 @media screen{
@@ -94,7 +99,7 @@
   [data-theme="dark"] .card:hover{box-shadow:0 12px 28px rgba(0,0,0,.5)}
   [data-theme="dark"] select,[data-theme="dark"] input,[data-theme="dark"] textarea{color:var(--ink)}
   [data-theme="dark"] header::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,.22);pointer-events:none}
-  [data-theme="dark"] header > *:not(.theme-btn){position:relative}
+  [data-theme="dark"] header > *:not(.theme-btn):not(.lang-btn){position:relative}
 }
 
 /* ════════════════════════ MÓVIL ════════════════════════ */

@@ -491,6 +491,7 @@
 </style>
 <link rel="stylesheet" href="tema.css">
 <script>(function(){var t=null;try{t=localStorage.getItem("tema")}catch(e){}var d=t?t==="oscuro":!!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.dataset.theme=d?"dark":"light";})();</script>
+<script src="i18n.js" data-pagina="index"></script>
 </head>
 <body>
 
@@ -555,8 +556,8 @@
 <section class="rub" id="rub">
   <div class="rub-intro">
     <h2>⚖️ ¿Es adecuada esta IA para esta edad?</h2>
-    <p>Dos rúbricas complementarias que se aplican en orden. Primero se valida <strong>la herramienta</strong> (aspectos legales, de datos y de edad mínima) y, después, <strong>la actividad concreta</strong> que se quiere hacer con ella (aspectos pedagógicos). Marca las casillas y el semáforo calcula el dictamen automáticamente.</p>
-    <p class="nb-tip">💬 <strong>¿Dudas al aplicarlas?</strong> Pregunta al <a href="https://notebook.google.com/notebook/54c403dc-e190-4c6c-bfb1-77b207a53b6f" target="_blank" rel="noopener">cuaderno de Gemini NotebookLM con las rúbricas ↗</a></p>
+    <p data-i18n="rubIntro">Dos rúbricas complementarias que se aplican en orden. Primero se valida <strong>la herramienta</strong> (aspectos legales, de datos y de edad mínima) y, después, <strong>la actividad concreta</strong> que se quiere hacer con ella (aspectos pedagógicos). Marca las casillas y el semáforo calcula el dictamen automáticamente.</p>
+    <p class="nb-tip" data-i18n="nbTip">💬 <strong>¿Dudas al aplicarlas?</strong> Pregunta al <a href="https://notebook.google.com/notebook/54c403dc-e190-4c6c-bfb1-77b207a53b6f" target="_blank" rel="noopener">cuaderno de Gemini NotebookLM con las rúbricas ↗</a></p>
     <div class="rub-flow">
       <button class="rub-pick" data-rub="herramienta">
         <div class="step">1</div>
@@ -584,7 +585,7 @@
 <div class="overlay" id="overlay">
   <form class="modal" id="formAdd">
     <h2>➕ Añadir un recurso</h2>
-    <p class="sub">Se guardará <strong>solo en este navegador</strong> y aparecerá con la etiqueta <strong>MÍO</strong>; nadie más lo verá. Si quieres que se publique en la web para todo el mundo, <a href="https://docs.google.com/forms/d/e/1FAIpQLScXIdWQmBWoYu3mK4ap3EAeZCtEFbtjb1sVy2T3nXm9a5tOEQ/viewform" target="_blank" rel="noopener">sugiérelo aquí</a>.</p>
+    <p class="sub" data-i18n="modalSub">Se guardará <strong>solo en este navegador</strong> y aparecerá con la etiqueta <strong>MÍO</strong>; nadie más lo verá. Si quieres que se publique en la web para todo el mundo, <a href="https://docs.google.com/forms/d/e/1FAIpQLScXIdWQmBWoYu3mK4ap3EAeZCtEFbtjb1sVy2T3nXm9a5tOEQ/viewform" target="_blank" rel="noopener">sugiérelo aquí</a>.</p>
     <div class="row2">
       <div class="field"><label>Nombre *</label><input id="fNombre" required maxlength="80" placeholder="Ej. Mi actividad de IA"></div>
       <div class="field"><label>Emoji (icono)</label><input id="fIcon" maxlength="4" placeholder="⭐"></div>
@@ -626,7 +627,12 @@
 </div>
 
 <script>
-const ETAPAS = {infantil:'Infantil', primaria:'Primaria', eso:'ESO', bach:'Bachillerato', secundaria:'Secundaria', proyecto:'Proyecto'};
+trDOM(document.body);
+const ETAPAS = {infantil:tr('Infantil'), primaria:tr('Primaria'), eso:'ESO', bach:tr('Bachillerato'), secundaria:tr('Secundaria'), proyecto:tr('Proyecto')};
+/* Edad en el idioma de la página (el dato interno sigue en castellano) */
+function edadTxt(e){ return (LANG==='va'&&VA.edad&&e)?VA.edad(e):e; }
+/* Valor original en castellano (se usa para clasificar, no para mostrar) */
+function enEs(r,k){ return r._es&&r._es[k]!=null?r._es[k]:r[k]; }
 /* ══════════════════ NOVEDADES ══════════════════
    Añade arriba una entrada cada vez que cambie la web. Los recursos nuevos
    aparecen solos a partir de su fecha «alta». */
@@ -636,7 +642,8 @@ const NOVEDADES_WEB = [
     'Ficha de cada recurso con una idea para usarlo en el aula y la valoración que hayas hecho.',
     'Favoritos: guarda recursos y comparte tu selección con un enlace o un código QR.',
     'Las rúbricas se descargan como informe en PDF, listo para firmar.',
-    'Esta sección de novedades.']},
+    'Esta sección de novedades.',
+    'Versión en valenciano de toda la web.']},
   {fecha:'2026-10-11', items:[
     'Catálogo de 306 proyectos guiados de Raspberry Pi.',
     'Recomendador «¿Qué quieres conseguir?».',
@@ -646,11 +653,12 @@ const NOVEDADES_WEB = [
   {fecha:'2026-10-05', items:['Rúbricas de idoneidad de herramientas y actividades de IA, con semáforo.']},
   {fecha:'2026-07-08', items:['Primera versión: 41 recursos de Infantil y Primaria.']}
 ];
+if(LANG==='va'&&VA.novedades) VA.novedades.forEach(n=>{ const o=NOVEDADES_WEB.find(x=>x.fecha===n.fecha); if(o) o.items=n.items; });
 const DIAS_NUEVO=60;
 const HOY_ISO=(()=>{ const d=new Date(); return new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10); })();
 function diasDesde(iso){ return (Date.parse(HOY_ISO)-Date.parse(iso))/864e5; }
 function esNuevo(r){ return !!r.alta && diasDesde(r.alta)<=DIAS_NUEVO; }
-function fechaLarga(iso){ return new Date(iso+'T12:00:00').toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'}).replace('.',''); }
+function fechaLarga(iso){ return fechaIdioma(iso); }
 /* Fecha de la visita anterior: se fija al empezar la sesión para que el aviso no desaparezca al recargar */
 let visitaPrev='';
 try{
@@ -661,7 +669,7 @@ try{
 }catch(e){}
 function nuevoParaTi(fecha){ return !!visitaPrev && !!fecha && fecha>visitaPrev; }
 
-const IDIOMAS = {es:'💬 Castellano', mix:'💬 Castellano e inglés', en:'💬 Inglés', sin:'🌍 Sin idioma'};
+const IDIOMAS = {es:tr('💬 Castellano'), mix:tr('💬 Castellano e inglés'), en:tr('💬 Inglés'), sin:tr('🌍 Sin idioma')};
 
 /* Cada recurso:
    etapa  infantil | primaria | eso | bach | proyecto      nombre, icon, cat, edad, desc, links:[{txt,url,alt?}]
@@ -822,12 +830,24 @@ const RECURSOS = [
    links:[{txt:'Ver actividades', url:'verificacion-ia.html'},{txt:'Fichas originales', url:'https://www.educatorstechnology.com/2026/10/ai-fact-checking-activities-for-teachers-and-students.html', alt:true}]},
 ];
 
+/* Identificador estable de cada recurso (favoritos, valoraciones, enlaces): no cambia con el idioma */
+function rid(r){ return r._id || slug(r.nombre); }
+/* Nombre, descripción e idea de cada recurso en valenciano (se guarda la versión en castellano) */
+if(LANG==='va'&&VA.recursos) RECURSOS.forEach(r=>{
+  const id=slug(r.nombre), v=VA.recursos[id]; if(!v) return;
+  r._id=id;
+  r._es={nombre:r.nombre, desc:r.desc, idea:r.idea};
+  if(v.nombre) r.nombre=v.nombre;
+  if(v.desc) r.desc=v.desc;
+  if(v.idea) r.idea=v.idea;
+});
+
 /* ══════════════════ RÚBRICAS DE IDONEIDAD ══════════════════ */
 const TRAMOS = {
-  A:{nombre:'Infantil', edad:'0-6 años', icon:'🧸'},
-  B:{nombre:'Primaria', edad:'6-12 años', icon:'✏️'},
+  A:{nombre:tr('Infantil'), edad:'0-6 años', icon:'🧸'},
+  B:{nombre:tr('Primaria'), edad:'6-12 años', icon:'✏️'},
   C:{nombre:'ESO', edad:'12-16 años', icon:'🎒'},
-  D:{nombre:'Bachillerato y FP', edad:'16-18+ años', icon:'🎓'}
+  D:{nombre:tr('Bachillerato y FP'), edad:'16-18+ años', icon:'🎓'}
 };
 
 const RUBRICAS = {
@@ -933,6 +953,8 @@ const RUBRICAS = {
   }
 };
 
+if(LANG==='va'&&VA.rubricas) ['herramienta','actividad'].forEach(k=>Object.assign(RUBRICAS[k],VA.rubricas[k]));
+
 /* Estado de cada rúbrica (se recuerda en este navegador) */
 const RS_KEY='rubricasEstado';
 function nuevoEstado(){ return {tramo:'B', filtros:{}, dims:{}, campos:{}, obs:''}; }
@@ -946,15 +968,16 @@ function calcDictamen(key){
   const R=RUBRICAS[key], S=rubState[key], T=R.tramos[S.tramo];
   const motivos=[];
   let pend=0, hayMed=false, hayNo=false;
-  R.filtros.forEach((f,i)=>{ const v=S.filtros[i]; if(v==='no'){hayNo=true;motivos.push('No cumple el filtro «'+f[0]+'».');} else if(v!=='si') pend++; });
+  const pdfx=s=>String(s).replace(/<[^>]+>/g,'');
+  R.filtros.forEach((f,i)=>{ const v=S.filtros[i]; if(v==='no'){hayNo=true;motivos.push({t:'no',m:tr('No cumple el filtro «{x}».',{x:pdfx(f[0])})});} else if(v!=='si') pend++; });
   T.dims.forEach((d,i)=>{ const v=S.dims[S.tramo+i];
-    if(v==='no'){hayNo=true;motivos.push('«'+d[0]+'» está en No apta.');}
-    else if(v==='med'){hayMed=true;motivos.push('«'+d[0]+'» requiere mediación.');}
+    if(v==='no'){hayNo=true;motivos.push({t:'no',m:tr('«{x}» está en No apta.',{x:pdfx(d[0])})});}
+    else if(v==='med'){hayMed=true;motivos.push({t:'med',m:tr('«{x}» requiere mediación.',{x:pdfx(d[0])})});}
     else if(v!=='ok') pend++; });
   const total=R.filtros.length+T.dims.length;
-  if(hayNo) return {estado:'no', motivos:motivos.filter(m=>!m.includes('mediación')), pend, total};
-  if(pend) return {estado:'pend', motivos, pend, total};
-  return {estado: hayMed?'med':'ok', motivos, pend, total};
+  if(hayNo) return {estado:'no', motivos:motivos.filter(m=>m.t==='no').map(m=>m.m), pend, total};
+  if(pend) return {estado:'pend', motivos:motivos.map(m=>m.m), pend, total};
+  return {estado: hayMed?'med':'ok', motivos:motivos.map(m=>m.m), pend, total};
 }
 
 function renderVeredicto(){
@@ -962,15 +985,15 @@ function renderVeredicto(){
   if(!box) return;
   box.className='veredicto '+(d.estado==='pend'?'':d.estado);
   if(d.estado==='pend'){
-    box.innerHTML=`<div class="luz"></div><div><div class="vt">Dictamen pendiente</div>
-      <div class="va">Faltan ${d.pend} de ${d.total} elementos por valorar.${d.motivos.length?' De momento:':''}</div>
+    box.innerHTML=`<div class="luz"></div><div><div class="vt">${tr('Dictamen pendiente')}</div>
+      <div class="va">${tr('Faltan {p} de {t} elementos por valorar.',{p:d.pend,t:d.total})}${d.motivos.length?tr(' De momento:'):''}</div>
       ${d.motivos.length?`<ul class="motivos">${d.motivos.map(m=>`<li>${esc(m)}</li>`).join('')}</ul>`:''}</div>`;
   } else {
     const [t,acc]=R.dictamen[d.estado];
     box.innerHTML=`<div class="luz"></div><div><div class="vt">${t}</div>
-      <div class="va"><b>Acción requerida:</b> ${acc}</div>
+      <div class="va"><b>${tr('Acción requerida:')}</b> ${acc}</div>
       ${d.motivos.length?`<ul class="motivos">${d.motivos.map(m=>`<li>${esc(m)}</li>`).join('')}</ul>`:''}
-      ${d.estado==='no'&&d.pend?`<div class="vp">Basta un incumplimiento para este dictamen; quedan ${d.pend} elementos sin valorar.</div>`:''}</div>`;
+      ${d.estado==='no'&&d.pend?`<div class="vp">${tr('Basta un incumplimiento para este dictamen; quedan {p} elementos sin valorar.',{p:d.pend})}</div>`:''}</div>`;
   }
 }
 
@@ -980,14 +1003,14 @@ function renderRubrica(){
   const camposHTML=R.campos.map(([k,l])=>`<div class="field"><label>${l}</label><input data-campo="${k}" value="${esc(S.campos[k]||'')}"></div>`).join('');
   const filtrosHTML=R.filtros.map((f,i)=>{ const v=S.filtros[i];
     return `<div class="filtro"><div class="fn">${f[0]}</div><div class="fr">${f[1]}</div>
-      <div class="yn"><button class="si${v==='si'?' on':''}" data-filtro="${i}" data-v="si">✓ Cumple</button>
-      <button class="no${v==='no'?' on':''}" data-filtro="${i}" data-v="no">✗ No cumple</button></div></div>`; }).join('');
+      <div class="yn"><button class="si${v==='si'?' on':''}" data-filtro="${i}" data-v="si">✓ ${tr('Cumple')}</button>
+      <button class="no${v==='no'?' on':''}" data-filtro="${i}" data-v="no">✗ ${tr('No cumple')}</button></div></div>`; }).join('');
   const tramosHTML=Object.entries(TRAMOS).map(([k,t])=>
     `<button class="tramo${S.tramo===k?' active':''}" data-t="${k}">${t.icon} ${k} · ${t.nombre} <span style="opacity:.75;font-weight:600">(${R.tramos[k].edad})</span></button>`).join('');
   const dimsHTML=T.dims.map((d,i)=>{ const v=S.dims[S.tramo+i];
     const c=(cls,txt,lbl)=>`<button class="cell ${cls}${v===cls?' sel':''}" data-dim="${i}" data-v="${cls}"><span class="lbl">${lbl}</span>${txt}</button>`;
     return `<div class="dim-name">${d[0]}${R.criterioCol&&d[1]?`<small>${d[1]}</small>`:''}</div>
-      ${c('ok',d[2],'Apta')}${c('med',d[3],'Apta con mediación')}${c('no',d[4],'No apta')}`; }).join('<div class="rowsep"></div>');
+      ${c('ok',d[2],tr('Apta'))}${c('med',d[3],tr('Apta con mediación'))}${c('no',d[4],tr('No apta'))}`; }).join('<div class="rowsep"></div>');
   const leyenda=['ok','med','no'].map(k=>{ const [t,acc,cond]=R.dictamen[k];
     const col={ok:'var(--ok)',med:'var(--med)',no:'var(--no)'}[k], dot={ok:'🟢',med:'🟡',no:'🔴'}[k];
     return `<tr><td style="color:${col}">${dot} ${t}</td><td>${cond}</td><td>${acc}</td></tr>`; }).join('');
@@ -995,7 +1018,7 @@ function renderRubrica(){
   rubBody.innerHTML=`
     <div class="rub-block">
       <h3>${rubActiva==='herramienta'?'🛠️':'🎯'} ${R.titulo}</h3>
-      <p class="hint">Responsable: ${R.quien}. ${rubActiva==='actividad'?'Complementa la rúbrica institucional de validación de herramientas.':'Si la herramienta resulta apta, continúa con la rúbrica pedagógica de la actividad.'}</p>
+      <p class="hint">${tr('Responsable:')} ${R.quien}. ${rubActiva==='actividad'?tr('Complementa la rúbrica institucional de validación de herramientas.'):tr('Si la herramienta resulta apta, continúa con la rúbrica pedagógica de la actividad.')}</p>
       <div class="rub-fields">${camposHTML}</div>
     </div>
     <div class="rub-block">
@@ -1004,29 +1027,29 @@ function renderRubrica(){
       ${filtrosHTML}
     </div>
     <div class="rub-block">
-      <h3><span class="num">2</span> Adecuación por tramo de edad</h3>
-      <p class="hint">Elige el tramo y marca <b>una sola columna por dimensión</b>. Manda la dimensión peor valorada.${R.medNote?' '+R.medNote:''}</p>
+      <h3><span class="num">2</span> ${tr('Adecuación por tramo de edad')}</h3>
+      <p class="hint">${tr('Elige el tramo y marca <b>una sola columna por dimensión</b>. Manda la dimensión peor valorada.')}${R.medNote?' '+R.medNote:''}</p>
       <div class="tramos">${tramosHTML}</div>
-      <div class="principio">Principio: ${T.principio}</div>
+      <div class="principio">${tr('Principio:')} ${T.principio}</div>
       <div class="dims" style="margin-top:14px">
-        <div class="hd dm">Dimensión</div><div class="hd ok">Apta</div><div class="hd med">Apta con mediación</div><div class="hd no">No apta</div>
+        <div class="hd dm">${tr('Dimensión')}</div><div class="hd ok">${tr('Apta')}</div><div class="hd med">${tr('Apta con mediación')}</div><div class="hd no">${tr('No apta')}</div>
         ${dimsHTML}
       </div>
       ${T.nota?`<div class="nota">${T.nota}</div>`:''}
     </div>
     <div class="rub-block">
-      <h3><span class="num">3</span> Dictamen final (semáforo)</h3>
+      <h3><span class="num">3</span> ${tr('Dictamen final (semáforo)')}</h3>
       <div class="veredicto" id="veredicto"></div>
       <table class="leyenda no-print">${leyenda}</table>
-      <div class="field" style="margin-top:14px"><label>Observaciones y ajustes requeridos</label>
-        <textarea data-obs="1" placeholder="Mediación prevista, restricciones, alternativas…">${esc(S.obs||'')}</textarea></div>
+      <div class="field" style="margin-top:14px"><label>${tr('Observaciones y ajustes requeridos')}</label>
+        <textarea data-obs="1" placeholder="${tr('Mediación prevista, restricciones, alternativas…')}">${esc(S.obs||'')}</textarea></div>
       <div class="rub-actions">
-        ${rubActiva==='herramienta'?'<button class="pri" data-accion="siguiente">Siguiente: valorar la actividad →</button>':'<button class="sec" data-accion="anterior">← Volver a la herramienta</button>'}
-        <button class="sec" data-accion="pdf">📄 Descargar informe (PDF)</button>
-        ${otraConDatos()?`<button class="sec" data-accion="pdf2">📑 Informe completo: herramienta + actividad</button>`:''}
-        <a class="sec" href="${R.pdf}" target="_blank" rel="noopener">📄 Rúbrica original (PDF)</a>
-        <a class="pri" href="https://notebook.google.com/notebook/54c403dc-e190-4c6c-bfb1-77b207a53b6f" target="_blank" rel="noopener">💬 ¿Dudas? Pregunta al cuaderno</a>
-        <button class="sec" data-accion="reiniciar">↺ Reiniciar</button>
+        ${rubActiva==='herramienta'?`<button class="pri" data-accion="siguiente">${tr('Siguiente: valorar la actividad →')}</button>`:`<button class="sec" data-accion="anterior">${tr('← Volver a la herramienta')}</button>`}
+        <button class="sec" data-accion="pdf">📄 ${tr('Descargar informe (PDF)')}</button>
+        ${otraConDatos()?`<button class="sec" data-accion="pdf2">📑 ${tr('Informe completo: herramienta + actividad')}</button>`:''}
+        <a class="sec" href="${R.pdf}" target="_blank" rel="noopener">📄 ${tr('Rúbrica original (PDF)')}</a>
+        <a class="pri" href="https://notebook.google.com/notebook/54c403dc-e190-4c6c-bfb1-77b207a53b6f" target="_blank" rel="noopener">💬 ${tr('¿Dudas? Pregunta al cuaderno')}</a>
+        <button class="sec" data-accion="reiniciar">↺ ${tr('Reiniciar')}</button>
       </div>
       ${R.fund?`<p class="fund">${R.fund}</p>`:''}
     </div>`;
@@ -1090,15 +1113,15 @@ async function descargarInforme(claves){
     // ── Cabecera
     doc.setFillColor(...COL.rub); doc.rect(0,0,W,3.5,'F');
     fuente('bold',8); color(COL.rub);
-    doc.text(`INFORME DE VALORACIÓN · ${key==='herramienta'?'HERRAMIENTA':'ACTIVIDAD'}${claves.length>1?` (${iClave+1}/${claves.length})`:''}`,M,y+3);
+    doc.text(pdfTxt(`${tr('INFORME DE VALORACIÓN')} · ${key==='herramienta'?tr('HERRAMIENTA'):tr('ACTIVIDAD')}${claves.length>1?` (${iClave+1}/${claves.length})`:''}`),M,y+3);
     y+=6;
     fuente('bold',16); color(COL.ink);
     let l=lineasDe(R.titulo,CW); escribir(l,M,y,16,1.2); y+=alto(l,16,1.2)+1.5;
     fuente('normal',9); color(COL.muted);
-    l=lineasDe('Responsable: '+R.quien+'.',CW); escribir(l,M,y,9); y+=alto(l,9)+5;
+    l=lineasDe(tr('Responsable:')+' '+R.quien+'.',CW); escribir(l,M,y,9); y+=alto(l,9)+5;
 
     // ── Datos
-    const campos=R.campos.concat([['__tramo','Tramo de edad']]);
+    const campos=R.campos.concat([['__tramo',tr('Tramo de edad')]]);
     const colW=(CW-6)/2;
     for(let i=0;i<campos.length;i+=2){
       let hFila=0;
@@ -1115,7 +1138,7 @@ async function descargarInforme(claves){
     y+=2;
 
     // ── Dictamen
-    const [dTit,dAcc]=d.estado==='pend'?['BORRADOR · DICTAMEN PENDIENTE',`Faltan ${d.pend} de ${d.total} elementos por valorar. Este documento no es un dictamen definitivo.`]:R.dictamen[d.estado];
+    const [dTit,dAcc]=d.estado==='pend'?[tr('BORRADOR · DICTAMEN PENDIENTE'),tr('Faltan {p} de {t} elementos por valorar. Este documento no es un dictamen definitivo.',{p:d.pend,t:d.total})]:R.dictamen[d.estado];
     fuente('normal',9.5);
     const lAcc=lineasDe(dAcc,CW-26);
     fuente('normal',9);
@@ -1127,10 +1150,10 @@ async function descargarInforme(claves){
     doc.setFillColor(...COL[est[1]]); doc.setDrawColor(...(d.estado==='med'?COL.medL:COL[est[0]])); doc.setLineWidth(.6);
     doc.roundedRect(M,y,CW,hBox,3,3,'FD');
     doc.setFillColor(...(d.estado==='med'?COL.medL:d.estado==='pend'?[200,198,190]:COL[est[0]])); doc.circle(M+10,y+10.5,5.2,'F');
-    fuente('bold',7); color(COL.muted); doc.text('DICTAMEN FINAL',M+20,y+6.5);
+    fuente('bold',7); color(COL.muted); doc.text(pdfTxt(tr('DICTAMEN FINAL')),M+20,y+6.5);
     fuente('bold',13); color(COL[est[0]]); doc.text(pdfTxt(dTit),M+20,y+12.3);
     let yy=y+15.5;
-    if(hLbl){ fuente('bold',8); color(COL.ink); doc.text('Acción requerida',M+20,yy+2.6); yy+=hLbl; }
+    if(hLbl){ fuente('bold',8); color(COL.ink); doc.text(pdfTxt(tr('Acción requerida')),M+20,yy+2.6); yy+=hLbl; }
     fuente('normal',9.5); color(COL.ink); escribir(lAcc,M+20,yy,9.5);
     yy+=alto(lAcc,9.5)+2; fuente('normal',9);
     motivos.forEach(m=>{ escribir(m,M+20,yy,9); yy+=alto(m,9); });
@@ -1147,22 +1170,22 @@ async function descargarInforme(claves){
       doc.setDrawColor(...COL.linea); doc.setLineWidth(.25); doc.line(M,y,M+CW,y);
       fuente('bold',9); color(COL.ink); escribir(ln,xN,y+2,9);
       fuente('normal',8.5); color(COL.muted); escribir(ld,xD,y+2,8.5);
-      const v=S.filtros[i], [txt,c]=v==='si'?['Cumple',COL.ok]:v==='no'?['No cumple',COL.no]:['Sin valorar',COL.pend];
-      fuente('bold',9); color(c); doc.text(txt,xR,y+2+9*0.3528*0.8);
+      const v=S.filtros[i], [txt,c]=v==='si'?[tr('Cumple'),COL.ok]:v==='no'?[tr('No cumple'),COL.no]:[tr('Sin valorar'),COL.pend];
+      fuente('bold',9); color(c); doc.text(pdfTxt(txt),xR,y+2+9*0.3528*0.8);
       y+=h;
     });
     y+=6;
 
     // ── 2. Dimensiones
-    fuente('normal',9); const lp=lineasDe('Principio: '+T.principio,CW-8);
+    fuente('normal',9); const lp=lineasDe(tr('Principio:')+' '+T.principio,CW-8);
     sitio(10.5+alto(lp,9)+28); // título, principio y primera dimensión, juntos
-    titulo(2,`Adecuación por tramo de edad · ${S.tramo} · ${TRAMOS[S.tramo].nombre} (${T.edad})`);
+    titulo(2,`${tr('Adecuación por tramo de edad')} · ${S.tramo} · ${TRAMOS[S.tramo].nombre} (${T.edad})`);
     doc.setFillColor(...COL.suave); doc.roundedRect(M,y,CW,alto(lp,9)+5,2,2,'F');
     fuente('normal',9); color(COL.ink); escribir(lp,M+4,y+2.5,9); y+=alto(lp,9)+9;
     T.dims.forEach((dm,i)=>{
       const v=S.dims[S.tramo+i];
       const idx={ok:2,med:3,no:4}[v];
-      const [lbl,c]=v==='ok'?['Apta',COL.ok]:v==='med'?['Apta con mediación',COL.med]:v==='no'?['No apta',COL.no]:['Sin valorar',COL.pend];
+      const [lbl,c]=v==='ok'?[tr('Apta'),COL.ok]:v==='med'?[tr('Apta con mediación'),COL.med]:v==='no'?[tr('No apta'),COL.no]:[tr('Sin valorar'),COL.pend];
       fuente('bold',9.5); const ln=lineasDe(dm[0],wN);
       fuente('normal',7.5); const lc=R.criterioCol&&dm[1]?lineasDe(dm[1],wN):[];
       fuente('normal',8.5); const ld=idx?lineasDe(dm[idx],CW-50):[];
@@ -1172,14 +1195,14 @@ async function descargarInforme(claves){
       doc.setDrawColor(...COL.linea); doc.setLineWidth(.25); doc.line(M,y,M+CW,y);
       fuente('bold',9.5); color(COL.ink); escribir(ln,xN,y+2,9.5);
       if(lc.length){ fuente('normal',7.5); color(COL.muted); escribir(lc,xN,y+2+alto(ln,9.5)+1,7.5); }
-      fuente('bold',9); color(c); doc.text(lbl.toUpperCase(),xD,y+2+9*0.3528*0.8);
+      fuente('bold',9); color(c); doc.text(pdfTxt(lbl.toUpperCase()),xD,y+2+9*0.3528*0.8);
       if(ld.length){ fuente('normal',8.5); color(COL.ink); escribir(ld,xD,y+7,8.5); }
       y+=h;
     });
     y+=6;
 
     // ── 3. Observaciones
-    titulo(3,'Observaciones y ajustes requeridos');
+    titulo(3,tr('Observaciones y ajustes requeridos'));
     const obs=pdfTxt(S.obs||'');
     if(obs){ fuente('normal',9.5); color(COL.ink); const lo=lineasDe(obs,CW);
       lo.forEach(t=>{ sitio(5); escribir([t],M,y,9.5); y+=alto([t],9.5); }); y+=4; }
@@ -1188,9 +1211,9 @@ async function descargarInforme(claves){
     // ── Firmas
     sitio(26); y+=8;
     const wf=(CW-12)/2;
-    [[key==='herramienta'?'Firma de la comisión o del equipo directivo':'Firma del docente o del departamento',M],['Fecha',M+wf+12]].forEach(([t,x])=>{
+    [[key==='herramienta'?tr('Firma de la comisión o del equipo directivo'):tr('Firma del docente o del departamento'),M],[tr('Fecha'),M+wf+12]].forEach(([t,x])=>{
       doc.setDrawColor(...COL.muted); doc.setLineWidth(.3); doc.line(x,y+10,x+wf,y+10);
-      fuente('normal',8); color(COL.muted); doc.text(t,x,y+14.5);
+      fuente('normal',8); color(COL.muted); doc.text(pdfTxt(t),x,y+14.5);
     });
     y+=20;
 
@@ -1203,13 +1226,13 @@ async function descargarInforme(claves){
     doc.setPage(i);
     doc.setDrawColor(...COL.linea); doc.setLineWidth(.25); doc.line(M,H-M+2,W-M,H-M+2);
     fuente('normal',7.5); color(COL.muted);
-    doc.text(`Mis Recursos de Aula · ${pdfTxt(location.host+location.pathname).replace(/index\.html$/,'').replace(/\/$/,'')} · Generado el ${hoyTxt}`,M,H-M+6);
-    doc.text(`Página ${i} de ${n}`,W-M,H-M+6,{align:'right'});
+    doc.text(pdfTxt(`${tr('Mis Recursos de Aula')} · ${(location.host+location.pathname).replace(/index\.html$/,'').replace(/\/$/,'')} · ${tr('Generado el {f}',{f:hoyTxt})}`),M,H-M+6);
+    doc.text(pdfTxt(tr('Página {i} de {n}',{i,n})),W-M,H-M+6,{align:'right'});
   }
 
   const S0=rubState[claves[0]];
   const nombre=slug(S0.campos.herramienta||S0.campos.actividad||'')||'ia';
-  doc.save(`Valoracion-${claves.length>1?'completa':claves[0]}-${nombre}-${hoy.toISOString().slice(0,10)}.pdf`);
+  doc.save(`${tr('Valoracion')}-${claves.length>1?tr('completa'):tr(claves[0])}-${nombre}-${hoy.toISOString().slice(0,10)}.pdf`);
 }
 
 /* Interacción con las rúbricas */
@@ -1226,8 +1249,8 @@ rubBody.addEventListener('click',e=>{
   if(a.dataset.accion==='imprimir') window.print();
   if(a.dataset.accion==='pdf'||a.dataset.accion==='pdf2'){
     const claves=a.dataset.accion==='pdf2'?['herramienta','actividad']:[rubActiva];
-    const txt=a.textContent; a.disabled=true; a.textContent='⏳ Generando…';
-    descargarInforme(claves).catch(()=>alert('No se ha podido generar el PDF. Prueba a recargar la página.'))
+    const txt=a.textContent; a.disabled=true; a.textContent='⏳ '+tr('Generando…');
+    descargarInforme(claves).catch(()=>alert(tr('No se ha podido generar el PDF. Prueba a recargar la página.')))
       .finally(()=>{ if(a.isConnected){ a.disabled=false; a.textContent=txt; } });
   }
   if(a.dataset.accion==='siguiente'||a.dataset.accion==='anterior'){
@@ -1262,7 +1285,7 @@ function abrirRubrica(r){
     if(rubState[k].campos.herramienta===r.nombre) return; // ya se estaba valorando este recurso
     rubState[k]=nuevoEstado(); rubState[k].tramo=t;
     rubState[k].campos.herramienta=r.nombre;
-    rubState[k].campos.etapa=ETAPAS[r.etapa]+(r.edad?' · '+r.edad:'');
+    rubState[k].campos.etapa=ETAPAS[r.etapa]+(r.edad?' · '+edadTxt(r.edad):'');
   });
   rubActiva='herramienta'; saveRub();
   setEtapa('rubricas');
@@ -1305,9 +1328,9 @@ let favs=[], favTitulo='', listaCompartida=null;
 try{ favs=JSON.parse(localStorage.getItem(FAV_KEY))||[]; }catch(e){}
 try{ favTitulo=localStorage.getItem(FAVT_KEY)||''; }catch(e){}
 function saveFavs(){ try{ localStorage.setItem(FAV_KEY, JSON.stringify(favs)); }catch(e){} }
-function esFav(r){ return favs.includes(slug(r.nombre)); }
+function esFav(r){ return favs.includes(rid(r)); }
 function toggleFav(r){
-  const id=slug(r.nombre);
+  const id=rid(r);
   favs = favs.includes(id) ? favs.filter(x=>x!==id) : favs.concat(id);
   saveFavs(); actualizarFavN(true);
 }
@@ -1317,7 +1340,7 @@ function actualizarFavN(pulso){
   if(pulso){ el.classList.remove('pulso'); void el.offsetWidth; el.classList.add('pulso'); }
 }
 function ordenLista(){
-  if(etapaActiva==='recientes') return recientes().map(r=>slug(r.nombre));
+  if(etapaActiva==='recientes') return recientes().map(r=>rid(r));
   return etapaActiva==='favoritos'?favs:(etapaActiva==='lista'&&listaCompartida?listaCompartida.slugs:null);
 }
 /* Recursos publicados, del más reciente al más antiguo */
@@ -1328,9 +1351,9 @@ function recientes(){
 
 function pasaEtapa(r,et=etapaActiva){
   if(et==='todas') return true;
-  if(et==='favoritos') return favs.includes(slug(r.nombre));
+  if(et==='favoritos') return favs.includes(rid(r));
   if(et==='recientes') return !r.custom && esNuevo(r);
-  if(et==='lista') return !!listaCompartida && listaCompartida.slugs.includes(slug(r.nombre));
+  if(et==='lista') return !!listaCompartida && listaCompartida.slugs.includes(rid(r));
   if(et==='proyecto') return r.etapa==='proyecto';
   return NIVEL_TAB[et] ? nivelesDe(r).includes(NIVEL_TAB[et]) : r.etapa===et;
 }
@@ -1340,7 +1363,7 @@ function pasaIdioma(r){ return !soloEs || r.idioma!=='en'; }
 
 /* Datos de los catálogos (Code.org, Raspberry Pi…) compartidos con el recomendador */
 let _ext=null;
-function cargarExt(){ return _ext || (_ext=fetch('data/recomendador.json').then(r=>r.ok?r.json():[]).catch(()=>[])); }
+function cargarExt(){ return _ext || (_ext=fetch(LANG==='va'?'data/recomendador.va.json':'data/recomendador.json').then(r=>r.ok?r.json():[]).catch(()=>[])); }
 
 let etapaActiva='todas', catActiva='todas', query='', itemsVisibles=[];
 const grid=document.getElementById('grid'), chipsEl=document.getElementById('chips'),
@@ -1348,7 +1371,7 @@ const grid=document.getElementById('grid'), chipsEl=document.getElementById('chi
       countBar=document.getElementById('countBar'), notaEl=document.getElementById('etapaNota');
 
 /* Aviso con los catálogos que tienen más recursos para la etapa elegida */
-const NOMBRE_ETAPA={inf:'Infantil',pri:'Primaria',eso:'ESO',bach:'Bachillerato'};
+const NOMBRE_ETAPA={inf:tr('Infantil'),pri:tr('Primaria'),eso:'ESO',bach:tr('Bachillerato')};
 const CODEORG_ETAPA={inf:'Infantil',pri:'Primaria',eso:'ESO',bach:'Bachillerato'};
 function renderNotaEtapa(){
   const nv=NIVEL_TAB[etapaActiva];
@@ -1358,10 +1381,10 @@ function renderNotaEtapa(){
     if(etapaActiva!==et||soloEs!==es) return;
     const n=f=>d.filter(x=>x.f===f&&x.e.includes(nv)&&(!soloEs||x.es)).length;
     const co=n('codeorg'), rp=n('rpi'), partes=[];
-    if(co) partes.push(`el <a href="codeorg.html?etapa=${CODEORG_ETAPA[nv]}">catálogo de Code.org</a> tiene <strong>${co} ${co===1?'curso':'cursos'}</strong>`);
-    if(rp) partes.push(`${co?'el de':'el catálogo de'} <a href="raspberrypi.html${soloEs?'?es=1':''}">Raspberry Pi</a> tiene <strong>${rp} ${rp===1?'proyecto':'proyectos'}</strong>`);
+    if(co) partes.push(tr('el {a}catálogo de Code.org{b} tiene {n}',{a:`<a href="codeorg.html?etapa=${CODEORG_ETAPA[nv]}">`,b:'</a>',n:`<strong>${co} ${co===1?tr('curso'):tr('cursos')}</strong>`}));
+    if(rp) partes.push(tr(co?'el de {a}Raspberry Pi{b} tiene {n}':'el catálogo de {a}Raspberry Pi{b} tiene {n}',{a:`<a href="raspberrypi.html${soloEs?'?es=1':''}">`,b:'</a>',n:`<strong>${rp} ${rp===1?tr('proyecto'):tr('proyectos')}</strong>`}));
     if(!partes.length){ notaEl.hidden=true; return; }
-    notaEl.innerHTML=`🔭 <span><strong>¿Buscas más?</strong> Además de lo que ves aquí, ${partes.join(' y ')} para ${NOMBRE_ETAPA[nv]}${soloEs?' en castellano':''}.</span>`;
+    notaEl.innerHTML=`🔭 <span>${tr('<strong>¿Buscas más?</strong> Además de lo que ves aquí, {p} para {e}{c}.',{p:partes.join(tr(' y ')),e:NOMBRE_ETAPA[nv],c:soloEs?tr(' en castellano'):''})}</span>`;
     notaEl.hidden=false;
   });
 }
@@ -1372,7 +1395,7 @@ function esc(s){const d=document.createElement('div');d.textContent=s||'';return
 function catsVisibles(){
   const set=new Set();
   allRecursos().forEach(r=>{ if(pasaEtapa(r)&&pasaIdioma(r)) set.add(r.cat); });
-  return [...set].sort();
+  return [...set].sort((a,b)=>tr(a).localeCompare(tr(b),LANG==='va'?'ca':'es'));
 }
 
 function renderChips(){
@@ -1380,12 +1403,12 @@ function renderChips(){
   if(!cats.includes(catActiva)) catActiva='todas';
   chipsEl.innerHTML='';
   const all=document.createElement('button');
-  all.className='chip'+(catActiva==='todas'?' active':''); all.textContent='Todas las categorías';
+  all.className='chip'+(catActiva==='todas'?' active':''); all.textContent=tr('Todas las categorías');
   all.onclick=()=>{catActiva='todas';render();};
   chipsEl.appendChild(all);
   cats.forEach(c=>{
     const b=document.createElement('button');
-    b.className='chip'+(catActiva===c?' active':''); b.textContent=c;
+    b.className='chip'+(catActiva===c?' active':''); b.textContent=tr(c);
     b.onclick=()=>{catActiva=(catActiva===c?'todas':c);render();};
     chipsEl.appendChild(b);
   });
@@ -1395,12 +1418,12 @@ function renderStats(){
   const rs=allRecursos();
   const n=e=>rs.filter(r=>pasaEtapa(r,e)).length;
   statsEl.innerHTML=`
-    <span class="stat">📦 ${rs.length} recursos</span>
-    <span class="stat">🧸 ${n('infantil')} Infantil</span>
-    <span class="stat">✏️ ${n('primaria')} Primaria</span>
+    <span class="stat">📦 ${tr('{n} recursos',{n:rs.length})}</span>
+    <span class="stat">🧸 ${n('infantil')} ${tr('Infantil')}</span>
+    <span class="stat">✏️ ${n('primaria')} ${tr('Primaria')}</span>
     <span class="stat">🎓 ${n('eso')} ESO</span>
-    <span class="stat">📚 ${n('bach')} Bachillerato</span>
-    <span class="stat">⚖️ 2 rúbricas</span>`;
+    <span class="stat">📚 ${n('bach')} ${tr('Bachillerato')}</span>
+    <span class="stat">⚖️ ${tr('2 rúbricas')}</span>`;
 }
 
 function render(){
@@ -1416,16 +1439,16 @@ function render(){
   const items=allRecursos().filter(r=>
     pasaEtapa(r) && pasaIdioma(r) &&
     (catActiva==='todas'||r.cat===catActiva) &&
-    (!q || norm(r.nombre+' '+r.desc+' '+r.cat+' '+r.edad).includes(q))
+    (!q || norm(r.nombre+' '+enEs(r,'nombre')+' '+r.desc+' '+enEs(r,'desc')+' '+r.cat+' '+tr(r.cat)+' '+r.edad+' '+edadTxt(r.edad||'')).includes(q))
   );
   const orden=ordenLista();
-  if(orden) items.sort((a,b)=>orden.indexOf(slug(a.nombre))-orden.indexOf(slug(b.nombre)));
+  if(orden) items.sort((a,b)=>orden.indexOf(rid(a))-orden.indexOf(rid(b)));
   itemsVisibles=items;
-  countEl.textContent=items.length===1?'1 recurso encontrado':items.length+' recursos encontrados';
+  countEl.textContent=items.length===1?tr('1 recurso encontrado'):tr('{n} recursos encontrados',{n:items.length});
   grid.innerHTML='';
   if(!items.length){
     if(etapaActiva==='favoritos'&&!favs.length){ grid.innerHTML=''; return; }
-    grid.innerHTML='<div class="empty"><div class="big">🔍</div><strong>No hay resultados.</strong><br>Prueba con otra búsqueda o quita algún filtro'+(soloEs?' (por ejemplo, «Solo en castellano»)':'')+'.</div>';
+    grid.innerHTML='<div class="empty"><div class="big">🔍</div><strong>'+tr('No hay resultados.')+'</strong><br>'+tr('Prueba con otra búsqueda o quita algún filtro')+(soloEs?tr(' (por ejemplo, «Solo en castellano»)'):'')+'.</div>';
     return;
   }
   items.forEach(r=>{
@@ -1433,29 +1456,29 @@ function render(){
     const card=document.createElement('article');
     card.className='card '+r.etapa;
     card.dataset.idx=idx;
-    const flag = r.custom ? '<span class="flag mio">MÍO</span>' : (esNuevo(r) ? '<span class="flag nuevo">NUEVO</span>' : '');
+    const flag = r.custom ? `<span class="flag mio">${tr('MÍO')}</span>` : (esNuevo(r) ? `<span class="flag nuevo">${tr('NUEVO')}</span>` : '');
     const fav=esFav(r);
     card.innerHTML=`
       <button class="fav-btn${fav?' on':''}" type="button" data-fav="${idx}" aria-pressed="${fav}"
-        aria-label="${fav?'Quitar de favoritos':'Guardar en favoritos'}" title="${fav?'Quitar de favoritos':'Guardar en favoritos'}">${fav?'★':'☆'}</button>
+        aria-label="${fav?tr('Quitar de favoritos'):tr('Guardar en favoritos')}" title="${fav?tr('Quitar de favoritos'):tr('Guardar en favoritos')}">${fav?'★':'☆'}</button>
       <div class="card-top">
         <div class="icon">${esc(r.icon)||'⭐'}</div>
         <div>
           <h3>${esc(r.nombre)}</h3>
           <div class="badges" style="margin-top:6px">
             <span class="badge etapa">${ETAPAS[r.etapa]}</span>${flag}
-            ${r.edad?`<span class="badge edad">👶 ${esc(r.edad)}</span>`:''}
+            ${r.edad?`<span class="badge edad">👶 ${esc(edadTxt(r.edad))}</span>`:''}
             ${IDIOMAS[r.idioma]?`<span class="badge idioma">${IDIOMAS[r.idioma]}</span>`:''}
           </div>
         </div>
       </div>
       <p class="desc">${esc(r.desc)}</p>
-      <div class="badges">${r.cat?`<span class="badge cat">${esc(r.cat)}</span>`:''}</div>
+      <div class="badges">${r.cat?`<span class="badge cat">${esc(tr(r.cat))}</span>`:''}</div>
       <div class="links">${r.links.map(l=>
-        `<a class="go${l.alt?' alt':''}" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.txt)} ↗</a>`).join('')}
-        <button class="btn-ficha" title="Ver la ficha completa" data-idx="${idx}">📄 Ficha</button>
-        <button class="btn-eval" title="Valorar su idoneidad con las rúbricas" data-idx="${idx}">⚖️ Valorar</button>
-        ${r.custom?`<button class="btn-del" title="Eliminar este recurso" data-id="${r.id}">🗑️</button>`:''}
+        `<a class="go${l.alt?' alt':''}" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(tr(l.txt))} ↗</a>`).join('')}
+        <button class="btn-ficha" title="${tr('Ver la ficha completa')}" data-idx="${idx}">📄 ${tr('Ficha')}</button>
+        <button class="btn-eval" title="${tr('Valorar su idoneidad con las rúbricas')}" data-idx="${idx}">⚖️ ${tr('Valorar')}</button>
+        ${r.custom?`<button class="btn-del" title="${tr('Eliminar este recurso')}" data-id="${r.id}">🗑️</button>`:''}
       </div>`;
     grid.appendChild(card);
   });
@@ -1468,7 +1491,7 @@ grid.addEventListener('click',e=>{
     toggleFav(allRecursos()[+fb.dataset.fav]);
     if(etapaActiva==='favoritos') render();
     else{ const on=esFav(allRecursos()[+fb.dataset.fav]); fb.classList.toggle('on',on); fb.textContent=on?'★':'☆';
-      fb.setAttribute('aria-pressed',on); fb.title=fb.ariaLabel=on?'Quitar de favoritos':'Guardar en favoritos'; fb.setAttribute('aria-label',fb.title); }
+      fb.setAttribute('aria-pressed',on); fb.title=on?tr('Quitar de favoritos'):tr('Guardar en favoritos'); fb.setAttribute('aria-label',fb.title); }
     return;
   }
   const fi=e.target.closest('.btn-ficha');
@@ -1478,7 +1501,7 @@ grid.addEventListener('click',e=>{
   const ev=e.target.closest('.btn-eval');
   if(ev){ abrirRubrica(allRecursos()[+ev.dataset.idx]); return; }
   const b=e.target.closest('.btn-del'); if(!b) return;
-  if(confirm('¿Eliminar este recurso añadido por ti?')){
+  if(confirm(tr('¿Eliminar este recurso añadido por ti?'))){
     customs=customs.filter(c=>c.id!==b.dataset.id);
     saveCustom(customs); render();
   }
@@ -1490,7 +1513,7 @@ const overlay=document.getElementById('overlay'), formAdd=document.getElementByI
 document.getElementById('btnAdd').onclick=()=>{
   // rellenar datalist de categorías
   const dl=document.getElementById('catList');
-  dl.innerHTML=[...new Set(allRecursos().map(r=>r.cat))].sort().map(c=>`<option value="${esc(c)}">`).join('');
+  dl.innerHTML=[...new Set(allRecursos().map(r=>tr(r.cat)))].sort().map(c=>`<option value="${esc(c)}">`).join('');
   formError.style.display='none';
   overlay.classList.add('open');
   document.getElementById('fNombre').focus();
@@ -1510,7 +1533,7 @@ formAdd.addEventListener('submit',e=>{
     etapa:document.getElementById('fEtapa').value,
     icon:document.getElementById('fIcon').value.trim()||'⭐',
     nombre,
-    cat:document.getElementById('fCat').value.trim()||'Sin categoría',
+    cat:document.getElementById('fCat').value.trim()||tr('Sin categoría'),
     edad:document.getElementById('fEdad').value.trim(),
     idioma:document.getElementById('fIdioma').value,
     desc:document.getElementById('fDesc').value.trim(),
@@ -1550,7 +1573,7 @@ function registrarValoracion(){
     const nombre=(rubState[k].campos.herramienta||'').trim(); if(!nombre) return;
     const r=allRecursos().find(x=>x.nombre===nombre); if(!r) return;
     const d=calcDictamen(k); if(d.pend===d.total) return;
-    const id=slug(r.nombre); vals[id]=vals[id]||{};
+    const id=rid(r); vals[id]=vals[id]||{};
     vals[id][k]={estado:d.estado, pend:d.pend, total:d.total, tramo:rubState[k].tramo, fecha:new Date().toISOString().slice(0,10)};
     cambio=true;
   });
@@ -1559,9 +1582,9 @@ function registrarValoracion(){
 
 const fichaOv=document.getElementById('fichaOv'), fichaEl=document.getElementById('ficha');
 let fichaLista=[], fichaR=null, fichaFoco=null, hashAntesFicha='';
-const NECESITA_TXT={camara:'📷 Cámara (tablet, móvil u ordenador con webcam)', micro:'🎙️ Micrófono', desenchufada:'✂️ No necesita ordenador: es una actividad desenchufada'};
-const NIVEL_TXT={inf:'Infantil', pri:'Primaria', eso:'ESO', bach:'Bachillerato'};
-function listaHumana(a){ return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' y '+a[a.length-1]; }
+const NECESITA_TXT={camara:tr('📷 Cámara (tablet, móvil u ordenador con webcam)'), micro:tr('🎙️ Micrófono'), desenchufada:tr('✂️ No necesita ordenador: es una actividad desenchufada')};
+const NIVEL_TXT={inf:tr('Infantil'), pri:tr('Primaria'), eso:'ESO', bach:tr('Bachillerato')};
+function listaHumana(a){ return a.length<2?a.join(''):a.slice(0,-1).join(', ')+tr(' y ')+a[a.length-1]; }
 function fechaCorta(iso){ const [y,m,d]=(iso||'').split('-'); return d?`${+d}/${+m}/${y}`:''; }
 
 function relacionados(r){
@@ -1574,56 +1597,56 @@ function relacionados(r){
 
 function renderFicha(){
   const r=fichaR, idx=fichaLista.indexOf(r);
-  const val=loadVal()[slug(r.nombre)]||{};
-  const flag=r.custom?'<span class="badge mio">MÍO</span>':(esNuevo(r)?'<span class="badge nuevo">NUEVO</span>':'');
+  const val=loadVal()[rid(r)]||{};
+  const flag=r.custom?`<span class="badge mio">${tr('MÍO')}</span>`:(esNuevo(r)?`<span class="badge nuevo">${tr('NUEVO')}</span>`:'');
   const valoracion=['herramienta','actividad'].map(k=>{
-    const v=val[k], nom=k==='herramienta'?'🛠️ Herramienta':'🎯 Actividad con ella';
-    if(!v) return `<div class="fv"><span class="fv-n">${nom}</span><span class="fv-e">Sin valorar</span></div>`;
-    if(v.estado==='pend') return `<div class="fv"><span class="fv-n">${nom}</span><span class="fv-e">En curso · ${v.total-v.pend} de ${v.total}</span><small>${TRAMOS[v.tramo].nombre} · ${fechaCorta(v.fecha)}</small></div>`;
+    const v=val[k], nom=k==='herramienta'?tr('🛠️ Herramienta'):tr('🎯 Actividad con ella');
+    if(!v) return `<div class="fv"><span class="fv-n">${nom}</span><span class="fv-e">${tr('Sin valorar')}</span></div>`;
+    if(v.estado==='pend') return `<div class="fv"><span class="fv-n">${nom}</span><span class="fv-e">${tr('En curso · {a} de {b}',{a:v.total-v.pend,b:v.total})}</span><small>${TRAMOS[v.tramo].nombre} · ${fechaCorta(v.fecha)}</small></div>`;
     return `<div class="fv ${v.estado}"><span class="fv-n">${nom}</span><span class="fv-e">${RUBRICAS[k].dictamen[v.estado][0]}</span><small>${TRAMOS[v.tramo].nombre} · ${fechaCorta(v.fecha)}</small></div>`;
   }).join('');
   const rel=relacionados(r);
   const niveles=nivelesDe(r).map(n=>NIVEL_TXT[n]);
   fichaEl.className='ficha '+r.etapa;
   fichaEl.innerHTML=`
-    <button class="ficha-x" type="button" data-f="cerrar" aria-label="Cerrar la ficha">✕</button>
+    <button class="ficha-x" type="button" data-f="cerrar" aria-label="${tr('Cerrar la ficha')}">✕</button>
     <button class="fav-btn ficha-fav${esFav(r)?' on':''}" type="button" data-f="fav" aria-pressed="${esFav(r)}"
-      aria-label="${esFav(r)?'Quitar de favoritos':'Guardar en favoritos'}" title="${esFav(r)?'Quitar de favoritos':'Guardar en favoritos'}">${esFav(r)?'★':'☆'}</button>
+      aria-label="${esFav(r)?tr('Quitar de favoritos'):tr('Guardar en favoritos')}" title="${esFav(r)?tr('Quitar de favoritos'):tr('Guardar en favoritos')}">${esFav(r)?'★':'☆'}</button>
     <div class="ficha-head">
       <div class="icon">${esc(r.icon)||'⭐'}</div>
       <div>
         <h2 id="fichaTitulo">${esc(r.nombre)}</h2>
         <div class="badges">
           <span class="badge etapa">${ETAPAS[r.etapa]||''}</span>
-          ${r.edad?`<span class="badge edad">👶 ${esc(r.edad)}</span>`:''}
+          ${r.edad?`<span class="badge edad">👶 ${esc(edadTxt(r.edad))}</span>`:''}
           ${IDIOMAS[r.idioma]?`<span class="badge idioma">${IDIOMAS[r.idioma]}</span>`:''}
-          ${r.cat?`<span class="badge cat">${esc(r.cat)}</span>`:''}
+          ${r.cat?`<span class="badge cat">${esc(tr(r.cat))}</span>`:''}
           ${flag}
         </div>
       </div>
     </div>
     <div class="ficha-body">
-      <section class="ficha-sec"><h3>📝 Qué es</h3><p>${esc(r.desc)||'<em>Sin descripción.</em>'}</p>
-        ${niveles.length?`<p class="ficha-niv">🎒 Sirve para <strong>${listaHumana(niveles)}</strong>.</p>`:''}</section>
-      ${r.idea?`<section class="ficha-sec"><h3>💡 Idea para el aula</h3><p class="ficha-idea">${esc(r.idea)}</p></section>`:''}
-      ${r.necesita&&r.necesita.length?`<section class="ficha-sec"><h3>🧰 Qué necesitas</h3><ul class="ficha-nec">${r.necesita.map(n=>`<li>${NECESITA_TXT[n]||esc(n)}</li>`).join('')}</ul></section>`:''}
-      <section class="ficha-sec"><h3>⚖️ ¿Es adecuada?</h3>
+      <section class="ficha-sec"><h3>📝 ${tr('Qué es')}</h3><p>${esc(r.desc)||`<em>${tr('Sin descripción.')}</em>`}</p>
+        ${niveles.length?`<p class="ficha-niv">🎒 ${tr('Sirve para {x}.',{x:`<strong>${listaHumana(niveles)}</strong>`})}</p>`:''}</section>
+      ${r.idea?`<section class="ficha-sec"><h3>💡 ${tr('Idea para el aula')}</h3><p class="ficha-idea">${esc(r.idea)}</p></section>`:''}
+      ${r.necesita&&r.necesita.length?`<section class="ficha-sec"><h3>🧰 ${tr('Qué necesitas')}</h3><ul class="ficha-nec">${r.necesita.map(n=>`<li>${NECESITA_TXT[n]||esc(n)}</li>`).join('')}</ul></section>`:''}
+      <section class="ficha-sec"><h3>⚖️ ${tr('¿Es adecuada?')}</h3>
         <div class="fvs">${valoracion}</div>
-        <p class="ficha-nota">${r.etapa==='proyecto'?'Si vas a usar alguna herramienta concreta de este proyecto, valórala antes con las rúbricas.':'Antes de usarla con alumnado, valora la herramienta y la actividad con las rúbricas.'} Tu valoración se guarda solo en este navegador.</p>
-        <button class="btn-eval ficha-val" type="button" data-f="valorar">⚖️ ${val.herramienta||val.actividad?'Seguir valorando':'Valorar con las rúbricas'}</button>
+        <p class="ficha-nota">${r.etapa==='proyecto'?tr('Si vas a usar alguna herramienta concreta de este proyecto, valórala antes con las rúbricas.'):tr('Antes de usarla con alumnado, valora la herramienta y la actividad con las rúbricas.')} ${tr('Tu valoración se guarda solo en este navegador.')}</p>
+        <button class="btn-eval ficha-val" type="button" data-f="valorar">⚖️ ${val.herramienta||val.actividad?tr('Seguir valorando'):tr('Valorar con las rúbricas')}</button>
       </section>
-      <section class="ficha-sec"><h3>🔗 Abrir</h3>
-        <div class="links">${r.links.map(l=>`<a class="go${l.alt?' alt':''}" href="${esc(l.url)}"${/^https?:/.test(l.url)?' target="_blank" rel="noopener"':''}>${esc(l.txt)} ${/^https?:/.test(l.url)?'↗':'→'}</a>`).join('')}</div>
+      <section class="ficha-sec"><h3>🔗 ${tr('Abrir')}</h3>
+        <div class="links">${r.links.map(l=>`<a class="go${l.alt?' alt':''}" href="${esc(l.url)}"${/^https?:/.test(l.url)?' target="_blank" rel="noopener"':''}>${esc(tr(l.txt))} ${/^https?:/.test(l.url)?'↗':'→'}</a>`).join('')}</div>
       </section>
-      ${rel.length?`<section class="ficha-sec"><h3>🧩 También te puede interesar</h3>
-        <div class="ficha-rel">${rel.map(x=>`<button type="button" class="rel ${x.etapa}" data-rel="${allRecursos().indexOf(x)}"><span class="rel-i">${esc(x.icon)||'⭐'}</span><span><strong>${esc(x.nombre)}</strong><small>${esc(x.cat||'')}${x.edad?' · '+esc(x.edad):''}</small></span></button>`).join('')}</div></section>`:''}
-      ${r.custom?'<p class="ficha-nota">Recurso añadido por ti: solo se ve en este navegador.</p>':(r.alta?`<p class="ficha-nota">Añadido a la web el ${fechaLarga(r.alta)}.</p>`:'')}
+      ${rel.length?`<section class="ficha-sec"><h3>🧩 ${tr('También te puede interesar')}</h3>
+        <div class="ficha-rel">${rel.map(x=>`<button type="button" class="rel ${x.etapa}" data-rel="${allRecursos().indexOf(x)}"><span class="rel-i">${esc(x.icon)||'⭐'}</span><span><strong>${esc(x.nombre)}</strong><small>${esc(tr(x.cat||''))}${x.edad?' · '+esc(edadTxt(x.edad)):''}</small></span></button>`).join('')}</div></section>`:''}
+      ${r.custom?`<p class="ficha-nota">${tr('Recurso añadido por ti: solo se ve en este navegador.')}</p>`:(r.alta?`<p class="ficha-nota">${tr('Añadido a la web el {f}.',{f:fechaLarga(r.alta)})}</p>`:'')}
     </div>
     <div class="ficha-foot">
-      <button type="button" class="ficha-nav" data-f="ant" ${idx<=0?'disabled':''} aria-label="Recurso anterior">←<span> Anterior</span></button>
-      <span class="ficha-pos">${idx>=0?`${idx+1} de ${fichaLista.length}`:''}</span>
-      ${r.custom?'':'<button type="button" class="ficha-copiar" data-f="copiar">🔗 Copiar enlace</button>'}
-      <button type="button" class="ficha-nav" data-f="sig" ${idx<0||idx>=fichaLista.length-1?'disabled':''} aria-label="Recurso siguiente"><span>Siguiente </span>→</button>
+      <button type="button" class="ficha-nav" data-f="ant" ${idx<=0?'disabled':''} aria-label="${tr('Recurso anterior')}">←<span> ${tr('Anterior')}</span></button>
+      <span class="ficha-pos">${idx>=0?tr('{a} de {b}',{a:idx+1,b:fichaLista.length}):''}</span>
+      ${r.custom?'':`<button type="button" class="ficha-copiar" data-f="copiar">🔗 ${tr('Copiar enlace')}</button>`}
+      <button type="button" class="ficha-nav" data-f="sig" ${idx<0||idx>=fichaLista.length-1?'disabled':''} aria-label="${tr('Recurso siguiente')}"><span>${tr('Siguiente')} </span>→</button>
     </div>`;
   fichaEl.scrollTop=0;
 }
@@ -1639,7 +1662,7 @@ function abrirFicha(r, lista){
     document.body.style.overflow='hidden';
   }
   renderFicha();
-  if(!r.custom) history.replaceState(null,'','#ficha='+slug(r.nombre));
+  if(!r.custom) history.replaceState(null,'','#ficha='+rid(r));
   fichaEl.focus({preventScroll:true});
 }
 function cerrarFicha(){
@@ -1665,10 +1688,10 @@ fichaOv.addEventListener('click',e=>{
   else if(f==='sig') moverFicha(1);
   else if(f==='valorar'){ const r=fichaR; cerrarFicha(); abrirRubrica(r); }
   else if(f==='copiar'){
-    const url=location.origin+location.pathname+'#ficha='+slug(fichaR.nombre);
-    const ok=()=>{ b.textContent='✅ Enlace copiado'; setTimeout(()=>{ if(b.isConnected) b.textContent='🔗 Copiar enlace'; },1800); };
-    if(navigator.clipboard&&window.isSecureContext) navigator.clipboard.writeText(url).then(ok,()=>prompt('Copia este enlace:',url));
-    else prompt('Copia este enlace:',url);
+    const url=urlIdioma(location.origin+location.pathname)+'#ficha='+rid(fichaR);
+    const ok=()=>{ b.textContent='✅ '+tr('Enlace copiado'); setTimeout(()=>{ if(b.isConnected) b.textContent='🔗 '+tr('Copiar enlace'); },1800); };
+    if(navigator.clipboard&&window.isSecureContext) navigator.clipboard.writeText(url).then(ok,()=>prompt(tr('Copia este enlace:'),url));
+    else prompt(tr('Copia este enlace:'),url);
   }
 });
 document.addEventListener('keydown',e=>{
@@ -1686,20 +1709,20 @@ document.addEventListener('keydown',e=>{
 /* ══════════════════ FAVORITOS Y LISTAS COMPARTIDAS ══════════════════ */
 const listaPanel=document.getElementById('listaPanel');
 function urlLista(){
-  const ids=favs.filter(id=>RECURSOS.some(r=>slug(r.nombre)===id));
+  const ids=favs.filter(id=>RECURSOS.some(r=>rid(r)===id));
   const t=favTitulo.trim();
-  return location.origin+location.pathname+'#lista='+ids.join(',')+(t?'&t='+encodeURIComponent(t):'');
+  return urlIdioma(location.origin+location.pathname)+'#lista='+ids.join(',')+(t?'&t='+encodeURIComponent(t):'');
 }
 function textoLista(){
-  const t=favTitulo.trim()||'Mi selección de recursos de IA para el aula';
-  const rs=favs.map(id=>RECURSOS.find(r=>slug(r.nombre)===id)).filter(Boolean);
-  return `⭐ ${t}\n\n`+rs.map(r=>`• ${r.nombre}${r.edad?' ('+r.edad+')':''}\n  ${new URL(r.links[0].url,location.href).href}`).join('\n')+
-    `\n\nVer la lista completa con fichas: ${urlLista()}`;
+  const t=favTitulo.trim()||tr('Mi selección de recursos de IA para el aula');
+  const rs=favs.map(id=>RECURSOS.find(r=>rid(r)===id)).filter(Boolean);
+  return `⭐ ${t}\n\n`+rs.map(r=>`• ${r.nombre}${r.edad?' ('+edadTxt(r.edad)+')':''}\n  ${new URL(r.links[0].url,location.href).href}`).join('\n')+
+    `\n\n${tr('Ver la lista completa con fichas:')} ${urlLista()}`;
 }
 function copiar(texto,btn,etiqueta){
-  const ok=()=>{ btn.textContent='✅ Copiado'; setTimeout(()=>{ if(btn.isConnected) btn.textContent=etiqueta; },1800); };
-  if(navigator.clipboard&&window.isSecureContext) navigator.clipboard.writeText(texto).then(ok,()=>prompt('Copia este texto:',texto));
-  else prompt('Copia este texto:',texto);
+  const ok=()=>{ btn.textContent='✅ '+tr('Copiado'); setTimeout(()=>{ if(btn.isConnected) btn.textContent=etiqueta; },1800); };
+  if(navigator.clipboard&&window.isSecureContext) navigator.clipboard.writeText(texto).then(ok,()=>prompt(tr('Copia este texto:'),texto));
+  else prompt(tr('Copia este texto:'),texto);
 }
 let qrLib=null;
 function cargarQR(){
@@ -1712,39 +1735,39 @@ function cargarQR(){
 function mostrarQR(){
   const box=document.getElementById('qrBox'); if(!box) return;
   if(!box.hidden){ box.hidden=true; return; }
-  box.hidden=false; box.innerHTML='<p class="lp-nota">Generando el código…</p>';
+  box.hidden=false; box.innerHTML=`<p class="lp-nota">${tr('Generando el código…')}</p>`;
   cargarQR().then(qrcode=>{
     const q=qrcode(0,'M'); q.addData(urlLista()); q.make();
-    const svg=q.createSvgTag({cellSize:5, margin:3, scalable:true, alt:'Código QR de la lista'});
+    const svg=q.createSvgTag({cellSize:5, margin:3, scalable:true, alt:tr('Código QR de la lista')});
     const href='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
     box.innerHTML=`<div class="qr-img">${svg}</div>
-      <div><strong>${esc(favTitulo.trim()||'Mi selección')}</strong>
-      <p class="lp-nota">Proyéctalo en clase o en una formación: al escanearlo se abre esta lista en el móvil.</p>
-      <a class="lp-btn" href="${href}" download="${slug(favTitulo||'lista-recursos')||'lista-recursos'}-qr.svg">⬇️ Descargar QR</a></div>`;
-  }).catch(()=>{ box.innerHTML='<p class="lp-nota">No se ha podido generar el código QR.</p>'; });
+      <div><strong>${esc(favTitulo.trim()||tr('Mi selección'))}</strong>
+      <p class="lp-nota">${tr('Proyéctalo en clase o en una formación: al escanearlo se abre esta lista en el móvil.')}</p>
+      <a class="lp-btn" href="${href}" download="${slug(favTitulo||tr('lista-recursos'))||'lista-recursos'}-qr.svg">⬇️ ${tr('Descargar QR')}</a></div>`;
+  }).catch(()=>{ box.innerHTML=`<p class="lp-nota">${tr('No se ha podido generar el código QR.')}</p>`; });
 }
 
 function renderListaPanel(){
   if(etapaActiva==='recientes'){
     listaPanel.className='lista-panel nov-vista'; listaPanel.hidden=false;
     listaPanel.innerHTML=`
-      <div class="lp-kicker">🆕 Novedades</div>
-      <h2>Añadido en los últimos ${DIAS_NUEVO} días</h2>
-      <p class="lp-nota">Del más reciente al más antiguo. Pulsa en cualquiera para ver su ficha.</p>
-      <div class="lp-acc"><button class="lp-btn" type="button" data-l="salir">Ver toda la web</button></div>`;
+      <div class="lp-kicker">🆕 ${tr('Novedades')}</div>
+      <h2>${tr('Añadido en los últimos {n} días',{n:DIAS_NUEVO})}</h2>
+      <p class="lp-nota">${tr('Del más reciente al más antiguo. Pulsa en cualquiera para ver su ficha.')}</p>
+      <div class="lp-acc"><button class="lp-btn" type="button" data-l="salir">${tr('Ver toda la web')}</button></div>`;
     return;
   }
   if(etapaActiva==='lista'&&listaCompartida){
     const n=allRecursos().filter(r=>pasaEtapa(r,'lista')).length;
-    const nuevos=listaCompartida.slugs.filter(id=>!favs.includes(id)&&RECURSOS.some(r=>slug(r.nombre)===id)).length;
+    const nuevos=listaCompartida.slugs.filter(id=>!favs.includes(id)&&RECURSOS.some(r=>rid(r)===id)).length;
     listaPanel.className='lista-panel recibida'; listaPanel.hidden=false;
     listaPanel.innerHTML=`
-      <div class="lp-kicker">📋 Lista compartida</div>
-      <h2>${esc(listaCompartida.titulo||'Selección de recursos')}</h2>
-      <p class="lp-nota">${n} ${n===1?'recurso seleccionado':'recursos seleccionados'} por quien te ha enviado este enlace. Pulsa en cualquiera para ver su ficha.</p>
+      <div class="lp-kicker">📋 ${tr('Lista compartida')}</div>
+      <h2>${esc(listaCompartida.titulo||tr('Selección de recursos'))}</h2>
+      <p class="lp-nota">${n===1?tr('1 recurso seleccionado por quien te ha enviado este enlace.'):tr('{n} recursos seleccionados por quien te ha enviado este enlace.',{n})} ${tr('Pulsa en cualquiera para ver su ficha.')}</p>
       <div class="lp-acc">
-        ${nuevos?`<button class="lp-btn pri" type="button" data-l="guardar">⭐ Añadir ${nuevos===n?'todos':'los '+nuevos+' que te faltan'} a mis favoritos</button>`:'<span class="lp-ok">✅ Ya están todos en tus favoritos</span>'}
-        <button class="lp-btn" type="button" data-l="salir">Ver toda la web</button>
+        ${nuevos?`<button class="lp-btn pri" type="button" data-l="guardar">⭐ ${nuevos===n?tr('Añadir todos a mis favoritos'):tr('Añadir los {n} que te faltan a mis favoritos',{n:nuevos})}</button>`:`<span class="lp-ok">✅ ${tr('Ya están todos en tus favoritos')}</span>`}
+        <button class="lp-btn" type="button" data-l="salir">${tr('Ver toda la web')}</button>
       </div>`;
     return;
   }
@@ -1752,21 +1775,21 @@ function renderListaPanel(){
   listaPanel.className='lista-panel'; listaPanel.hidden=false;
   if(!favs.length){
     listaPanel.innerHTML=`<div class="lp-vacio"><div class="big">☆</div>
-      <strong>Todavía no tienes favoritos.</strong>
-      <p class="lp-nota">Pulsa la estrella ☆ de cualquier recurso para guardarlo aquí. Después podrás compartir tu selección con un enlace o un código QR, por ejemplo con tu equipo o en una formación.</p></div>`;
+      <strong>${tr('Todavía no tienes favoritos.')}</strong>
+      <p class="lp-nota">${tr('Pulsa la estrella ☆ de cualquier recurso para guardarlo aquí. Después podrás compartir tu selección con un enlace o un código QR, por ejemplo con tu equipo o en una formación.')}</p></div>`;
     return;
   }
-  const propios=favs.filter(id=>!RECURSOS.some(r=>slug(r.nombre)===id)).length;
+  const propios=favs.filter(id=>!RECURSOS.some(r=>rid(r)===id)).length;
   listaPanel.innerHTML=`
-    <label class="lp-tit">Nombre de tu lista
-      <input id="favTitulo" maxlength="60" placeholder="Ej. IA en 5.º de Primaria" value="${esc(favTitulo)}"></label>
+    <label class="lp-tit">${tr('Nombre de tu lista')}
+      <input id="favTitulo" maxlength="60" placeholder="${tr('Ej. IA en 5.º de Primaria')}" value="${esc(favTitulo)}"></label>
     <div class="lp-acc">
-      <button class="lp-btn pri" type="button" data-l="enlace">🔗 Copiar enlace</button>
-      <button class="lp-btn" type="button" data-l="qr">📱 Código QR</button>
-      <button class="lp-btn" type="button" data-l="texto">📋 Copiar como texto</button>
-      <button class="lp-btn lp-del" type="button" data-l="vaciar">🗑️ Vaciar</button>
+      <button class="lp-btn pri" type="button" data-l="enlace">🔗 ${tr('Copiar enlace')}</button>
+      <button class="lp-btn" type="button" data-l="qr">📱 ${tr('Código QR')}</button>
+      <button class="lp-btn" type="button" data-l="texto">📋 ${tr('Copiar como texto')}</button>
+      <button class="lp-btn lp-del" type="button" data-l="vaciar">🗑️ ${tr('Vaciar')}</button>
     </div>
-    <p class="lp-nota">Tus favoritos se guardan en este navegador. Con el enlace, cualquiera puede ver tu selección sin registrarse${propios?`; los ${propios===1?'recurso añadido':propios+' recursos añadidos'} por ti no se incluyen porque solo existen en tu navegador`:''}.</p>
+    <p class="lp-nota">${tr('Tus favoritos se guardan en este navegador. Con el enlace, cualquiera puede ver tu selección sin registrarse')}${propios?(propios===1?tr('; el recurso añadido por ti no se incluye porque solo existe en tu navegador'):tr('; los {n} recursos añadidos por ti no se incluyen porque solo existen en tu navegador',{n:propios})):''}.</p>
     <div class="qr-box" id="qrBox" hidden></div>`;
 }
 listaPanel.addEventListener('input',e=>{
@@ -1778,12 +1801,12 @@ listaPanel.addEventListener('input',e=>{
 listaPanel.addEventListener('click',e=>{
   const b=e.target.closest('[data-l]'); if(!b) return;
   const a=b.dataset.l;
-  if(a==='enlace') copiar(urlLista(),b,'🔗 Copiar enlace');
-  else if(a==='texto') copiar(textoLista(),b,'📋 Copiar como texto');
+  if(a==='enlace') copiar(urlLista(),b,'🔗 '+tr('Copiar enlace'));
+  else if(a==='texto') copiar(textoLista(),b,'📋 '+tr('Copiar como texto'));
   else if(a==='qr') mostrarQR();
-  else if(a==='vaciar'){ if(confirm('¿Quitar todos los recursos de tus favoritos?')){ favs=[]; saveFavs(); actualizarFavN(); render(); } }
+  else if(a==='vaciar'){ if(confirm(tr('¿Quitar todos los recursos de tus favoritos?'))){ favs=[]; saveFavs(); actualizarFavN(); render(); } }
   else if(a==='guardar'){
-    listaCompartida.slugs.forEach(id=>{ if(!favs.includes(id)&&RECURSOS.some(r=>slug(r.nombre)===id)) favs.push(id); });
+    listaCompartida.slugs.forEach(id=>{ if(!favs.includes(id)&&RECURSOS.some(r=>rid(r)===id)) favs.push(id); });
     if(!favTitulo.trim()&&listaCompartida.titulo){ favTitulo=listaCompartida.titulo; try{ localStorage.setItem(FAVT_KEY,favTitulo); }catch(err){} }
     saveFavs(); actualizarFavN(true); render();
   }
@@ -1799,7 +1822,7 @@ function listaDesdeHash(){
   render();
   // quien recibe la lista va directo a ella: se pliega el recomendador
   const reco=document.getElementById('reco');
-  if(reco&&reco.classList.contains('open')){ reco.classList.remove('open'); const t=document.getElementById('recoToggle'); if(t) t.textContent='Mostrar'; }
+  if(reco&&reco.classList.contains('open')){ reco.classList.remove('open'); const t=document.getElementById('recoToggle'); if(t) t.textContent=tr('Mostrar'); }
   requestAnimationFrame(()=>listaPanel.scrollIntoView({block:'start'}));
   return true;
 }
@@ -1827,24 +1850,24 @@ function renderNovedades(){
   let plegado=false; try{ plegado=localStorage.getItem(NOV_KEY)==='1'; }catch(e){}
   if(total) plegado=false; // si hay novedades para ti, se muestra abierto
   novBox.classList.toggle('plegado',plegado);
-  const mini=ultimos.map(r=>`<button type="button" class="nc ${r.etapa}" data-nov="${allRecursos().indexOf(r)}" title="Ver la ficha de ${esc(r.nombre)}">
-      ${nuevoParaTi(r.alta)?'<span class="nc-punto" title="Nuevo desde tu última visita"></span>':''}
+  const mini=ultimos.map(r=>`<button type="button" class="nc ${r.etapa}" data-nov="${allRecursos().indexOf(r)}" title="${tr('Ver la ficha de {x}',{x:esc(r.nombre)})}">
+      ${nuevoParaTi(r.alta)?`<span class="nc-punto" title="${tr('Nuevo desde tu última visita')}"></span>`:''}
       <span class="nc-i">${esc(r.icon)||'⭐'}</span><strong>${esc(r.nombre)}</strong>
       <small>${ETAPAS[r.etapa]} · ${fechaLarga(r.alta)}</small></button>`).join('');
   const log=NOVEDADES_WEB.map(n=>`<li${nuevoParaTi(n.fecha)?' class="tuyo"':''}>
-      <div class="nl-f">${fechaLarga(n.fecha)}${nuevoParaTi(n.fecha)?' <span class="nl-pill">NUEVO PARA TI</span>':''}</div>
+      <div class="nl-f">${fechaLarga(n.fecha)}${nuevoParaTi(n.fecha)?` <span class="nl-pill">${tr('NUEVO PARA TI')}</span>`:''}</div>
       <ul>${n.items.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></li>`).join('');
   novBox.innerHTML=`<div class="nov-box">
     <div class="nov-head" data-n="toggle">
-      <div><h2>🆕 Novedades</h2><p>Última actualización: ${fechaLarga(ultimaAct)}</p></div>
-      ${total?`<span class="nov-badge" title="Tu última visita fue el ${fechaLarga(visitaPrev)}">✨ ${total} ${total===1?'novedad':'novedades'} desde tu última visita</span>`:''}
-      <button class="nov-toggle" type="button" aria-expanded="${!plegado}">${plegado?'Mostrar':'Ocultar'}</button>
+      <div><h2>🆕 ${tr('Novedades')}</h2><p>${tr('Última actualización: {f}',{f:fechaLarga(ultimaAct)})}</p></div>
+      ${total?`<span class="nov-badge" title="${tr('Tu última visita fue el {f}',{f:fechaLarga(visitaPrev)})}">✨ ${total===1?tr('1 novedad desde tu última visita'):tr('{n} novedades desde tu última visita',{n:total})}</span>`:''}
+      <button class="nov-toggle" type="button" aria-expanded="${!plegado}">${plegado?tr('Mostrar'):tr('Ocultar')}</button>
     </div>
     <div class="nov-body">
-      <div class="nov-sub"><h3>Últimos recursos añadidos</h3>
-        ${nRecientes>ultimos.length?`<button type="button" class="nov-mas" data-n="recientes">Ver los ${nRecientes} de los últimos ${DIAS_NUEVO} días →</button>`:''}</div>
+      <div class="nov-sub"><h3>${tr('Últimos recursos añadidos')}</h3>
+        ${nRecientes>ultimos.length?`<button type="button" class="nov-mas" data-n="recientes">${tr('Ver los {n} de los últimos {d} días →',{n:nRecientes,d:DIAS_NUEVO})}</button>`:''}</div>
       <div class="nov-res">${mini}</div>
-      <details class="nov-log"><summary>🛠️ Qué ha cambiado en la web${nWeb?` <span class="nl-pill">${nWeb} ${nWeb===1?'cambio nuevo':'cambios nuevos'} para ti</span>`:''}</summary><ol>${log}</ol></details>
+      <details class="nov-log"><summary>🛠️ ${tr('Qué ha cambiado en la web')}${nWeb?` <span class="nl-pill">${nWeb===1?tr('1 cambio nuevo para ti'):tr('{n} cambios nuevos para ti',{n:nWeb})}</span>`:''}</summary><ol>${log}</ol></details>
     </div></div>`;
 }
 novBox&&novBox.addEventListener('click',e=>{
@@ -1855,17 +1878,17 @@ novBox&&novBox.addEventListener('click',e=>{
   if(b.dataset.n==='toggle'){
     const pleg=!novBox.classList.contains('plegado');
     novBox.classList.toggle('plegado',pleg);
-    const t=novBox.querySelector('.nov-toggle'); t.textContent=pleg?'Mostrar':'Ocultar'; t.setAttribute('aria-expanded',!pleg);
+    const t=novBox.querySelector('.nov-toggle'); t.textContent=pleg?tr('Mostrar'):tr('Ocultar'); t.setAttribute('aria-expanded',!pleg);
     try{ localStorage.setItem(NOV_KEY,pleg?'1':'0'); }catch(err){}
   }
 });
 renderNovedades();
 { const f=document.querySelector('footer'); const ult=[NOVEDADES_WEB[0].fecha,(recientes()[0]||{}).alta].filter(Boolean).sort().pop();
-  if(f&&ult) f.insertAdjacentHTML('beforeend',` · Última actualización: ${fechaLarga(ult)}`); }
+  if(f&&ult) f.insertAdjacentHTML('beforeend',` · ${tr('Última actualización: {f}',{f:fechaLarga(ult)})}`); }
 
 function fichaDesdeHash(){
   const m=location.hash.match(/^#ficha=([a-z0-9-]+)/); if(!m) return;
-  const r=allRecursos().find(x=>slug(x.nombre)===m[1]);
+  const r=allRecursos().find(x=>rid(x)===m[1]);
   if(r) abrirFicha(r, allRecursos());
 }
 window.addEventListener('hashchange',fichaDesdeHash);
@@ -1892,9 +1915,10 @@ fichaDesdeHash();
          ['seguridad','🔐 Seguridad y ciudadanía digital'],['docente','🛠️ Rediseñar mis tareas y evaluar herramientas']],
     dur:[['sesion','⚡ Una sesión'],['semanas','📅 Unas semanas'],['largo','🗓️ Un trimestre o más'],['any','🤷 Me da igual']]
   };
-  const ETQ={inf:'Infantil',pri:'Primaria',eso:'ESO',bach:'Bachillerato/FP',doc:'profesorado'};
+  Object.values(Q).forEach(l=>l.forEach(o=>{ o[1]=tr(o[1]); }));
+  const ETQ={inf:tr('Infantil'),pri:tr('Primaria'),eso:'ESO',bach:tr('Bachillerato/FP'),doc:tr('profesorado')};
   const OBJ=Object.fromEntries(Q.obj);
-  const SRC={mis:['MIS RECURSOS','#dcfce7','#15803d'],codeorg:['CODE.ORG','#cffafe','#0e7490'],rpi:['RASPBERRY PI','#ffe4e6','#be123c'],pc:['PENSAMIENTO CRÍTICO','#f3e8ff','#6d28d9'],ver:['VERIFICACIÓN','#e0f2fe','#075985']};
+  const SRC={mis:[tr('MIS RECURSOS'),'#dcfce7','#15803d'],codeorg:['CODE.ORG','#cffafe','#0e7490'],rpi:['RASPBERRY PI','#ffe4e6','#be123c'],pc:[tr('PENSAMIENTO CRÍTICO'),'#f3e8ff','#6d28d9'],ver:[tr('VERIFICACIÓN'),'#e0f2fe','#075985']};
   const KEY='reco-eleccion';
   let sel={etapa:null,obj:null,dur:'any'};
   try{ const s=JSON.parse(localStorage.getItem(KEY)); if(s) sel=Object.assign(sel,s); }catch(e){}
@@ -1904,7 +1928,7 @@ fichaDesdeHash();
 
   document.getElementById('recoHead').addEventListener('click',()=>{
     box.classList.toggle('open');
-    document.getElementById('recoToggle').textContent=box.classList.contains('open')?'Ocultar':'Mostrar';
+    document.getElementById('recoToggle').textContent=box.classList.contains('open')?tr('Ocultar'):tr('Mostrar');
   });
   document.querySelectorAll('.rq-opts').forEach(el=>{
     const k=el.dataset.q;
@@ -1927,7 +1951,7 @@ fichaDesdeHash();
   // Normaliza los recursos propios de esta página
   const etapasDe=nivelesDe;
   function objsDe(r){
-    const o=new Set(), txt=(r.nombre+' '+r.desc).toLowerCase();
+    const o=new Set(), txt=(r.nombre+' '+enEs(r,'desc')).toLowerCase();
     const c=r.cat||'';
     if(/Alfabetización en IA/.test(c)) o.add('descubrir');
     if(/Pensamiento computacional|Programación/.test(c)) o.add('programar');
@@ -1942,10 +1966,10 @@ fichaDesdeHash();
   }
   function propios(){
     return allRecursos().filter(r=>r.links&&r.links[0]&&!/^(codeorg|raspberrypi|pensamiento-critico|verificacion-ia)\.html/.test(r.links[0].url))
-      .map(r=>({t:r.nombre,d:r.desc,u:r.links[0].url,f:'mis',e:etapasDe(r),o:objsDe(r),r:r.etapa==='proyecto'?'semanas':'sesion',x:r.edad||'',es:r.idioma==='en'?0:1}));
+      .map(r=>({t:r.nombre,d:r.desc,u:r.links[0].url,f:'mis',e:etapasDe(r),o:objsDe(r),r:r.etapa==='proyecto'?'semanas':'sesion',x:edadTxt(r.edad||''),es:r.idioma==='en'?0:1}));
   }
   const ESPECIALES=[
-    {t:'Rúbricas de idoneidad de IA',d:'Valora si una herramienta de IA es adecuada para una edad y si una actividad con IA está bien planteada, con dictamen final tipo semáforo.',accion:'rubricas',f:'mis',e:['doc'],o:['docente','critico','seguridad'],r:'sesion',x:'Dentro de esta web',es:1}
+    {t:tr('Rúbricas de idoneidad de IA'),d:tr('Valora si una herramienta de IA es adecuada para una edad y si una actividad con IA está bien planteada, con dictamen final tipo semáforo.'),accion:'rubricas',f:'mis',e:['doc'],o:['docente','critico','seguridad'],r:'sesion',x:tr('Dentro de esta web'),es:1}
   ];
 
   function puntuar(it){
@@ -1965,26 +1989,26 @@ fichaDesdeHash();
   }
 
   async function mostrar(){
-    if(!sel.etapa||!sel.obj){ out.innerHTML='<p class="reco-msg">👆 Elige con quién vas a trabajar y tu objetivo para ver recomendaciones.</p>'; return; }
-    out.innerHTML='<p class="reco-msg">Buscando…</p>';
+    if(!sel.etapa||!sel.obj){ out.innerHTML=`<p class="reco-msg">${tr('👆 Elige con quién vas a trabajar y tu objetivo para ver recomendaciones.')}</p>`; return; }
+    out.innerHTML=`<p class="reco-msg">${tr('Buscando…')}</p>`;
     const todos=ESPECIALES.concat(propios(), await cargar());
     // el profesorado también puede usar los recursos y actividades de aula de cualquier etapa
     const cand=todos.map(it=>{
       let it2=it;
       if(sel.etapa==='doc'&&!it.e.includes('doc')&&(it.f==='pc'||it.f==='mis')) it2=Object.assign({},it,{e:it.e.concat('doc')});
       return [puntuar(it2),it];
-    }).filter(([s])=>s>=0).sort((a,b)=>b[0]-a[0]||a[1].t.localeCompare(b[1].t,'es'));
+    }).filter(([s])=>s>=0).sort((a,b)=>b[0]-a[0]||a[1].t.localeCompare(b[1].t,LANG==='va'?'ca':'es'));
     // diversidad: máx. 2 por fuente en la primera vuelta
     const elegidos=[], cuenta={};
     for(const [s,it] of cand){ if(elegidos.length>=6) break; if((cuenta[it.f]||0)<2){ elegidos.push(it); cuenta[it.f]=(cuenta[it.f]||0)+1; } }
     for(const [s,it] of cand){ if(elegidos.length>=6) break; if(!elegidos.includes(it)) elegidos.push(it); }
     if(!elegidos.length){
-      out.innerHTML=`<p class="reco-msg">No he encontrado recursos para <strong>${esc2(OBJ[sel.obj])}</strong> con ${ETQ[sel.etapa]}. Prueba con otro objetivo o con otra etapa cercana.</p>`;
+      out.innerHTML=`<p class="reco-msg">${tr('No he encontrado recursos para {o} con {e}. Prueba con otro objetivo o con otra etapa cercana.',{o:`<strong>${esc2(OBJ[sel.obj])}</strong>`,e:ETQ[sel.etapa]})}</p>`;
       return;
     }
     const porque=it=>{
       const p=[OBJ[sel.obj].replace(/^\S+\s/,'')];
-      p.push(it.f==='mis'?'seleccionado en esta web':ETQ[sel.etapa]==='profesorado'?'para profesorado':'adecuado para '+ETQ[sel.etapa]);
+      p.push(it.f==='mis'?tr('seleccionado en esta web'):sel.etapa==='doc'?tr('para profesorado'):tr('adecuado para {e}',{e:ETQ[sel.etapa]}));
       if(it.x) p.push(it.x);
       return p.join(' · ');
     };
@@ -1992,19 +2016,19 @@ fichaDesdeHash();
       const [n,bg,fg]=SRC[it.f];
       const ext=/^https?:/.test(it.u||'');
       const btn=it.accion==='rubricas'
-        ? `<button class="go2" type="button" data-accion="rubricas">Abrir rúbricas</button>`
-        : `<a href="${esc2(it.u)}"${ext?' target="_blank" rel="noopener"':''}>Abrir ${ext?'↗':'→'}</a>`;
+        ? `<button class="go2" type="button" data-accion="rubricas">${tr('Abrir rúbricas')}</button>`
+        : `<a href="${esc2(it.u)}"${ext?' target="_blank" rel="noopener"':''}>${tr('Abrir')} ${ext?'↗':'→'}</a>`;
       return `<div class="rc"><span class="rc-src" style="background:${bg};color:${fg}">${n}</span>
         <h4>${esc2(it.t)}</h4><p>${esc2(it.d)}</p><span class="rc-why">✔ ${esc2(porque(it))}</span>${btn}</div>`;
     }).join('');
     const total=cand.length;
     const mas=[];
-    if(cand.some(([s,it])=>it.f==='codeorg')) mas.push('<a href="codeorg.html">Catálogo de Code.org</a>');
-    if(cand.some(([s,it])=>it.f==='rpi')) mas.push('<a href="raspberrypi.html">Proyectos de Raspberry Pi</a>');
-    if(cand.some(([s,it])=>it.f==='pc')) mas.push('<a href="pensamiento-critico.html">Actividades de pensamiento crítico</a>');
-    if(cand.some(([s,it])=>it.f==='ver')) mas.push('<a href="verificacion-ia.html">Actividades de verificación</a>');
+    if(cand.some(([s,it])=>it.f==='codeorg')) mas.push(`<a href="codeorg.html">${tr('Catálogo de Code.org')}</a>`);
+    if(cand.some(([s,it])=>it.f==='rpi')) mas.push(`<a href="raspberrypi.html">${tr('Proyectos de Raspberry Pi')}</a>`);
+    if(cand.some(([s,it])=>it.f==='pc')) mas.push(`<a href="pensamiento-critico.html">${tr('Actividades de pensamiento crítico')}</a>`);
+    if(cand.some(([s,it])=>it.f==='ver')) mas.push(`<a href="verificacion-ia.html">${tr('Actividades de verificación')}</a>`);
     out.innerHTML=`<div class="reco-res">${tarjetas}</div>`+
-      (total>elegidos.length?`<div class="reco-more">Hay ${total} recursos que encajan. Explora más en: ${mas.join(' ')}</div>`:'');
+      (total>elegidos.length?`<div class="reco-more">${tr('Hay {n} recursos que encajan. Explora más en:',{n:total})} ${mas.join(' ')}</div>`:'');
   }
   out.addEventListener('click',e=>{
     const b=e.target.closest('[data-accion="rubricas"]'); if(!b) return;
