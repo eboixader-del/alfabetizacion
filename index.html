@@ -227,6 +227,7 @@
     border-radius:12px;text-decoration:none;transition:.15s}
   .rub-actions .pri{background:var(--rubrica);color:#fff} .rub-actions .pri:hover{filter:brightness(1.1)}
   .rub-actions .sec{background:var(--chip-bg);color:var(--ink)} .rub-actions .sec:hover{background:var(--chip-hover)}
+  .rub-actions button[disabled]{opacity:.6;cursor:wait}
   .rub-intro .nb-tip{margin-top:12px;padding:10px 14px;border-radius:12px;background:var(--rubrica-soft);color:var(--ink)}
   .nb-tip a{color:var(--rubrica);font-weight:800}
   .fund{font-size:.78rem;color:var(--muted);line-height:1.5;margin-top:14px}
@@ -929,7 +930,8 @@ function renderRubrica(){
         <textarea data-obs="1" placeholder="Mediación prevista, restricciones, alternativas…">${esc(S.obs||'')}</textarea></div>
       <div class="rub-actions">
         ${rubActiva==='herramienta'?'<button class="pri" data-accion="siguiente">Siguiente: valorar la actividad →</button>':'<button class="sec" data-accion="anterior">← Volver a la herramienta</button>'}
-        <button class="sec" data-accion="imprimir">🖨️ Imprimir / guardar PDF</button>
+        <button class="sec" data-accion="pdf">📄 Descargar informe (PDF)</button>
+        ${otraConDatos()?`<button class="sec" data-accion="pdf2">📑 Informe completo: herramienta + actividad</button>`:''}
         <a class="sec" href="${R.pdf}" target="_blank" rel="noopener">📄 Rúbrica original (PDF)</a>
         <a class="pri" href="https://notebook.google.com/notebook/54c403dc-e190-4c6c-bfb1-77b207a53b6f" target="_blank" rel="noopener">💬 ¿Dudas? Pregunta al cuaderno</a>
         <button class="sec" data-accion="reiniciar">↺ Reiniciar</button>
@@ -937,6 +939,185 @@ function renderRubrica(){
       ${R.fund?`<p class="fund">${R.fund}</p>`:''}
     </div>`;
   renderVeredicto();
+}
+
+/* ══════════════════ INFORME PDF DE LA RÚBRICA ══════════════════ */
+function otraConDatos(){
+  const otra=rubActiva==='herramienta'?'actividad':'herramienta', d=calcDictamen(otra);
+  const S=rubState[otra];
+  // los campos herramienta y etapa se copian solos, así que no cuentan como «datos»
+  return d.pend<d.total || !!(S.obs||'').trim() ||
+    Object.entries(S.campos).some(([k,v])=>!['herramienta','etapa'].includes(k)&&(v||'').trim());
+}
+let jspdfCarga=null;
+function cargarJsPDF(){
+  return jspdfCarga || (jspdfCarga=new Promise((ok,ko)=>{
+    if(window.jspdf) return ok(window.jspdf.jsPDF);
+    const sc=document.createElement('script'); sc.src='lib/jspdf.umd.min.js';
+    sc.onload=()=>window.jspdf?ok(window.jspdf.jsPDF):ko(new Error('jsPDF'));
+    sc.onerror=e=>{ jspdfCarga=null; ko(e); };
+    document.head.appendChild(sc);
+  }));
+}
+/* Texto plano compatible con las fuentes estándar del PDF (sin HTML ni emojis) */
+function pdfTxt(h){
+  const d=document.createElement('div');
+  d.innerHTML=String(h??'').replace(/<li>/gi,'\n• ').replace(/<\/(p|li|summary|ol|ul)>/gi,'\n').replace(/<br\s*\/?>/gi,'\n');
+  return d.textContent.replace(/ /g,' ').replace(/[→]/g,'->').replace(/[≤]/g,'<=').replace(/[≥]/g,'>=')
+    .replace(/[^\t\n\x20-\x7E\xA0-\xFF€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ]/g,'')
+    .replace(/[ \t]+/g,' ').replace(/ *\n */g,'\n').replace(/\n{3,}/g,'\n\n').trim();
+}
+
+async function descargarInforme(claves){
+  const JsPDF=await cargarJsPDF();
+  const doc=new JsPDF({unit:'mm', format:'a4'});
+  const W=210, H=297, M=16, CW=W-2*M, PIE=14;
+  const COL={rub:[225,29,72], ink:[43,43,58], muted:[107,107,125], linea:[226,221,210], suave:[246,244,239],
+    ok:[21,128,61], okS:[220,252,231], med:[161,98,7], medS:[254,249,195], medL:[234,179,8], no:[185,28,28], noS:[254,226,226],
+    pend:[120,120,135], pendS:[241,239,232]};
+  const hoy=new Date(), hoyTxt=`${hoy.getDate()}/${hoy.getMonth()+1}/${hoy.getFullYear()}`;
+  let y=M;
+  const color=c=>doc.setTextColor(...c);
+  const fuente=(st,sz)=>{ doc.setFont('helvetica',st); doc.setFontSize(sz); };
+  const alto=(lineas,sz,inter=1.35)=>lineas.length*sz*0.3528*inter;
+  const lineasDe=(t,ancho)=>doc.splitTextToSize(pdfTxt(t),ancho);
+  const escribir=(lineas,x,yy,sz,inter=1.35)=>{ doc.text(lineas,x,yy+sz*0.3528*0.8,{lineHeightFactor:inter}); };
+  const sitio=h=>{ if(y+h>H-M-PIE){ doc.addPage(); y=M; return true; } return false; };
+  const titulo=(n,t)=>{
+    sitio(30); fuente('bold',11.5); color(COL.ink);
+    doc.setFillColor(...COL.ink); doc.roundedRect(M,y,6.5,6.5,1.4,1.4,'F');
+    doc.setTextColor(255,255,255); fuente('bold',9); doc.text(String(n),M+3.25,y+4.6,{align:'center'});
+    fuente('bold',11.5); color(COL.ink); doc.text(pdfTxt(t),M+9.5,y+4.9); y+=10.5;
+  };
+
+  claves.forEach((key,iClave)=>{
+    if(iClave>0){ doc.addPage(); y=M; }
+    const R=RUBRICAS[key], S=rubState[key], T=R.tramos[S.tramo], d=calcDictamen(key);
+    const est={ok:['ok','okS'],med:['med','medS'],no:['no','noS'],pend:['pend','pendS']}[d.estado];
+
+    // ── Cabecera
+    doc.setFillColor(...COL.rub); doc.rect(0,0,W,3.5,'F');
+    fuente('bold',8); color(COL.rub);
+    doc.text(`INFORME DE VALORACIÓN · ${key==='herramienta'?'HERRAMIENTA':'ACTIVIDAD'}${claves.length>1?` (${iClave+1}/${claves.length})`:''}`,M,y+3);
+    y+=6;
+    fuente('bold',16); color(COL.ink);
+    let l=lineasDe(R.titulo,CW); escribir(l,M,y,16,1.2); y+=alto(l,16,1.2)+1.5;
+    fuente('normal',9); color(COL.muted);
+    l=lineasDe('Responsable: '+R.quien+'.',CW); escribir(l,M,y,9); y+=alto(l,9)+5;
+
+    // ── Datos
+    const campos=R.campos.concat([['__tramo','Tramo de edad']]);
+    const colW=(CW-6)/2;
+    for(let i=0;i<campos.length;i+=2){
+      let hFila=0;
+      [campos[i],campos[i+1]].forEach((c,j)=>{
+        if(!c) return;
+        const x=M+j*(colW+6);
+        const val=c[0]==='__tramo'?`${S.tramo} · ${TRAMOS[S.tramo].nombre} (${T.edad})`:(S.campos[c[0]]||'').trim();
+        fuente('bold',7); color(COL.muted); doc.text(pdfTxt(c[1]).toUpperCase(),x,y+2.5);
+        if(val){ fuente('bold',10); color(COL.ink); const lv=lineasDe(val,colW); escribir(lv,x,y+4,10,1.25); hFila=Math.max(hFila,4+alto(lv,10,1.25)); }
+        else{ doc.setDrawColor(...COL.linea); doc.setLineWidth(.3); doc.line(x,y+10,x+colW,y+10); hFila=Math.max(hFila,11); }
+      });
+      y+=hFila+3.5;
+    }
+    y+=2;
+
+    // ── Dictamen
+    const [dTit,dAcc]=d.estado==='pend'?['BORRADOR · DICTAMEN PENDIENTE',`Faltan ${d.pend} de ${d.total} elementos por valorar. Este documento no es un dictamen definitivo.`]:R.dictamen[d.estado];
+    fuente('normal',9.5);
+    const lAcc=lineasDe(dAcc,CW-26);
+    fuente('normal',9);
+    const motivos=d.motivos.map(m=>lineasDe('• '+m,CW-26));
+    const hMot=motivos.reduce((a,m)=>a+alto(m,9),0);
+    const hLbl=d.estado==='pend'?0:4.5;
+    const hBox=8+6.5+hLbl+alto(lAcc,9.5)+(motivos.length?2+hMot:0)+5;
+    sitio(hBox);
+    doc.setFillColor(...COL[est[1]]); doc.setDrawColor(...(d.estado==='med'?COL.medL:COL[est[0]])); doc.setLineWidth(.6);
+    doc.roundedRect(M,y,CW,hBox,3,3,'FD');
+    doc.setFillColor(...(d.estado==='med'?COL.medL:d.estado==='pend'?[200,198,190]:COL[est[0]])); doc.circle(M+10,y+10.5,5.2,'F');
+    fuente('bold',7); color(COL.muted); doc.text('DICTAMEN FINAL',M+20,y+6.5);
+    fuente('bold',13); color(COL[est[0]]); doc.text(pdfTxt(dTit),M+20,y+12.3);
+    let yy=y+15.5;
+    if(hLbl){ fuente('bold',8); color(COL.ink); doc.text('Acción requerida',M+20,yy+2.6); yy+=hLbl; }
+    fuente('normal',9.5); color(COL.ink); escribir(lAcc,M+20,yy,9.5);
+    yy+=alto(lAcc,9.5)+2; fuente('normal',9);
+    motivos.forEach(m=>{ escribir(m,M+20,yy,9); yy+=alto(m,9); });
+    y+=hBox+7;
+
+    // ── 1. Filtros
+    titulo(1,R.filtrosTitulo);
+    const xN=M, wN=46, xD=M+50, wD=CW-50-28, xR=M+CW-25;
+    R.filtros.forEach((f,i)=>{
+      fuente('bold',9); const ln=lineasDe(f[0],wN);
+      fuente('normal',8.5); const ld=lineasDe(f[1],wD);
+      const h=Math.max(alto(ln,9),alto(ld,8.5))+4;
+      sitio(h);
+      doc.setDrawColor(...COL.linea); doc.setLineWidth(.25); doc.line(M,y,M+CW,y);
+      fuente('bold',9); color(COL.ink); escribir(ln,xN,y+2,9);
+      fuente('normal',8.5); color(COL.muted); escribir(ld,xD,y+2,8.5);
+      const v=S.filtros[i], [txt,c]=v==='si'?['Cumple',COL.ok]:v==='no'?['No cumple',COL.no]:['Sin valorar',COL.pend];
+      fuente('bold',9); color(c); doc.text(txt,xR,y+2+9*0.3528*0.8);
+      y+=h;
+    });
+    y+=6;
+
+    // ── 2. Dimensiones
+    fuente('normal',9); const lp=lineasDe('Principio: '+T.principio,CW-8);
+    sitio(10.5+alto(lp,9)+28); // título, principio y primera dimensión, juntos
+    titulo(2,`Adecuación por tramo de edad · ${S.tramo} · ${TRAMOS[S.tramo].nombre} (${T.edad})`);
+    doc.setFillColor(...COL.suave); doc.roundedRect(M,y,CW,alto(lp,9)+5,2,2,'F');
+    fuente('normal',9); color(COL.ink); escribir(lp,M+4,y+2.5,9); y+=alto(lp,9)+9;
+    T.dims.forEach((dm,i)=>{
+      const v=S.dims[S.tramo+i];
+      const idx={ok:2,med:3,no:4}[v];
+      const [lbl,c]=v==='ok'?['Apta',COL.ok]:v==='med'?['Apta con mediación',COL.med]:v==='no'?['No apta',COL.no]:['Sin valorar',COL.pend];
+      fuente('bold',9.5); const ln=lineasDe(dm[0],wN);
+      fuente('normal',7.5); const lc=R.criterioCol&&dm[1]?lineasDe(dm[1],wN):[];
+      fuente('normal',8.5); const ld=idx?lineasDe(dm[idx],CW-50):[];
+      const hIzq=alto(ln,9.5)+(lc.length?1+alto(lc,7.5):0), hDer=5+alto(ld,8.5);
+      const h=Math.max(hIzq,hDer)+4;
+      sitio(h);
+      doc.setDrawColor(...COL.linea); doc.setLineWidth(.25); doc.line(M,y,M+CW,y);
+      fuente('bold',9.5); color(COL.ink); escribir(ln,xN,y+2,9.5);
+      if(lc.length){ fuente('normal',7.5); color(COL.muted); escribir(lc,xN,y+2+alto(ln,9.5)+1,7.5); }
+      fuente('bold',9); color(c); doc.text(lbl.toUpperCase(),xD,y+2+9*0.3528*0.8);
+      if(ld.length){ fuente('normal',8.5); color(COL.ink); escribir(ld,xD,y+7,8.5); }
+      y+=h;
+    });
+    y+=6;
+
+    // ── 3. Observaciones
+    titulo(3,'Observaciones y ajustes requeridos');
+    const obs=pdfTxt(S.obs||'');
+    if(obs){ fuente('normal',9.5); color(COL.ink); const lo=lineasDe(obs,CW);
+      lo.forEach(t=>{ sitio(5); escribir([t],M,y,9.5); y+=alto([t],9.5); }); y+=4; }
+    else{ sitio(26); doc.setDrawColor(...COL.linea); doc.setLineWidth(.3); for(let k=0;k<4;k++){ y+=6.5; doc.line(M,y,M+CW,y); } y+=6; }
+
+    // ── Firmas
+    sitio(26); y+=8;
+    const wf=(CW-12)/2;
+    [[key==='herramienta'?'Firma de la comisión o del equipo directivo':'Firma del docente o del departamento',M],['Fecha',M+wf+12]].forEach(([t,x])=>{
+      doc.setDrawColor(...COL.muted); doc.setLineWidth(.3); doc.line(x,y+10,x+wf,y+10);
+      fuente('normal',8); color(COL.muted); doc.text(t,x,y+14.5);
+    });
+    y+=20;
+
+    if(R.fund){ fuente('normal',7.5); color(COL.muted); const lf=lineasDe(R.fund,CW); sitio(alto(lf,7.5)+4); y+=2; escribir(lf,M,y,7.5); y+=alto(lf,7.5); }
+  });
+
+  // ── Pie de página
+  const n=doc.getNumberOfPages();
+  for(let i=1;i<=n;i++){
+    doc.setPage(i);
+    doc.setDrawColor(...COL.linea); doc.setLineWidth(.25); doc.line(M,H-M+2,W-M,H-M+2);
+    fuente('normal',7.5); color(COL.muted);
+    doc.text(`Mis Recursos de Aula · ${pdfTxt(location.host+location.pathname).replace(/index\.html$/,'').replace(/\/$/,'')} · Generado el ${hoyTxt}`,M,H-M+6);
+    doc.text(`Página ${i} de ${n}`,W-M,H-M+6,{align:'right'});
+  }
+
+  const S0=rubState[claves[0]];
+  const nombre=slug(S0.campos.herramienta||S0.campos.actividad||'')||'ia';
+  doc.save(`Valoracion-${claves.length>1?'completa':claves[0]}-${nombre}-${hoy.toISOString().slice(0,10)}.pdf`);
 }
 
 /* Interacción con las rúbricas */
@@ -951,6 +1132,12 @@ rubBody.addEventListener('click',e=>{
   if(c){ const k=S.tramo+c.dataset.dim; S.dims[k]=(S.dims[k]===c.dataset.v?undefined:c.dataset.v); saveRub(); renderRubrica(); return; }
   const a=e.target.closest('[data-accion]'); if(!a) return;
   if(a.dataset.accion==='imprimir') window.print();
+  if(a.dataset.accion==='pdf'||a.dataset.accion==='pdf2'){
+    const claves=a.dataset.accion==='pdf2'?['herramienta','actividad']:[rubActiva];
+    const txt=a.textContent; a.disabled=true; a.textContent='⏳ Generando…';
+    descargarInforme(claves).catch(()=>alert('No se ha podido generar el PDF. Prueba a recargar la página.'))
+      .finally(()=>{ if(a.isConnected){ a.disabled=false; a.textContent=txt; } });
+  }
   if(a.dataset.accion==='siguiente'||a.dataset.accion==='anterior'){
     const otra=rubActiva==='herramienta'?'actividad':'herramienta';
     const A=rubState[otra];
