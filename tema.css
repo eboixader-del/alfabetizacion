@@ -35,6 +35,7 @@
     --no:#f87171; --no-soft:color-mix(in srgb,#ef4444 18%,#1f1f2b);
     --soft:color-mix(in srgb,var(--pc,#7c3aed) 24%,#1f1f2b);
     --otros:#9ca3af;
+    --nov:#0d9488; --nov-soft:color-mix(in srgb,#14b8a6 20%,#1f1f2b); --nov-ink:#5eead4; --nov-line:#1f4a47;
   }
 
   /* Elementos con fondo oscuro (--ink) y texto blanco: invertir el texto */
@@ -53,7 +54,7 @@
   [data-theme="dark"] .cierre .box{background:var(--card)}
   [data-theme="dark"] .note{color:var(--muted)}
   [data-theme="dark"] .chip:not(.active){border-color:var(--line,#3a3a50)}
-  [data-theme="dark"] details:not(.nota){background:#262634}
+  [data-theme="dark"] details:not(.nota):not(.nov-log){background:#262634}
   [data-theme="dark"] .desc,
   [data-theme="dark"] ol,
   [data-theme="dark"] .cierre p,[data-theme="dark"] .cierre li{color:#c4c4d2}
@@ -85,7 +86,7 @@
   /* Enlaces dentro de texto */
   [data-theme="dark"] .note a,[data-theme="dark"] .modal .sub a,
   [data-theme="dark"] .etapa-nota a{color:#93c5fd}
-  [data-theme="dark"] .src a,[data-theme="dark"] details:not(.nota) summary{color:color-mix(in srgb,var(--pc,#7c3aed) 55%,#fff)}
+  [data-theme="dark"] .src a,[data-theme="dark"] details:not(.nota):not(.nov-log) summary{color:color-mix(in srgb,var(--pc,#7c3aed) 55%,#fff)}
   [data-theme="dark"] .nb-tip a{color:#fb7185}
 
   /* Sombras más suaves y formularios */

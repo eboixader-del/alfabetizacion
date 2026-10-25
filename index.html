@@ -17,6 +17,7 @@
     --bach:#6366f1; --bach-soft:#e0e7ff;
     --field:#fbfaf7; --line:#e2ddd2; --line-2:#ece8df; --line-strong:#cfc9bb; --line-soft:#f0ece3;
     --chip-bg:#f1efe8; --chip-hover:#e6e3d8; --label:#44444f; --on-ink:#fff;
+    --nov:#0d9488; --nov-soft:#ccfbf1; --nov-ink:#0f766e; --nov-line:#ccebe6;
     --radius:18px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -437,6 +438,56 @@
     .qr-box{flex-direction:column;text-align:center}
   }
   @media print{.lista-panel,.fav-btn{display:none!important}}
+
+  /* ===== Novedades ===== */
+  .nov{max-width:1080px;margin:18px auto 0;padding:0 20px}
+  .nov-box{background:var(--card);border-radius:22px;box-shadow:0 6px 20px rgba(43,43,58,.08);padding:18px 22px;border:2px solid var(--nov-line)}
+  .nov-head{display:flex;align-items:center;gap:10px 14px;cursor:pointer;user-select:none;flex-wrap:wrap}
+  .nov-head h2{font-size:1.15rem;font-weight:900}
+  .nov-head p{font-size:.85rem;color:var(--muted);margin-top:2px}
+  .nov-badge{background:var(--nov);color:#fff;font-weight:900;font-size:.8rem;padding:5px 12px;border-radius:999px;animation:novIn .5s ease}
+  @keyframes novIn{from{transform:scale(.8);opacity:0}}
+  .nov-toggle{margin-left:auto;border:none;background:var(--nov-soft);color:var(--nov-ink);font:inherit;font-weight:800;font-size:.85rem;
+    padding:8px 16px;border-radius:999px;cursor:pointer;white-space:nowrap}
+  .nov-body{margin-top:14px}
+  .nov.plegado .nov-body{display:none}
+  .nov-sub{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+  .nov-sub h3{font-size:.76rem;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)}
+  .nov-mas{border:none;background:none;cursor:pointer;font:inherit;font-weight:800;font-size:.84rem;color:var(--nov-ink);padding:0}
+  .nov-res{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+  .nc{--c:var(--ink);position:relative;text-align:left;font:inherit;color:var(--ink);background:var(--field);border:1.5px solid var(--line-2);
+    border-top:4px solid var(--c);border-radius:14px;padding:10px 12px;cursor:pointer;display:flex;flex-direction:column;gap:3px;transition:.15s}
+  .nc:hover{transform:translateY(-2px);border-color:var(--line-strong);border-top-color:var(--c)}
+  .nc.infantil{--c:var(--infantil)} .nc.primaria{--c:var(--primaria)} .nc.eso,.nc.secundaria{--c:var(--secundaria)}
+  .nc.bach{--c:var(--bach)} .nc.proyecto{--c:var(--proyecto)}
+  .nc-i{font-size:1.5rem;line-height:1.2}
+  .nc strong{font-size:.84rem;font-weight:800;line-height:1.25}
+  .nc small{font-size:.72rem;color:var(--muted);margin-top:auto}
+  .nc-punto{position:absolute;top:9px;right:9px;width:10px;height:10px;border-radius:50%;background:var(--nov);box-shadow:0 0 0 3px var(--nov-soft)}
+  .nov-log{margin-top:14px;border-top:1px solid var(--line-soft);padding-top:10px}
+  .nov-log summary{cursor:pointer;font-weight:800;font-size:.88rem;color:var(--nov-ink);padding:4px 0}
+  .nov-log ol{list-style:none;margin:8px 0 0;padding:0 0 0 14px;border-left:2px solid var(--nov-line)}
+  .nov-log ol > li{position:relative;padding:4px 0 10px 12px}
+  .nov-log ol > li::before{content:"";position:absolute;left:-20px;top:9px;width:10px;height:10px;border-radius:50%;background:var(--card);border:2px solid var(--nov)}
+  .nov-log ol > li.tuyo::before{background:var(--nov)}
+  .nl-f{font-weight:900;font-size:.82rem}
+  .nl-pill{display:inline-block;margin-left:6px;font-size:.62rem;letter-spacing:.4px;padding:2px 8px;border-radius:999px;background:var(--nov-soft);color:var(--nov-ink);vertical-align:1px}
+  .nov-log ul{margin:4px 0 0 18px;font-size:.86rem;line-height:1.5;color:var(--muted)}
+  .nov-log li.tuyo ul{color:var(--ink)}
+  .lista-panel.nov-vista{border-top-color:var(--nov)}
+  .nov-vista .lp-kicker{color:var(--nov-ink)}
+  @media (max-width:900px){
+    .nov-res{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:150px;overflow-x:auto;padding-bottom:4px;
+      scrollbar-width:none;scroll-snap-type:x proximity}
+    .nov-res::-webkit-scrollbar{display:none}
+    .nc{scroll-snap-align:start}
+  }
+  @media (max-width:560px){
+    .nov{padding-left:16px;padding-right:16px}
+    .nov-box{padding:16px}
+    .nov-badge{order:3;width:100%;text-align:center}
+  }
+  @media print{.nov{display:none!important}}
 </style>
 <link rel="stylesheet" href="tema.css">
 <script>(function(){var t=null;try{t=localStorage.getItem("tema")}catch(e){}var d=t?t==="oscuro":!!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.dataset.theme=d?"dark":"light";})();</script>
@@ -457,6 +508,8 @@
   <a class="btn-add btn-sug" href="https://docs.google.com/forms/d/e/1FAIpQLScXIdWQmBWoYu3mK4ap3EAeZCtEFbtjb1sVy2T3nXm9a5tOEQ/viewform" target="_blank" rel="noopener" title="Propón un recurso para que se publique en esta web">💡 Sugerir recurso</a>
   <button class="btn-add btn-mio" id="btnAdd" title="Guarda un recurso solo en este navegador">➕ Añadir para mí</button>
 </div>
+
+<section class="nov" id="nov" aria-label="Novedades"></section>
 
 <section class="reco open" id="reco">
   <div class="reco-box">
@@ -574,158 +627,197 @@
 
 <script>
 const ETAPAS = {infantil:'Infantil', primaria:'Primaria', eso:'ESO', bach:'Bachillerato', secundaria:'Secundaria', proyecto:'Proyecto'};
+/* ══════════════════ NOVEDADES ══════════════════
+   Añade arriba una entrada cada vez que cambie la web. Los recursos nuevos
+   aparecen solos a partir de su fecha «alta». */
+const NOVEDADES_WEB = [
+  {fecha:'2026-10-25', items:[
+    'Pestañas de ESO y Bachillerato, etiqueta de idioma con el filtro «Solo en castellano» y modo oscuro.',
+    'Ficha de cada recurso con una idea para usarlo en el aula y la valoración que hayas hecho.',
+    'Favoritos: guarda recursos y comparte tu selección con un enlace o un código QR.',
+    'Las rúbricas se descargan como informe en PDF, listo para firmar.',
+    'Esta sección de novedades.']},
+  {fecha:'2026-10-11', items:[
+    'Catálogo de 306 proyectos guiados de Raspberry Pi.',
+    'Recomendador «¿Qué quieres conseguir?».',
+    'Actividades de pensamiento crítico y de verificación de lo que dice la IA.',
+    'Botón para sugerir recursos.']},
+  {fecha:'2026-10-10', items:['Catálogo de los 131 cursos de Code.org.']},
+  {fecha:'2026-10-05', items:['Rúbricas de idoneidad de herramientas y actividades de IA, con semáforo.']},
+  {fecha:'2026-07-08', items:['Primera versión: 41 recursos de Infantil y Primaria.']}
+];
+const DIAS_NUEVO=60;
+const HOY_ISO=(()=>{ const d=new Date(); return new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10); })();
+function diasDesde(iso){ return (Date.parse(HOY_ISO)-Date.parse(iso))/864e5; }
+function esNuevo(r){ return !!r.alta && diasDesde(r.alta)<=DIAS_NUEVO; }
+function fechaLarga(iso){ return new Date(iso+'T12:00:00').toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'}).replace('.',''); }
+/* Fecha de la visita anterior: se fija al empezar la sesión para que el aviso no desaparezca al recargar */
+let visitaPrev='';
+try{
+  const ss=sessionStorage.getItem('visitaPrev');
+  if(ss!==null) visitaPrev=ss;
+  else{ visitaPrev=localStorage.getItem('visitaUltima')||''; sessionStorage.setItem('visitaPrev',visitaPrev); }
+  localStorage.setItem('visitaUltima',HOY_ISO);
+}catch(e){}
+function nuevoParaTi(fecha){ return !!visitaPrev && !!fecha && fecha>visitaPrev; }
+
 const IDIOMAS = {es:'💬 Castellano', mix:'💬 Castellano e inglés', en:'💬 Inglés', sin:'🌍 Sin idioma'};
 
+/* Cada recurso:
+   etapa  infantil | primaria | eso | bach | proyecto      nombre, icon, cat, edad, desc, links:[{txt,url,alt?}]
+   alta   fecha en que se añadió (AAAA-MM-DD): da la etiqueta NUEVO durante 60 días y lo pone en «Novedades»
+   idea   propuesta de uso en el aula (ficha)               idioma  es | mix | en | sin
+   necesita  ['camara'|'micro'|'desenchufada'] (opcional)  */
 const RECURSOS = [
   // ══════════ INFANTIL (3-6 años) ══════════
-  {etapa:'infantil', icon:'🖍️', nombre:'Animated Drawings', idea:"Cada niño dibuja un personaje del cuento del proyecto; el docente fotografía los dibujos y en la asamblea los vemos cobrar vida. Después: ¿cómo ha sabido la máquina dónde están los brazos y las piernas? Sube solo el dibujo, nunca fotos del alumnado.", necesita:["camara"], idioma:'en', cat:'Arte y creatividad', edad:'3-6 años',
+  {etapa:'infantil', icon:'🖍️', nombre:'Animated Drawings', alta:'2026-07-08', idea:"Cada niño dibuja un personaje del cuento del proyecto; el docente fotografía los dibujos y en la asamblea los vemos cobrar vida. Después: ¿cómo ha sabido la máquina dónde están los brazos y las piernas? Sube solo el dibujo, nunca fotos del alumnado.", necesita:["camara"], idioma:'en', cat:'Arte y creatividad', edad:'3-6 años',
    desc:'La IA anima los dibujos que hacen los alumnos: suben su dibujo y cobra vida moviéndose y bailando. Motivación asegurada.',
    links:[{txt:'Abrir', url:'https://sketch.metademolab.com/'}]},
-  {etapa:'infantil', icon:'🎤', nombre:'Speechnotes', idea:"Dictado colectivo: el grupo cuenta lo que pasó en la excursión, el docente lo dicta y todos ven aparecer las palabras en la pantalla. Después buscan en el texto las letras de su nombre.", necesita:["micro"], idioma:'es', cat:'Lenguaje y lectoescritura', edad:'3-6 años',
+  {etapa:'infantil', icon:'🎤', nombre:'Speechnotes', alta:'2026-07-08', idea:"Dictado colectivo: el grupo cuenta lo que pasó en la excursión, el docente lo dicta y todos ven aparecer las palabras en la pantalla. Después buscan en el texto las letras de su nombre.", necesita:["micro"], idioma:'es', cat:'Lenguaje y lectoescritura', edad:'3-6 años',
    desc:'Convierte audio a texto. Útil para que los peques "escriban" hablando y vean cómo sus palabras se transforman en letras.',
    links:[{txt:'Abrir', url:'https://speechnotes.co/es/'}]},
-  {etapa:'infantil', icon:'🔊', nombre:'TTSMaker', idea:"Graba las consignas de cada rincón o un audiocuento corto y enlázalos con un código QR, para que los niños los escuchen de forma autónoma en la tablet.", idioma:'es', cat:'Lenguaje y lectoescritura', edad:'3-6 años',
+  {etapa:'infantil', icon:'🔊', nombre:'TTSMaker', alta:'2026-07-08', idea:"Graba las consignas de cada rincón o un audiocuento corto y enlázalos con un código QR, para que los niños los escuchen de forma autónoma en la tablet.", idioma:'es', cat:'Lenguaje y lectoescritura', edad:'3-6 años',
    desc:'Convierte texto a audio con voces naturales. Ideal para crear audiocuentos o consignas sonoras para rincones.',
    links:[{txt:'Abrir', url:'https://ttsmaker.com/'}]},
-  {etapa:'infantil', icon:'🎵', nombre:'Suno', idea:"Uso docente: crea con el grupo una canción para una rutina (recoger, lavarse las manos). Los niños proponen las palabras, el docente escribe la letra y genera dos versiones; la clase vota su favorita.", idioma:'en', cat:'Música', edad:'3-6 años',
+  {etapa:'infantil', icon:'🎵', nombre:'Suno', alta:'2026-07-08', idea:"Uso docente: crea con el grupo una canción para una rutina (recoger, lavarse las manos). Los niños proponen las palabras, el docente escribe la letra y genera dos versiones; la clase vota su favorita.", idioma:'en', cat:'Música', edad:'3-6 años',
    desc:'Crea canciones personalizadas con IA: canciones de rutinas, de cumpleaños, de proyectos… con la letra que tú elijas.',
    links:[{txt:'Abrir', url:'https://www.suno.ai/'}]},
-  {etapa:'infantil', icon:'🎨', nombre:'Copilot (imágenes para colorear)', idea:"Uso docente: genera láminas de colorear a partir de lo que piden los niños en la asamblea («un dinosaurio astronauta») e imprímelas. Comentad si el dibujo se parece a lo que imaginaban.", idioma:'es', cat:'Arte y creatividad', edad:'3-6 años',
+  {etapa:'infantil', icon:'🎨', nombre:'Copilot (imágenes para colorear)', alta:'2026-07-08', idea:"Uso docente: genera láminas de colorear a partir de lo que piden los niños en la asamblea («un dinosaurio astronauta») e imprímelas. Comentad si el dibujo se parece a lo que imaginaban.", idioma:'es', cat:'Arte y creatividad', edad:'3-6 años',
    desc:'Genera imágenes para colorear a gusto de los niños: pide un dibujo de línea sobre cualquier tema y imprímelo al momento.',
    links:[{txt:'Abrir', url:'https://copilot.microsoft.com/'}]},
-  {etapa:'infantil', icon:'✏️', nombre:'Quick, Draw!', idea:"Por turnos en la pizarra digital: un niño dibuja y el resto intenta adivinar a la vez que la máquina. ¿Quién acierta antes, la clase o la IA? ¿Qué dibujos le cuestan más?", idioma:'es', cat:'Alfabetización en IA', edad:'3-6 años',
+  {etapa:'infantil', icon:'✏️', nombre:'Quick, Draw!', alta:'2026-07-08', idea:"Por turnos en la pizarra digital: un niño dibuja y el resto intenta adivinar a la vez que la máquina. ¿Quién acierta antes, la clase o la IA? ¿Qué dibujos le cuestan más?", idioma:'es', cat:'Alfabetización en IA', edad:'3-6 años',
    desc:'Dibujan en la pizarra digital y la IA intenta adivinar qué es. Primer contacto con el reconocimiento de imágenes, con muchas risas.',
    links:[{txt:'Abrir', url:'https://quickdraw.withgoogle.com/'}]},
-  {etapa:'infantil', icon:'📚', nombre:'Khan Academy Kids', idea:"Úsala en un rincón de tablet con sesiones cortas de 10 minutos, alternando con actividades manipulativas sobre el mismo contenido.", idioma:'es', cat:'Multiárea', edad:'3-6 años',
+  {etapa:'infantil', icon:'📚', nombre:'Khan Academy Kids', alta:'2026-07-08', idea:"Úsala en un rincón de tablet con sesiones cortas de 10 minutos, alternando con actividades manipulativas sobre el mismo contenido.", idioma:'es', cat:'Multiárea', edad:'3-6 años',
    desc:'Amplia variedad de actividades educativas: matemáticas, lectura, escritura y habilidades socioemocionales. Gratuito y en español.',
    links:[{txt:'Abrir', url:'https://es.khanacademy.org/kids'}]},
-  {etapa:'infantil', icon:'🎹', nombre:'AI Duet (Piano virtual)', idea:"Juego de pregunta y respuesta musical: un niño toca tres notas y escuchamos qué contesta la IA; después, otro niño intenta contestar él mismo.", idioma:'sin', cat:'Música', edad:'3-6 años',
+  {etapa:'infantil', icon:'🎹', nombre:'AI Duet (Piano virtual)', alta:'2026-07-08', idea:"Juego de pregunta y respuesta musical: un niño toca tres notas y escuchamos qué contesta la IA; después, otro niño intenta contestar él mismo.", idioma:'sin', cat:'Música', edad:'3-6 años',
    desc:'Piano virtual que responde: el niño toca unas notas y la IA improvisa un dueto con él. Exploración musical libre.',
    links:[{txt:'Abrir', url:'https://experiments.withgoogle.com/ai/ai-duet/view/'}]},
-  {etapa:'infantil', icon:'🐼', nombre:'Scarlett Panda', idea:"Uso docente: crea un cuento con los personajes y el tema del proyecto y léelo en la asamblea; al final, los niños dibujan un final distinto. Mejor usar nombres de personajes inventados que nombres reales del alumnado.", idioma:'en', cat:'Lenguaje y lectoescritura', edad:'3-6 años',
+  {etapa:'infantil', icon:'🐼', nombre:'Scarlett Panda', alta:'2026-07-08', idea:"Uso docente: crea un cuento con los personajes y el tema del proyecto y léelo en la asamblea; al final, los niños dibujan un final distinto. Mejor usar nombres de personajes inventados que nombres reales del alumnado.", idioma:'en', cat:'Lenguaje y lectoescritura', edad:'3-6 años',
    desc:'Generador de cuentos personalizados: crea historias con los nombres de los alumnos y los temas del proyecto de aula.',
    links:[{txt:'Abrir', url:'https://www.scarlettpanda.com/'}]},
-  {etapa:'infantil', icon:'🖤', nombre:'PineTools · Blanco y negro', idea:"Convierte en blanco y negro fotos de objetos del entorno (plantas del patio, la fachada del cole) para preparar fichas de colorear o recortar.", idioma:'es', cat:'Utilidades', edad:'3-6 años',
+  {etapa:'infantil', icon:'🖤', nombre:'PineTools · Blanco y negro', alta:'2026-07-08', idea:"Convierte en blanco y negro fotos de objetos del entorno (plantas del patio, la fachada del cole) para preparar fichas de colorear o recortar.", idioma:'es', cat:'Utilidades', edad:'3-6 años',
    desc:'Convierte cualquier imagen a blanco y negro en segundos. Práctico para preparar fichas para colorear a partir de fotos.',
    links:[{txt:'Abrir', url:'https://pinetools.com/es/convertir-blanco-y-negro'}]},
-  {etapa:'infantil', icon:'🎼', nombre:'Musical Canvas', idea:"Después de escuchar una pieza musical, cada niño la «pinta» y descubre cómo suena su dibujo. Comparad cómo suenan los trazos rápidos y los lentos.", idioma:'sin', cat:'Arte y creatividad', edad:'3-6 años',
+  {etapa:'infantil', icon:'🎼', nombre:'Musical Canvas', alta:'2026-07-08', idea:"Después de escuchar una pieza musical, cada niño la «pinta» y descubre cómo suena su dibujo. Comparad cómo suenan los trazos rápidos y los lentos.", idioma:'sin', cat:'Arte y creatividad', edad:'3-6 años',
    desc:'Realizan un dibujo y la IA lo transforma en música. Une plástica y música en una misma experiencia sensorial.',
    links:[{txt:'Abrir', url:'https://artsandculture.google.com/experiment/musical-canvas'}]},
-  {etapa:'infantil', icon:'🪄', nombre:'Semi-Conductor', idea:"Sesión de psicomotricidad: por turnos, un niño dirige la orquesta y el resto se mueve al ritmo. ¿Qué pasa si movemos los brazos más rápido o más despacio?", necesita:["camara"], idioma:'sin', cat:'Música', edad:'3-6 años',
+  {etapa:'infantil', icon:'🪄', nombre:'Semi-Conductor', alta:'2026-07-08', idea:"Sesión de psicomotricidad: por turnos, un niño dirige la orquesta y el resto se mueve al ritmo. ¿Qué pasa si movemos los brazos más rápido o más despacio?", necesita:["camara"], idioma:'sin', cat:'Música', edad:'3-6 años',
    desc:'Los niños/as se convierten en directores de orquesta: la cámara analiza sus movimientos y la orquesta les obedece.',
    links:[{txt:'Abrir', url:'https://semiconductor.withgoogle.com/'}]},
 
   // ── Nuevos · Infantil · Alfabetización en IA ──
-  {etapa:'infantil', icon:'✨', nombre:'AutoDraw', idea:"Un niño hace un garabato de un animal y el grupo elige entre las sugerencias de la IA. ¿Cuál se parece más? ¿Por qué creéis que la máquina ha pensado en eso?", idioma:'sin', cat:'Alfabetización en IA', edad:'3-6 años', nuevo:true,
+  {etapa:'infantil', icon:'✨', nombre:'AutoDraw', alta:'2026-07-08', idea:"Un niño hace un garabato de un animal y el grupo elige entre las sugerencias de la IA. ¿Cuál se parece más? ¿Por qué creéis que la máquina ha pensado en eso?", idioma:'sin', cat:'Alfabetización en IA', edad:'3-6 años',
    desc:'Dibujan un garabato y la IA sugiere dibujos "perfeccionados" de lo que ha reconocido. Ideal para hablar de cómo la máquina "adivina" lo que vemos.',
    links:[{txt:'Abrir', url:'https://www.autodraw.com/'}]},
-  {etapa:'infantil', icon:'🔎', nombre:'Emoji Scavenger Hunt', idea:"Búsqueda del tesoro por la clase en pequeños grupos con una tablet: aparece un emoji y hay que encontrar el objeto real antes de que acabe el tiempo.", necesita:["camara"], idioma:'sin', cat:'Alfabetización en IA', edad:'4-6 años', nuevo:true,
+  {etapa:'infantil', icon:'🔎', nombre:'Emoji Scavenger Hunt', alta:'2026-07-08', idea:"Búsqueda del tesoro por la clase en pequeños grupos con una tablet: aparece un emoji y hay que encontrar el objeto real antes de que acabe el tiempo.", necesita:["camara"], idioma:'sin', cat:'Alfabetización en IA', edad:'4-6 años',
    desc:'La app muestra un emoji y hay que encontrar el objeto real antes de que acabe el tiempo: la cámara lo reconoce con IA. Interfaz en inglés pero casi sin texto.',
    links:[{txt:'Jugar', url:'https://emojiscavengerhunt.withgoogle.com/'}]},
-  {etapa:'infantil', icon:'🎭', nombre:'Blob Opera', idea:"Dirigid el coro para acompañar una canción de la clase y trabajad agudo y grave moviendo los blobs hacia arriba y hacia abajo.", idioma:'sin', cat:'Música', edad:'3-6 años', nuevo:true,
+  {etapa:'infantil', icon:'🎭', nombre:'Blob Opera', alta:'2026-07-08', idea:"Dirigid el coro para acompañar una canción de la clase y trabajad agudo y grave moviendo los blobs hacia arriba y hacia abajo.", idioma:'sin', cat:'Música', edad:'3-6 años',
    desc:'Cuatro "blobs" cantarines entrenados con voces de ópera reales. Los niños dirigen el coro arrastrándolos. Muy útil para explicar que la IA "aprende" de ejemplos.',
    links:[{txt:'Jugar', url:'https://artsandculture.google.com/experiment/blob-opera/AAHWrq360NcGbw'}]},
 
   // ══════════ PRIMARIA · 6-8 años ══════════
-  {etapa:'primaria', icon:'🈺', nombre:'Las palabras misteriosas', idea:"Úsala como primera sesión de una unidad sobre lenguaje y máquinas. Al terminar, la clase busca ejemplos de traductores y asistentes de voz que usa en casa.", idioma:'es', cat:'Alfabetización en IA', edad:'6-8 años',
+  {etapa:'primaria', icon:'🈺', nombre:'Las palabras misteriosas', alta:'2026-07-08', idea:"Úsala como primera sesión de una unidad sobre lenguaje y máquinas. Al terminar, la clase busca ejemplos de traductores y asistentes de voz que usa en casa.", idioma:'es', cat:'Alfabetización en IA', edad:'6-8 años',
    desc:'Descubren cómo funciona una IA de Procesamiento de Lenguaje Natural (PLN) traduciendo palabras a otro idioma. Actividad completa con materiales.',
    links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1vAUspRuZkxt5efoDmeV-ks4HrwiWiqyN?usp=drive_link'}]},
-  {etapa:'primaria', icon:'🖼️', nombre:'En busca del arte perdido', idea:"Conéctala con Plástica: al acabar la búsqueda, cada grupo prepara tres preguntas sobre su obra favorita y compara lo que responde el chatbot con un libro o la web del museo.", idioma:'es', cat:'Alfabetización en IA', edad:'6-8 años',
+  {etapa:'primaria', icon:'🖼️', nombre:'En busca del arte perdido', alta:'2026-07-08', idea:"Conéctala con Plástica: al acabar la búsqueda, cada grupo prepara tres preguntas sobre su obra favorita y compara lo que responde el chatbot con un libro o la web del museo.", idioma:'es', cat:'Alfabetización en IA', edad:'6-8 años',
    desc:'Aprenden cómo funciona un chatbot a través de una búsqueda con temática artística. Actividad guiada con materiales descargables.',
    links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1RTOnJQZXERw9ugS2y59Ekft5s4Wfh_hv?usp=drive_link'}]},
-  {etapa:'primaria', icon:'😊', nombre:'La Inteligencia Artificial Feliz', idea:"Enlázala con tutoría: después de la actividad, debatid si una máquina puede «saber» cómo nos sentimos y qué emociones son más difíciles de adivinar por la cara.", idioma:'es', cat:'Emociones', edad:'6-8 años',
+  {etapa:'primaria', icon:'😊', nombre:'La Inteligencia Artificial Feliz', alta:'2026-07-08', idea:"Enlázala con tutoría: después de la actividad, debatid si una máquina puede «saber» cómo nos sentimos y qué emociones son más difíciles de adivinar por la cara.", idioma:'es', cat:'Emociones', edad:'6-8 años',
    desc:'Descubren que la IA puede servir para reconocer emociones. Conecta tecnología con educación emocional.',
    links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1eXLYTC1YzVLQDOmYbJPwvS7OiTQdoArq?usp=drive_link'}]},
-  {etapa:'primaria', icon:'💃', nombre:'K-Pop Dance Challenge', idea:"Pausa activa de 5 minutos entre clases o calentamiento en Educación Física. Después, pregunta: ¿cómo sabe la IA si lo estamos haciendo bien?", necesita:["camara"], idioma:'sin', cat:'Movimiento y baile', edad:'6-9 años',
+  {etapa:'primaria', icon:'💃', nombre:'K-Pop Dance Challenge', alta:'2026-07-08', idea:"Pausa activa de 5 minutos entre clases o calentamiento en Educación Física. Después, pregunta: ¿cómo sabe la IA si lo estamos haciendo bien?", necesita:["camara"], idioma:'sin', cat:'Movimiento y baile', edad:'6-9 años',
    desc:'Imitan coreografías por niveles de dificultad y la IA puntúa sus movimientos. Genial para descansos activos o Educación Física.',
    links:[{txt:'Jugar', url:'https://artsandculture.google.com/experiment/k-pop-dance-challenge/ugGuLJ2ruXjWlg'}]},
 
   // ── Nuevo · 6-12 ──
-  {etapa:'primaria', icon:'🧞', nombre:'Akinator', idea:"Jugad con toda la clase pensando en un personaje del libro de lectura. Apunta en la pizarra las preguntas que hace y analizad su estrategia: ¿por qué empieza con preguntas tan generales?", idioma:'es', cat:'Alfabetización en IA', edad:'6-12 años', nuevo:true,
+  {etapa:'primaria', icon:'🧞', nombre:'Akinator', alta:'2026-07-08', idea:"Jugad con toda la clase pensando en un personaje del libro de lectura. Apunta en la pizarra las preguntas que hace y analizad su estrategia: ¿por qué empieza con preguntas tan generales?", idioma:'es', cat:'Alfabetización en IA', edad:'6-12 años',
    desc:'El genio adivina el personaje en el que piensan haciendo preguntas. Perfecto para debatir después: ¿cómo lo hace? Introduce los árboles de decisión sin nombrarlos.',
    links:[{txt:'Jugar', url:'https://es.akinator.com/'}]},
 
   // ══════════ PRIMARIA · 9-12 años ══════════
-  {etapa:'primaria', icon:'🪐', nombre:'¿De qué planeta eres?', idea:"Buena puerta de entrada a la clasificación: tras la actividad, cada grupo inventa sus propias reglas para clasificar los objetos de la clase y las prueba con otro grupo.", idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años',
+  {etapa:'primaria', icon:'🪐', nombre:'¿De qué planeta eres?', alta:'2026-07-08', idea:"Buena puerta de entrada a la clasificación: tras la actividad, cada grupo inventa sus propias reglas para clasificar los objetos de la clase y las prueba con otro grupo.", idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años',
    desc:'Los alumnos comienzan a trabajar tal y como lo hace un tipo de inteligencia artificial. Actividad de iniciación con materiales completos.',
    links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1I2egIdaB43EkRO-c3qP977aSXIqaAv93?usp=sharing'}]},
-  {etapa:'primaria', icon:'🔷', nombre:'El camino de los rombos', idea:"Llévala al patio o al gimnasio con cinta en el suelo: un alumno da las instrucciones y otro hace de robot que solo puede obedecerlas al pie de la letra.", necesita:["desenchufada"], idioma:'es', cat:'Programación', edad:'9-12 años',
+  {etapa:'primaria', icon:'🔷', nombre:'El camino de los rombos', alta:'2026-07-08', idea:"Llévala al patio o al gimnasio con cinta en el suelo: un alumno da las instrucciones y otro hace de robot que solo puede obedecerlas al pie de la letra.", necesita:["desenchufada"], idioma:'es', cat:'Programación', edad:'9-12 años',
    desc:'Conocen aspectos básicos de los fundamentos de la programación mediante una actividad desenchufada y guiada.',
    links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1Ztu3fgECkOXO8UD_9NEJrJucZj7uMnKr?usp=drive_link'}]},
-  {etapa:'primaria', icon:'🌿', nombre:'Conociendo nuestro entorno con la IA', idea:"En una salida al entorno, cada grupo fotografía cinco plantas o animales, comprueba la identificación de la IA con una guía de campo y anota cuándo se equivoca.", necesita:["camara"], idioma:'es', cat:'Ciencias naturales', edad:'9-12 años',
+  {etapa:'primaria', icon:'🌿', nombre:'Conociendo nuestro entorno con la IA', alta:'2026-07-08', idea:"En una salida al entorno, cada grupo fotografía cinco plantas o animales, comprueba la identificación de la IA con una guía de campo y anota cuándo se equivoca.", necesita:["camara"], idioma:'es', cat:'Ciencias naturales', edad:'9-12 años',
    desc:'Usan una herramienta de IA que reconoce plantas y animales. Perfecta para salidas al entorno natural del cole.',
    links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1g1hjqZ9nmWNSExfcTaMywpd5gCJyiKRB?usp=drive_link'}]},
-  {etapa:'primaria', icon:'🔍', nombre:'¿Qué es qué?', idea:"Úsala para arrancar una unidad de IA. Al final, la clase hace un mural con ejemplos de su vida diaria en los que una máquina clasifica imágenes.", idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años',
+  {etapa:'primaria', icon:'🔍', nombre:'¿Qué es qué?', alta:'2026-07-08', idea:"Úsala para arrancar una unidad de IA. Al final, la clase hace un mural con ejemplos de su vida diaria en los que una máquina clasifica imágenes.", idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años',
    desc:'Aprenden qué es la inteligencia artificial y cómo clasifica las imágenes, con dinámicas prácticas.',
    links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1IxEdLHhqOnhtOz_CrCIm8Y5eMb5NQOsf?usp=drive_link'}]},
-  {etapa:'primaria', icon:'💬', nombre:'Chateando con una IA: descubre ChatGPT', idea:"Hazla en modo demostración, con el docente al teclado: la clase propone preguntas, comprueba las respuestas en otra fuente y apunta los errores que encuentra.", idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años',
+  {etapa:'primaria', icon:'💬', nombre:'Chateando con una IA: descubre ChatGPT', alta:'2026-07-08', idea:"Hazla en modo demostración, con el docente al teclado: la clase propone preguntas, comprueba las respuestas en otra fuente y apunta los errores que encuentra.", idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años',
    desc:'Aprenden a usar ChatGPT interactuando con él y debatiendo sobre sus usos y limitaciones. Fomenta el espíritu crítico.',
    links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1ya6qOYXvpj77vUyjOrJ-TuHypOS_poVR?usp=drive_link'}]},
-  {etapa:'primaria', icon:'🛡️', nombre:'El VigilaChat', idea:"Complemento ideal de una unidad de seguridad digital: cada grupo prueba su detector con frases inventadas y busca las que consiguen engañarlo.", idioma:'es', cat:'Seguridad digital', edad:'9-12 años',
+  {etapa:'primaria', icon:'🛡️', nombre:'El VigilaChat', alta:'2026-07-08', idea:"Complemento ideal de una unidad de seguridad digital: cada grupo prueba su detector con frases inventadas y busca las que consiguen engañarlo.", idioma:'es', cat:'Seguridad digital', edad:'9-12 años',
    desc:'Entrenan una IA con Machine Learning for Kids y la implementan en Scratch para detectar si alguien expone datos personales al chatear en Internet.',
    links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1zVbK1RNj45CkwKZGtyHsP-owfKnBvFCW?usp=drive_link'}]},
-  {etapa:'primaria', icon:'🤖', nombre:'Entrenamos una IA', idea:"Repetid el entrenamiento con pocos ejemplos y con muchos, y comparad los resultados: así se ve en directo por qué importan los datos.", idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años',
+  {etapa:'primaria', icon:'🤖', nombre:'Entrenamos una IA', alta:'2026-07-08', idea:"Repetid el entrenamiento con pocos ejemplos y con muchos, y comparad los resultados: así se ve en directo por qué importan los datos.", idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años',
    desc:'Descubren cómo funciona una IA que identifica dibujos y entrenan la suya propia para reconocer gatos y manzanas, usando imágenes con licencia Creative Commons.',
    links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/104p0bBj1_JQotqQEUEmZ52rBEFMLxyzD?usp=drive_link'}]},
-  {etapa:'primaria', icon:'🎭', nombre:'Galería Virtual Familiar', idea:"Organiza una exposición para las familias con el dibujo original junto a la versión de la IA y una frase del alumno explicando qué ha cambiado y qué prefiere.", idioma:'es', cat:'Arte y creatividad', edad:'9-12 años',
+  {etapa:'primaria', icon:'🎭', nombre:'Galería Virtual Familiar', alta:'2026-07-08', idea:"Organiza una exposición para las familias con el dibujo original junto a la versión de la IA y una frase del alumno explicando qué ha cambiado y qué prefiere.", idioma:'es', cat:'Arte y creatividad', edad:'9-12 años',
    desc:'A partir de un dibujo del alumno, la IA lo convierte en una obra al estilo de un pintor reconocido. Termina en exposición de aula.',
    links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1264zwVi3Haq-Y5fsvTDrRJfiI79gOveT?usp=drive_link'}]},
-  {etapa:'primaria', icon:'🧠', nombre:'Google Teachable Machine', idea:"Entrenad entre todos un modelo que distinga piedra, papel y tijera con la cámara. Probad qué pasa si solo lo entrena una persona: el sesgo se ve en directo.", necesita:["camara"], idioma:'en', cat:'Alfabetización en IA', edad:'9-12 años',
+  {etapa:'primaria', icon:'🧠', nombre:'Google Teachable Machine', alta:'2026-07-08', idea:"Entrenad entre todos un modelo que distinga piedra, papel y tijera con la cámara. Probad qué pasa si solo lo entrena una persona: el sesgo se ve en directo.", necesita:["camara"], idioma:'en', cat:'Alfabetización en IA', edad:'9-12 años',
    desc:'Crean modelos sencillos de IA que clasifican imágenes, sonidos o posturas. Sin programar y con resultados inmediatos.',
    links:[{txt:'Abrir', url:'https://teachablemachine.withgoogle.com/'}]},
-  {etapa:'primaria', icon:'🕵️', nombre:'Odd One Out', idea:"Jugad en parejas y apuntad las pistas que os ayudan a descubrir la imagen generada. Al final, haced una lista común de «señales de IA».", idioma:'sin', cat:'Alfabetización en IA', edad:'9-12 años',
+  {etapa:'primaria', icon:'🕵️', nombre:'Odd One Out', alta:'2026-07-08', idea:"Jugad en parejas y apuntad las pistas que os ayudan a descubrir la imagen generada. Al final, haced una lista común de «señales de IA».", idioma:'sin', cat:'Alfabetización en IA', edad:'9-12 años',
    desc:'Los jugadores deben identificar los «impostores» generados por IA ocultos entre obras de arte reales. Agudiza la observación y el pensamiento crítico.',
    links:[{txt:'Jugar', url:'https://artsandculture.google.com/experiment/odd-one-out/wAHNn4JsVTFOiw'}]},
-  {etapa:'primaria', icon:'⚙️', nombre:'Machine Learning for Kids', idea:"Proyecto de varias sesiones: entrenar un modelo que distinga frases amables de frases ofensivas y usarlo dentro de un juego de Scratch.", idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años',
+  {etapa:'primaria', icon:'⚙️', nombre:'Machine Learning for Kids', alta:'2026-07-08', idea:"Proyecto de varias sesiones: entrenar un modelo que distinga frases amables de frases ofensivas y usarlo dentro de un juego de Scratch.", idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años',
    desc:'Plataforma para introducir el aprendizaje automático de forma accesible y divertida, con herramientas visuales y proyectos prácticos conectados a Scratch.',
    links:[{txt:'Abrir', url:'https://machinelearningforkids.co.uk/'}]},
-  {etapa:'primaria', icon:'📸', nombre:'INTEF · Reconocimiento de imágenes', idea:"Úsala como secuencia completa para el tercer ciclo. Revisa antes los materiales y adapta las sesiones a tu horario.", idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años',
+  {etapa:'primaria', icon:'📸', nombre:'INTEF · Reconocimiento de imágenes', alta:'2026-07-08', idea:"Úsala como secuencia completa para el tercer ciclo. Revisa antes los materiales y adapta las sesiones a tu horario.", idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años',
    desc:'Propuesta didáctica oficial del INTEF para trabajar el reconocimiento de imágenes utilizando la IA.',
    links:[{txt:'Abrir', url:'https://code.intef.es/prop_didacticas/reconocimiento-de-imagenes-utilizando-la-ia/'}]},
-  {etapa:'primaria', icon:'🧙', nombre:'Reto Gandalf', idea:"En parejas y con el docente supervisando: cada pareja apunta qué truco le ha funcionado en cada nivel. Después, debatid por qué un asistente de IA puede ser engañado.", idioma:'en', cat:'Seguridad digital', edad:'9-12 años',
+  {etapa:'primaria', icon:'🧙', nombre:'Reto Gandalf', alta:'2026-07-08', idea:"En parejas y con el docente supervisando: cada pareja apunta qué truco le ha funcionado en cada nivel. Después, debatid por qué un asistente de IA puede ser engañado.", idioma:'en', cat:'Seguridad digital', edad:'9-12 años',
    desc:'Se ponen en la piel de un "atacante" que intenta sonsacar una contraseña a un asistente LLM que no debe revelarla. ¿Superarán los 8 niveles? Muy útil para hablar de ciberseguridad.',
    links:[{txt:'Jugar', url:'https://gandalf.lakera.ai/intro'}]},
 
   // ── Nuevos · Primaria · Alfabetización en IA ──
-  {etapa:'primaria', icon:'🐠', nombre:'AI for Oceans (Code.org)', idea:"Hazla en una sesión y cierra con un debate: ¿qué pasaría si enseñamos a la IA con ejemplos equivocados o incompletos?", idioma:'es', cat:'Alfabetización en IA', edad:'8-12 años', nuevo:true,
+  {etapa:'primaria', icon:'🐠', nombre:'AI for Oceans (Code.org)', alta:'2026-07-08', idea:"Hazla en una sesión y cierra con un debate: ¿qué pasaría si enseñamos a la IA con ejemplos equivocados o incompletos?", idioma:'es', cat:'Alfabetización en IA', edad:'8-12 años',
    desc:'Entrenan una IA para clasificar peces y basura marina, y descubren qué son los datos de entrenamiento y los sesgos. En español, con vídeos y guía docente. Un clásico imprescindible.',
    links:[{txt:'Abrir', url:'https://code.org/oceans'}]},
-  {etapa:'primaria', icon:'🇪🇸', nombre:'LearningML', idea:"Proyecto de varias sesiones: entrenad un modelo que reconozca si un texto habla de deportes o de música y usadlo en un programa de Scratch.", idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años', nuevo:true,
+  {etapa:'primaria', icon:'🇪🇸', nombre:'LearningML', alta:'2026-07-08', idea:"Proyecto de varias sesiones: entrenad un modelo que reconozca si un texto habla de deportes o de música y usadlo en un programa de Scratch.", idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años',
    desc:'Plataforma española (y en español) para entrenar modelos de reconocimiento de textos e imágenes y usarlos luego en proyectos de Scratch. Alternativa cercana a ML for Kids.',
    links:[{txt:'Abrir', url:'https://learningml.org/'}]},
-  {etapa:'primaria', icon:'🔌', nombre:'AI Unplugged', idea:"Ideal cuando no hay ordenadores: elige una actividad (por ejemplo, árboles de decisión) y hazla con tarjetas en pequeños grupos. Descarga la versión en español de las fichas.", necesita:["desenchufada"], idioma:'mix', cat:'Alfabetización en IA', edad:'9-12 años', nuevo:true,
+  {etapa:'primaria', icon:'🔌', nombre:'AI Unplugged', alta:'2026-07-08', idea:"Ideal cuando no hay ordenadores: elige una actividad (por ejemplo, árboles de decisión) y hazla con tarjetas en pequeños grupos. Descarga la versión en español de las fichas.", necesita:["desenchufada"], idioma:'mix', cat:'Alfabetización en IA', edad:'9-12 años',
    desc:'Colección de actividades "desenchufadas" (sin ordenador) para entender cómo decide una IA: árboles de decisión, aprendizaje por refuerzo… Con versión en español descargable.',
    links:[{txt:'Abrir', url:'https://www.aiunplugged.org/'}]},
-  {etapa:'primaria', icon:'😮', nombre:'Scratch Lab · Face Sensing', idea:"Reto: crear un juego que se controle con la cara (abrir la boca para saltar). Antes, hablad de qué información de nuestra cara está leyendo la cámara.", necesita:["camara"], idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años', nuevo:true,
+  {etapa:'primaria', icon:'😮', nombre:'Scratch Lab · Face Sensing', alta:'2026-07-08', idea:"Reto: crear un juego que se controle con la cara (abrir la boca para saltar). Antes, hablad de qué información de nuestra cara está leyendo la cámara.", necesita:["camara"], idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años',
    desc:'Bloques experimentales de Scratch que detectan la cara con la cámara: programan juegos controlados con gestos y comprenden qué "ve" un modelo de visión.',
    links:[{txt:'Abrir', url:'https://lab.scratch.mit.edu/face/'}]},
-  {etapa:'primaria', icon:'🗨️', nombre:'Say What You See', idea:"Trabaja la descripción precisa: en cada reto, la clase redacta en común la descripción antes de escribirla. Como se escribe en inglés, combina bien con la clase de Inglés.", idioma:'en', cat:'Alfabetización en IA', edad:'10-12 años', nuevo:true,
+  {etapa:'primaria', icon:'🗨️', nombre:'Say What You See', alta:'2026-07-08', idea:"Trabaja la descripción precisa: en cada reto, la clase redacta en común la descripción antes de escribirla. Como se escribe en inglés, combina bien con la clase de Inglés.", idioma:'en', cat:'Alfabetización en IA', edad:'10-12 años',
    desc:'Juego de Google Arts & Culture para aprender a describir imágenes con precisión hasta que la IA genere una parecida. Introducción perfecta al arte del "prompting".',
    links:[{txt:'Jugar', url:'https://artsandculture.google.com/experiment/say-what-you-see/jwG3m7wQShZngw'}]},
 
   // ══════════ PROYECTOS ══════════
-  {etapa:'proyecto', icon:'🐝', nombre:'Hello BEBRAS', idea:"Usa un reto como actividad de inicio de clase (10 minutos) una vez por semana, en cualquier área.", idioma:'es', cat:'Pensamiento computacional', edad:'Primaria a Bachillerato',
+  {etapa:'proyecto', icon:'🐝', nombre:'Hello BEBRAS', alta:'2026-07-08', idea:"Usa un reto como actividad de inicio de clase (10 minutos) una vez por semana, en cualquier área.", idioma:'es', cat:'Pensamiento computacional', edad:'Primaria a Bachillerato',
    desc:'Interesante propuesta de EduCaixa para trabajar el pensamiento computacional. Abarca todas las áreas desde Primaria hasta Bachillerato.',
    links:[{txt:'Abrir', url:'https://educaixa.org/es/-/hellobebras?s=03'}]},
-  {etapa:'proyecto', icon:'🍓', nombre:'Experience AI', idea:"Programa una unidad completa en Tecnología o Digitalización siguiendo sus lecciones, que ya traen presentaciones y fichas listas.", idioma:'es', cat:'Alfabetización en IA', edad:'11-14 años', nuevo:true,
+  {etapa:'proyecto', icon:'🍓', nombre:'Experience AI', alta:'2026-07-08', idea:"Programa una unidad completa en Tecnología o Digitalización siguiendo sus lecciones, que ya traen presentaciones y fichas listas.", idioma:'es', cat:'Alfabetización en IA', edad:'11-14 años',
    desc:'Programa gratuito de la Raspberry Pi Foundation y Google DeepMind: lecciones completas (presentaciones, fichas, vídeos) sobre qué es la IA, modelos y sesgos. Disponible en español.',
    links:[{txt:'Abrir', url:'https://experience-ai.org/'}]},
-  {etapa:'proyecto', icon:'🎓', nombre:'Day of AI', idea:"Elige un módulo corto (por ejemplo, el de deepfakes) para una sesión de tutoría. Los materiales están en inglés y conviene adaptarlos.", idioma:'en', cat:'Alfabetización en IA', edad:'Desde 5 años', nuevo:true,
+  {etapa:'proyecto', icon:'🎓', nombre:'Day of AI', alta:'2026-07-08', idea:"Elige un módulo corto (por ejemplo, el de deepfakes) para una sesión de tutoría. Los materiales están en inglés y conviene adaptarlos.", idioma:'en', cat:'Alfabetización en IA', edad:'Desde 5 años',
    desc:'Currículo gratuito del MIT con itinerarios por edades (desde Infantil): qué es la IA, deepfakes, chatbots, ciudadanía digital… Requiere registro docente gratuito.',
    links:[{txt:'Abrir', url:'https://dayofai.org/'}]},
-  {etapa:'proyecto', icon:'💻', nombre:'Code.org · Catálogo de cursos', idea:"Filtra por etapa y duración para encontrar un curso que encaje en tu horario. Los cursos de más de 100 horas se pueden usar por unidades sueltas.", idioma:'mix', cat:'Pensamiento computacional', edad:'Infantil a Bachillerato', nuevo:true,
+  {etapa:'proyecto', icon:'💻', nombre:'Code.org · Catálogo de cursos', alta:'2026-10-10', idea:"Filtra por etapa y duración para encontrar un curso que encaje en tu horario. Los cursos de más de 100 horas se pueden usar por unidades sueltas.", idioma:'mix', cat:'Pensamiento computacional', edad:'Infantil a Bachillerato',
    desc:'Los 131 cursos y actividades gratuitas de Code.org (programación, IA, datos, ciberseguridad…) con descripción en castellano, buscador y filtros por etapa, tema y duración.',
    links:[{txt:'Ver catálogo', url:'codeorg.html'},{txt:'Web oficial', url:'https://studio.code.org/catalog', alt:true}]},
-  {etapa:'proyecto', icon:'🍓', nombre:'Raspberry Pi · Proyectos guiados', idea:"Activa «Solo en castellano» y filtra por nivel para proponer proyectos según el ritmo de cada alumno: funcionan muy bien como trabajo autónomo o de ampliación.", idioma:'mix', cat:'Pensamiento computacional', edad:'Primaria a Bachillerato', nuevo:true,
+  {etapa:'proyecto', icon:'🍓', nombre:'Raspberry Pi · Proyectos guiados', alta:'2026-10-11', idea:"Activa «Solo en castellano» y filtra por nivel para proponer proyectos según el ritmo de cada alumno: funcionan muy bien como trabajo autónomo o de ampliación.", idioma:'mix', cat:'Pensamiento computacional', edad:'Primaria a Bachillerato',
    desc:'306 proyectos paso a paso de la Raspberry Pi Foundation (Scratch, Python, web, IA, micro:bit, electrónica y 3D), 52 de ellos en castellano, con buscador y filtros por tecnología, nivel, tema e idioma.',
    links:[{txt:'Ver catálogo', url:'raspberrypi.html'},{txt:'Web oficial', url:'https://projects.raspberrypi.org/es-ES/projects', alt:true}]},
-  {etapa:'proyecto', icon:'🇪🇸', nombre:'Code INTEF · Pensamiento computacional e IA', idea:"Consulta las propuestas didácticas de tu etapa antes de programar una situación de aprendizaje con pensamiento computacional.", idioma:'es', cat:'Pensamiento computacional', edad:'Infantil a Bachillerato', nuevo:true,
+  {etapa:'proyecto', icon:'🇪🇸', nombre:'Code INTEF · Pensamiento computacional e IA', alta:'2026-10-11', idea:"Consulta las propuestas didácticas de tu etapa antes de programar una situación de aprendizaje con pensamiento computacional.", idioma:'es', cat:'Pensamiento computacional', edad:'Infantil a Bachillerato',
    desc:'Portal del Ministerio (INTEF) con propuestas didácticas de programación, robótica e IA en castellano, el programa Código Escuela 4.0, formación docente y el Observatorio de la IA.',
    links:[{txt:'Propuestas didácticas', url:'https://code.intef.es/recursos/?recurso=prop_didacticas'},{txt:'Portal', url:'https://code.intef.es/', alt:true}]},
-  {etapa:'proyecto', icon:'🧠', nombre:'Pensamiento crítico en la era de la IA', idea:"Elige una actividad de 10-15 minutos como rutina semanal y termina siempre con la nota reflexiva del alumnado.", idioma:'es', cat:'Alfabetización en IA', edad:'Primaria a Bachillerato y profesorado', nuevo:true,
+  {etapa:'proyecto', icon:'🧠', nombre:'Pensamiento crítico en la era de la IA', alta:'2026-10-11', idea:"Elige una actividad de 10-15 minutos como rutina semanal y termina siempre con la nota reflexiva del alumnado.", idioma:'es', cat:'Alfabetización en IA', edad:'Primaria a Bachillerato y profesorado',
    desc:'13 actividades prácticas (10-30 min) para que el alumnado cuestione, verifique y debata lo que produce la IA: detective de alucinaciones, preguntas socráticas, debate a favor y en contra, comparación a ciegas… Traducidas y adaptadas de Med Kharbach (CC BY-NC-SA).',
    links:[{txt:'Ver actividades', url:'pensamiento-critico.html'}]},
-  {etapa:'proyecto', icon:'🔎', nombre:'Verificar lo que dice la IA', idea:"Enseña primero la rutina de seis pasos y aplícala en cualquier tarea en la que el alumnado use IA.", idioma:'es', cat:'Alfabetización en IA', edad:'6.º Primaria a Bachillerato', nuevo:true,
+  {etapa:'proyecto', icon:'🔎', nombre:'Verificar lo que dice la IA', alta:'2026-10-11', idea:"Enseña primero la rutina de seis pasos y aplícala en cualquier tarea en la que el alumnado use IA.", idioma:'es', cat:'Alfabetización en IA', edad:'6.º Primaria a Bachillerato',
    desc:'12 actividades de fact-checking en tres niveles para comprobar afirmaciones, fuentes, citas bibliográficas, estadísticas, citas textuales e imágenes, con una rutina de seis pasos y etiquetas de verificación. Basadas en Med Kharbach.',
    links:[{txt:'Ver actividades', url:'verificacion-ia.html'},{txt:'Fichas originales', url:'https://www.educatorstechnology.com/2026/10/ai-fact-checking-activities-for-teachers-and-students.html', alt:true}]},
 ];
@@ -1224,11 +1316,20 @@ function actualizarFavN(pulso){
   el.textContent=favs.length||'';
   if(pulso){ el.classList.remove('pulso'); void el.offsetWidth; el.classList.add('pulso'); }
 }
-function ordenLista(){ return etapaActiva==='favoritos'?favs:(etapaActiva==='lista'&&listaCompartida?listaCompartida.slugs:null); }
+function ordenLista(){
+  if(etapaActiva==='recientes') return recientes().map(r=>slug(r.nombre));
+  return etapaActiva==='favoritos'?favs:(etapaActiva==='lista'&&listaCompartida?listaCompartida.slugs:null);
+}
+/* Recursos publicados, del más reciente al más antiguo */
+function recientes(){
+  return RECURSOS.map((r,i)=>[r,i]).filter(([r])=>r.alta)
+    .sort((a,b)=>b[0].alta.localeCompare(a[0].alta)||a[1]-b[1]).map(x=>x[0]);
+}
 
 function pasaEtapa(r,et=etapaActiva){
   if(et==='todas') return true;
   if(et==='favoritos') return favs.includes(slug(r.nombre));
+  if(et==='recientes') return !r.custom && esNuevo(r);
   if(et==='lista') return !!listaCompartida && listaCompartida.slugs.includes(slug(r.nombre));
   if(et==='proyecto') return r.etapa==='proyecto';
   return NIVEL_TAB[et] ? nivelesDe(r).includes(NIVEL_TAB[et]) : r.etapa===et;
@@ -1332,7 +1433,7 @@ function render(){
     const card=document.createElement('article');
     card.className='card '+r.etapa;
     card.dataset.idx=idx;
-    const flag = r.custom ? '<span class="flag mio">MÍO</span>' : (r.nuevo ? '<span class="flag nuevo">NUEVO</span>' : '');
+    const flag = r.custom ? '<span class="flag mio">MÍO</span>' : (esNuevo(r) ? '<span class="flag nuevo">NUEVO</span>' : '');
     const fav=esFav(r);
     card.innerHTML=`
       <button class="fav-btn${fav?' on':''}" type="button" data-fav="${idx}" aria-pressed="${fav}"
@@ -1474,7 +1575,7 @@ function relacionados(r){
 function renderFicha(){
   const r=fichaR, idx=fichaLista.indexOf(r);
   const val=loadVal()[slug(r.nombre)]||{};
-  const flag=r.custom?'<span class="badge mio">MÍO</span>':(r.nuevo?'<span class="badge nuevo">NUEVO</span>':'');
+  const flag=r.custom?'<span class="badge mio">MÍO</span>':(esNuevo(r)?'<span class="badge nuevo">NUEVO</span>':'');
   const valoracion=['herramienta','actividad'].map(k=>{
     const v=val[k], nom=k==='herramienta'?'🛠️ Herramienta':'🎯 Actividad con ella';
     if(!v) return `<div class="fv"><span class="fv-n">${nom}</span><span class="fv-e">Sin valorar</span></div>`;
@@ -1516,7 +1617,7 @@ function renderFicha(){
       </section>
       ${rel.length?`<section class="ficha-sec"><h3>🧩 También te puede interesar</h3>
         <div class="ficha-rel">${rel.map(x=>`<button type="button" class="rel ${x.etapa}" data-rel="${allRecursos().indexOf(x)}"><span class="rel-i">${esc(x.icon)||'⭐'}</span><span><strong>${esc(x.nombre)}</strong><small>${esc(x.cat||'')}${x.edad?' · '+esc(x.edad):''}</small></span></button>`).join('')}</div></section>`:''}
-      ${r.custom?'<p class="ficha-nota">Recurso añadido por ti: solo se ve en este navegador.</p>':''}
+      ${r.custom?'<p class="ficha-nota">Recurso añadido por ti: solo se ve en este navegador.</p>':(r.alta?`<p class="ficha-nota">Añadido a la web el ${fechaLarga(r.alta)}.</p>`:'')}
     </div>
     <div class="ficha-foot">
       <button type="button" class="ficha-nav" data-f="ant" ${idx<=0?'disabled':''} aria-label="Recurso anterior">←<span> Anterior</span></button>
@@ -1624,6 +1725,15 @@ function mostrarQR(){
 }
 
 function renderListaPanel(){
+  if(etapaActiva==='recientes'){
+    listaPanel.className='lista-panel nov-vista'; listaPanel.hidden=false;
+    listaPanel.innerHTML=`
+      <div class="lp-kicker">🆕 Novedades</div>
+      <h2>Añadido en los últimos ${DIAS_NUEVO} días</h2>
+      <p class="lp-nota">Del más reciente al más antiguo. Pulsa en cualquiera para ver su ficha.</p>
+      <div class="lp-acc"><button class="lp-btn" type="button" data-l="salir">Ver toda la web</button></div>`;
+    return;
+  }
   if(etapaActiva==='lista'&&listaCompartida){
     const n=allRecursos().filter(r=>pasaEtapa(r,'lista')).length;
     const nuevos=listaCompartida.slugs.filter(id=>!favs.includes(id)&&RECURSOS.some(r=>slug(r.nombre)===id)).length;
@@ -1694,6 +1804,64 @@ function listaDesdeHash(){
   return true;
 }
 window.addEventListener('hashchange',listaDesdeHash);
+
+/* ══════════════════ PANEL DE NOVEDADES ══════════════════ */
+const novBox=document.getElementById('nov');
+const NOV_KEY='novPlegado';
+function verRecientes(){
+  if(listaCompartida){ listaCompartida=null; if(/^#lista=/.test(location.hash)) history.replaceState(null,'',location.pathname+location.search); }
+  etapaActiva='recientes';
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  render();
+  listaPanel.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function renderNovedades(){
+  if(!novBox) return;
+  const rec=recientes(), nRecientes=rec.filter(esNuevo).length;
+  // los añadidos en los últimos 60 días (al menos 3 y como mucho 6)
+  const ultimos=rec.slice(0,Math.min(6,Math.max(3,nRecientes)));
+  const ultimaAct=[NOVEDADES_WEB[0]&&NOVEDADES_WEB[0].fecha, rec[0]&&rec[0].alta].filter(Boolean).sort().pop();
+  const nRes=rec.filter(r=>nuevoParaTi(r.alta)).length;
+  const nWeb=NOVEDADES_WEB.filter(n=>nuevoParaTi(n.fecha)).reduce((a,n)=>a+n.items.length,0);
+  const total=nRes+nWeb;
+  let plegado=false; try{ plegado=localStorage.getItem(NOV_KEY)==='1'; }catch(e){}
+  if(total) plegado=false; // si hay novedades para ti, se muestra abierto
+  novBox.classList.toggle('plegado',plegado);
+  const mini=ultimos.map(r=>`<button type="button" class="nc ${r.etapa}" data-nov="${allRecursos().indexOf(r)}" title="Ver la ficha de ${esc(r.nombre)}">
+      ${nuevoParaTi(r.alta)?'<span class="nc-punto" title="Nuevo desde tu última visita"></span>':''}
+      <span class="nc-i">${esc(r.icon)||'⭐'}</span><strong>${esc(r.nombre)}</strong>
+      <small>${ETAPAS[r.etapa]} · ${fechaLarga(r.alta)}</small></button>`).join('');
+  const log=NOVEDADES_WEB.map(n=>`<li${nuevoParaTi(n.fecha)?' class="tuyo"':''}>
+      <div class="nl-f">${fechaLarga(n.fecha)}${nuevoParaTi(n.fecha)?' <span class="nl-pill">NUEVO PARA TI</span>':''}</div>
+      <ul>${n.items.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></li>`).join('');
+  novBox.innerHTML=`<div class="nov-box">
+    <div class="nov-head" data-n="toggle">
+      <div><h2>🆕 Novedades</h2><p>Última actualización: ${fechaLarga(ultimaAct)}</p></div>
+      ${total?`<span class="nov-badge" title="Tu última visita fue el ${fechaLarga(visitaPrev)}">✨ ${total} ${total===1?'novedad':'novedades'} desde tu última visita</span>`:''}
+      <button class="nov-toggle" type="button" aria-expanded="${!plegado}">${plegado?'Mostrar':'Ocultar'}</button>
+    </div>
+    <div class="nov-body">
+      <div class="nov-sub"><h3>Últimos recursos añadidos</h3>
+        ${nRecientes>ultimos.length?`<button type="button" class="nov-mas" data-n="recientes">Ver los ${nRecientes} de los últimos ${DIAS_NUEVO} días →</button>`:''}</div>
+      <div class="nov-res">${mini}</div>
+      <details class="nov-log"><summary>🛠️ Qué ha cambiado en la web${nWeb?` <span class="nl-pill">${nWeb} ${nWeb===1?'cambio nuevo':'cambios nuevos'} para ti</span>`:''}</summary><ol>${log}</ol></details>
+    </div></div>`;
+}
+novBox&&novBox.addEventListener('click',e=>{
+  const c=e.target.closest('[data-nov]');
+  if(c){ abrirFicha(allRecursos()[+c.dataset.nov], recientes()); return; }
+  const b=e.target.closest('[data-n]'); if(!b) return;
+  if(b.dataset.n==='recientes'){ verRecientes(); return; }
+  if(b.dataset.n==='toggle'){
+    const pleg=!novBox.classList.contains('plegado');
+    novBox.classList.toggle('plegado',pleg);
+    const t=novBox.querySelector('.nov-toggle'); t.textContent=pleg?'Mostrar':'Ocultar'; t.setAttribute('aria-expanded',!pleg);
+    try{ localStorage.setItem(NOV_KEY,pleg?'1':'0'); }catch(err){}
+  }
+});
+renderNovedades();
+{ const f=document.querySelector('footer'); const ult=[NOVEDADES_WEB[0].fecha,(recientes()[0]||{}).alta].filter(Boolean).sort().pop();
+  if(f&&ult) f.insertAdjacentHTML('beforeend',` · Última actualización: ${fechaLarga(ult)}`); }
 
 function fichaDesdeHash(){
   const m=location.hash.match(/^#ficha=([a-z0-9-]+)/); if(!m) return;
