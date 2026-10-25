@@ -50,7 +50,7 @@
   .note{max-width:1040px;margin:14px auto 0;padding:12px 16px;font-size:.85rem;color:#57534e;background:#fff;
     border-radius:12px;border-left:4px solid var(--pc);line-height:1.55}
   .count{max-width:1080px;margin:14px auto 0;padding:0 24px;font-size:.85rem;color:var(--muted);font-weight:600}
-  .grid{max-width:1080px;margin:12px auto 40px;padding:0 20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+  .grid{max-width:1080px;margin:12px auto 40px;padding:0 20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(320px,100%),1fr));gap:18px}
   .card{background:var(--card);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;gap:10px;
     box-shadow:0 3px 12px rgba(43,43,58,.06);border-top:5px solid var(--pc);transition:.2s;position:relative}
   .card.profesorado{border-color:var(--pc2)}
@@ -83,6 +83,8 @@
   footer a{color:inherit}
   @media (max-width:560px){.toolbar{flex-direction:column}.search-box{flex:none}.grid{grid-template-columns:1fr}}
 </style>
+<link rel="stylesheet" href="tema.css">
+<script>(function(){var t=null;try{t=localStorage.getItem("tema")}catch(e){}var d=t?t==="oscuro":!!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.dataset.theme=d?"dark":"light";})();</script>
 </head>
 <body>
 <header>
@@ -181,5 +183,6 @@ function render(){
 render();
 if(location.hash){const el=document.querySelector(location.hash); if(el) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'center'}),100);}
 </script>
+<script src="tema.js"></script>
 </body>
 </html>

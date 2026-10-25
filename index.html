@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Recursos de Aula · Infantil y Primaria</title>
+<title>Recursos de Aula · IA de Infantil a Bachillerato</title>
+<meta name="description" content="Herramientas, cursos y actividades con IA de Infantil a Bachillerato, con rúbricas para valorar si son adecuadas a cada edad.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -13,6 +14,9 @@
     --primaria:#0ea5e9; --primaria-soft:#e0f2fe;
     --secundaria:#8b5cf6; --secundaria-soft:#ede9fe;
     --proyecto:#10b981; --proyecto-soft:#d1fae5;
+    --bach:#6366f1; --bach-soft:#e0e7ff;
+    --field:#fbfaf7; --line:#e2ddd2; --line-2:#ece8df; --line-strong:#cfc9bb; --line-soft:#f0ece3;
+    --chip-bg:#f1efe8; --chip-hover:#e6e3d8; --label:#44444f; --on-ink:#fff;
     --radius:18px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -45,7 +49,7 @@
 
   .tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:22px auto 6px;padding:0 20px;max-width:1080px}
   .tab{border:none;cursor:pointer;font:inherit;font-weight:800;font-size:.92rem;padding:9px 20px;
-    border-radius:999px;background:#fff;color:var(--muted);box-shadow:0 2px 6px rgba(43,43,58,.07);transition:.18s}
+    border-radius:999px;background:var(--card);color:var(--muted);box-shadow:0 2px 6px rgba(43,43,58,.07);transition:.18s}
   .tab:hover{transform:translateY(-1px)}
   .tab.active{color:#fff}
   .tab[data-etapa="todas"].active{background:var(--ink)}
@@ -55,15 +59,15 @@
   .tab[data-etapa="proyecto"].active{background:var(--proyecto)}
 
   .chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px auto 4px;padding:0 20px;max-width:1080px}
-  .chip{border:1.5px solid #ddd8ce;background:transparent;cursor:pointer;font:inherit;font-size:.8rem;
+  .chip{border:1.5px solid var(--line);background:transparent;cursor:pointer;font:inherit;font-size:.8rem;
     font-weight:700;color:var(--muted);padding:5px 14px;border-radius:999px;transition:.15s}
   .chip:hover{border-color:var(--ink);color:var(--ink)}
-  .chip.active{background:var(--ink);border-color:var(--ink);color:#fff}
+  .chip.active{background:var(--ink);border-color:var(--ink);color:var(--on-ink)}
 
   .count{max-width:1080px;margin:14px auto 0;padding:0 24px;font-size:.85rem;color:var(--muted);font-weight:600}
 
   .grid{max-width:1080px;margin:12px auto 60px;padding:0 20px;display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+    grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:18px}
 
   .card{background:var(--card);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;
     gap:10px;box-shadow:0 3px 12px rgba(43,43,58,.06);border-top:5px solid;transition:.2s;position:relative}
@@ -85,7 +89,7 @@
 
   .badges{display:flex;gap:6px;flex-wrap:wrap}
   .badge{font-size:.72rem;font-weight:800;padding:3px 10px;border-radius:999px}
-  .badge.edad{background:#f1efe8;color:#57534e}
+  .badge.edad{background:var(--chip-bg);color:var(--muted)}
   .badge.cat{background:#eef2ff;color:#4f46e5}
   .badge.etapa{color:#fff}
   .infantil .badge.etapa{background:var(--infantil)} .primaria .badge.etapa{background:var(--primaria)}
@@ -110,28 +114,28 @@
   .overlay{position:fixed;inset:0;background:rgba(30,30,45,.55);display:none;align-items:center;
     justify-content:center;z-index:50;padding:20px;backdrop-filter:blur(3px)}
   .overlay.open{display:flex}
-  .modal{background:#fff;border-radius:22px;max-width:520px;width:100%;max-height:90vh;overflow:auto;
+  .modal{background:var(--card);border-radius:22px;max-width:520px;width:100%;max-height:90vh;overflow:auto;
     padding:28px;box-shadow:0 24px 60px rgba(0,0,0,.25)}
   .modal h2{font-size:1.3rem;font-weight:900;margin-bottom:4px}
   .modal .sub{font-size:.85rem;color:var(--muted);margin-bottom:18px}
   .field{margin-bottom:14px}
-  .field label{display:block;font-size:.8rem;font-weight:800;margin-bottom:5px;color:#44444f}
-  .field input,.field select,.field textarea{width:100%;font:inherit;font-size:.92rem;padding:10px 14px;
-    border:1.5px solid #e2ddd2;border-radius:12px;outline:none;background:#fbfaf7;transition:.15s}
-  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--primaria);background:#fff}
+  .field label{display:block;font-size:.8rem;font-weight:800;margin-bottom:5px;color:var(--label)}
+  .field input,.field select,.field textarea{width:100%;font:inherit;font-size:.92rem;color:var(--ink);padding:10px 14px;
+    border:1.5px solid var(--line);border-radius:12px;outline:none;background:var(--field);transition:.15s}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--primaria);background:var(--card)}
   .field textarea{resize:vertical;min-height:70px}
   .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
   .btn{border:none;cursor:pointer;font:inherit;font-weight:800;padding:11px 22px;border-radius:12px;transition:.15s}
   .btn.primary{background:var(--primaria);color:#fff} .btn.primary:hover{filter:brightness(1.1)}
-  .btn.ghost{background:#f1efe8;color:var(--muted)} .btn.ghost:hover{background:#e6e3d8}
+  .btn.ghost{background:var(--chip-bg);color:var(--muted)} .btn.ghost:hover{background:var(--chip-hover)}
   .form-error{color:#dc2626;font-size:.8rem;font-weight:700;display:none;margin-top:8px}
 
   footer{text-align:center;padding:24px;font-size:.8rem;color:var(--muted)}
   @media (max-width:560px){.toolbar{flex-direction:column}.row2{grid-template-columns:1fr}}
 
   /* ===== Botón valorar en tarjetas ===== */
-  .btn-eval{border:1.5px solid #e2ddd2;background:#fff;cursor:pointer;font:inherit;font-weight:800;font-size:.78rem;
+  .btn-eval{border:1.5px solid var(--line);background:var(--card);cursor:pointer;font:inherit;font-weight:800;font-size:.78rem;
     color:var(--muted);padding:6px 12px;border-radius:12px;transition:.15s}
   .btn-eval:hover{border-color:var(--rubrica);color:var(--rubrica)}
 
@@ -141,21 +145,21 @@
   .tab[data-etapa="rubricas"].active{background:var(--rubrica)}
   .rub{max-width:1080px;margin:18px auto 60px;padding:0 20px;display:none}
   .rub.show{display:block}
-  .rub-intro{background:#fff;border-radius:var(--radius);padding:22px 24px;box-shadow:0 3px 12px rgba(43,43,58,.06);
+  .rub-intro{background:var(--card);border-radius:var(--radius);padding:22px 24px;box-shadow:0 3px 12px rgba(43,43,58,.06);
     border-top:5px solid var(--rubrica)}
   .rub-intro h2{font-size:1.35rem;font-weight:900}
   .rub-intro p{color:var(--muted);font-size:.92rem;line-height:1.55;margin-top:6px}
   .rub-flow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
-  .rub-pick{border:2px solid #ece8df;background:#fbfaf7;border-radius:16px;padding:16px 18px;text-align:left;
+  .rub-pick{border:2px solid var(--line-2);background:var(--field);border-radius:16px;padding:16px 18px;text-align:left;
     cursor:pointer;font:inherit;color:var(--ink);transition:.18s;display:flex;gap:14px;align-items:flex-start}
-  .rub-pick:hover{border-color:#d6d0c3;transform:translateY(-2px)}
+  .rub-pick:hover{border-color:var(--line-strong);transform:translateY(-2px)}
   .rub-pick.active{border-color:var(--rubrica);background:var(--rubrica-soft)}
   .rub-pick .step{flex-shrink:0;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
-    font-weight:900;background:#fff;border:2px solid currentColor;color:var(--rubrica)}
+    font-weight:900;background:var(--card);border:2px solid currentColor;color:var(--rubrica)}
   .rub-pick strong{display:block;font-size:1rem;font-weight:900}
   .rub-pick span{display:block;font-size:.82rem;color:var(--muted);margin-top:3px;line-height:1.45}
 
-  .rub-block{background:#fff;border-radius:var(--radius);padding:20px 22px;margin-top:16px;
+  .rub-block{background:var(--card);border-radius:var(--radius);padding:20px 22px;margin-top:16px;
     box-shadow:0 3px 12px rgba(43,43,58,.06)}
   .rub-block h3{font-size:1.05rem;font-weight:900;display:flex;align-items:center;gap:10px;margin-bottom:4px}
   .rub-block h3 .num{background:var(--ink);color:#fff;border-radius:8px;font-size:.8rem;padding:2px 9px}
@@ -164,22 +168,22 @@
   .rub-fields .field{margin:0}
 
   .tramos{display:flex;gap:8px;flex-wrap:wrap}
-  .tramo{border:2px solid #ece8df;background:#fff;cursor:pointer;font:inherit;font-weight:800;font-size:.86rem;
+  .tramo{border:2px solid var(--line-2);background:var(--card);cursor:pointer;font:inherit;font-weight:800;font-size:.86rem;
     padding:8px 16px;border-radius:999px;color:var(--muted);transition:.15s}
-  .tramo:hover{border-color:#cfc9bb}
+  .tramo:hover{border-color:var(--line-strong)}
   .tramo.active{color:#fff;border-color:transparent}
   .tramo.active[data-t="A"]{background:var(--infantil)} .tramo.active[data-t="B"]{background:var(--primaria)}
   .tramo.active[data-t="C"]{background:var(--secundaria)} .tramo.active[data-t="D"]{background:var(--proyecto)}
-  .principio{margin-top:12px;padding:12px 16px;border-radius:12px;background:#f6f4ef;font-size:.9rem;line-height:1.5}
+  .principio{margin-top:12px;padding:12px 16px;border-radius:12px;background:var(--bg);font-size:.9rem;line-height:1.5}
   .principio b{font-weight:900}
 
   .filtro{display:grid;grid-template-columns:200px 1fr auto;gap:14px;align-items:center;padding:12px 0;
-    border-top:1px solid #f0ece3}
+    border-top:1px solid var(--line-soft)}
   .filtro:first-of-type{border-top:none}
   .filtro .fn{font-weight:800;font-size:.9rem}
   .filtro .fr{font-size:.86rem;color:var(--muted);line-height:1.45}
   .yn{display:flex;gap:6px}
-  .yn button{border:2px solid #ece8df;background:#fff;cursor:pointer;font:inherit;font-weight:800;font-size:.8rem;
+  .yn button{border:2px solid var(--line-2);background:var(--card);cursor:pointer;font:inherit;font-weight:800;font-size:.8rem;
     padding:6px 12px;border-radius:10px;color:var(--muted);transition:.15s;white-space:nowrap}
   .yn button.si.on{background:var(--ok);border-color:var(--ok);color:#fff}
   .yn button.no.on{background:var(--no);border-color:var(--no);color:#fff}
@@ -190,7 +194,7 @@
   .dims .hd.no{background:var(--no-soft);color:var(--no)} .dims .hd.dm{color:var(--muted)}
   .dim-name{font-weight:900;font-size:.88rem;padding:10px 4px;line-height:1.3}
   .dim-name small{display:block;font-weight:600;color:var(--muted);font-size:.76rem;margin-top:3px}
-  .cell{border:2px solid #ece8df;background:#fff;border-radius:12px;padding:10px 12px;font:inherit;font-size:.83rem;
+  .cell{border:2px solid var(--line-2);background:var(--card);border-radius:12px;padding:10px 12px;font:inherit;font-size:.83rem;
     line-height:1.45;text-align:left;cursor:pointer;color:var(--ink);transition:.15s;position:relative}
   .cell .lbl{display:none;font-size:.7rem;font-weight:900;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
   .cell.ok:hover{border-color:#86efac} .cell.med:hover{border-color:#fde047} .cell.no:hover{border-color:#fca5a5}
@@ -199,14 +203,14 @@
   .cell.sel.no{background:var(--no-soft);border-color:var(--no)}
   .cell.sel::after{content:"✓";position:absolute;top:6px;right:9px;font-weight:900}
   .cell.sel.ok::after{color:var(--ok)} .cell.sel.med::after{color:var(--med)} .cell.sel.no::after{color:var(--no)}
-  .rowsep{grid-column:1/-1;height:1px;background:#f0ece3;margin:4px 0}
+  .rowsep{grid-column:1/-1;height:1px;background:var(--line-soft);margin:4px 0}
 
   .nota{margin-top:14px;border-left:4px solid var(--primaria);background:var(--primaria-soft);border-radius:0 12px 12px 0;
     padding:4px 16px;font-size:.85rem;line-height:1.55}
   .nota summary{cursor:pointer;font-weight:900;padding:8px 0}
   .nota ol{margin:6px 0 8px 20px} .nota p{margin:6px 0}
 
-  .veredicto{display:flex;gap:16px;align-items:center;border-radius:16px;padding:18px 20px;border:2px solid #ece8df;background:#fbfaf7}
+  .veredicto{display:flex;gap:16px;align-items:center;border-radius:16px;padding:18px 20px;border:2px solid var(--line-2);background:var(--field)}
   .veredicto .luz{width:46px;height:46px;border-radius:50%;flex-shrink:0;background:#d6d3cb;box-shadow:inset 0 -4px 0 rgba(0,0,0,.12)}
   .veredicto .vt{font-weight:900;font-size:1.15rem;letter-spacing:.2px}
   .veredicto .va{font-size:.88rem;line-height:1.5;color:var(--ink);margin-top:3px}
@@ -216,13 +220,13 @@
   .veredicto.no{background:var(--no-soft);border-color:var(--no)} .veredicto.no .luz{background:#ef4444} .veredicto.no .vt{color:var(--no)}
   .motivos{margin:10px 0 0 18px;font-size:.84rem;line-height:1.5}
   .leyenda{width:100%;border-collapse:collapse;margin-top:14px;font-size:.82rem}
-  .leyenda td{padding:8px 10px;border-top:1px solid #f0ece3;vertical-align:top;line-height:1.45}
+  .leyenda td{padding:8px 10px;border-top:1px solid var(--line-soft);vertical-align:top;line-height:1.45}
   .leyenda td:first-child{font-weight:900;white-space:nowrap}
   .rub-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
   .rub-actions a,.rub-actions button{border:none;cursor:pointer;font:inherit;font-weight:800;font-size:.86rem;padding:10px 18px;
     border-radius:12px;text-decoration:none;transition:.15s}
   .rub-actions .pri{background:var(--rubrica);color:#fff} .rub-actions .pri:hover{filter:brightness(1.1)}
-  .rub-actions .sec{background:#f1efe8;color:var(--ink)} .rub-actions .sec:hover{background:#e6e3d8}
+  .rub-actions .sec{background:var(--chip-bg);color:var(--ink)} .rub-actions .sec:hover{background:var(--chip-hover)}
   .rub-intro .nb-tip{margin-top:12px;padding:10px 14px;border-radius:12px;background:var(--rubrica-soft);color:var(--ink)}
   .nb-tip a{color:var(--rubrica);font-weight:800}
   .fund{font-size:.78rem;color:var(--muted);line-height:1.5;margin-top:14px}
@@ -235,25 +239,25 @@
     .dim-name{padding:12px 2px 0}
     .cell .lbl{display:block}
     .leyenda,.leyenda tbody,.leyenda tr,.leyenda td{display:block;width:100%}
-    .leyenda tr{border-top:1px solid #f0ece3;padding:6px 0}
+    .leyenda tr{border-top:1px solid var(--line-soft);padding:6px 0}
     .leyenda td{border:none;padding:3px 4px}
     .leyenda td:first-child{white-space:normal}
     .cell.ok .lbl{color:var(--ok)} .cell.med .lbl{color:var(--med)} .cell.no .lbl{color:var(--no)}
   }
   @media print{
-    body{background:#fff}
+    body{background:var(--card)}
     header,.toolbar,.tabs,.chips,.count,.grid,footer,.rub-flow,.rub-actions,.no-print{display:none!important}
     .rub{display:block!important;margin:0;padding:0;max-width:none}
     .rub-intro,.rub-block{box-shadow:none;border:1px solid #ddd;break-inside:avoid;padding:12px 14px;margin-top:10px}
     .cell:not(.sel){opacity:.45}
     .tramo:not(.active){display:none}
-    .field input,.field textarea{border:none;border-bottom:1px solid #999;border-radius:0;background:#fff}
+    .field input,.field textarea{border:none;border-bottom:1px solid #999;border-radius:0;background:var(--card)}
   }
 
   .btn-sug{background:#7c3aed;text-decoration:none;display:inline-flex;align-items:center}
   .btn-sug:hover{background:#6d28d9}
-  .btn-mio{background:#fff;color:var(--ink);border:2px solid #e2ddd2!important;box-shadow:0 8px 24px rgba(43,43,58,.08)}
-  .btn-mio:hover{background:#f1efe8}
+  .btn-mio{background:var(--card);color:var(--ink);border:2px solid var(--line)!important;box-shadow:0 8px 24px rgba(43,43,58,.08)}
+  .btn-mio:hover{background:var(--chip-bg)}
 
   /* ===== Asistente de recomendaciones ===== */
   .reco{max-width:1080px;margin:18px auto 0;padding:0 20px}
@@ -265,15 +269,15 @@
   .reco-body{margin-top:16px;display:none}
   .reco.open .reco-body{display:block}
   .rq{margin-bottom:14px}
-  .rq-t{font-size:.82rem;font-weight:900;color:#44444f;margin-bottom:7px;letter-spacing:.2px}
+  .rq-t{font-size:.82rem;font-weight:900;color:var(--label);margin-bottom:7px;letter-spacing:.2px}
   .rq-t span{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#7c3aed;color:#fff;font-size:.72rem;margin-right:6px}
   .rq-opts{display:flex;gap:8px;flex-wrap:wrap}
-  .rq-opt{border:1.5px solid #e2ddd2;background:#fbfaf7;cursor:pointer;font:inherit;font-size:.85rem;font-weight:700;color:#44444f;padding:7px 14px;border-radius:999px;transition:.15s}
+  .rq-opt{border:1.5px solid var(--line);background:var(--field);cursor:pointer;font:inherit;font-size:.85rem;font-weight:700;color:var(--label);padding:7px 14px;border-radius:999px;transition:.15s}
   .rq-opt:hover{border-color:#7c3aed;color:#7c3aed}
   .rq-opt.sel{background:#7c3aed;border-color:#7c3aed;color:#fff}
   .reco-msg{font-size:.88rem;color:var(--muted);padding:10px 2px}
-  .reco-res{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-top:6px}
-  .rc{border:1.5px solid #ece8de;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:7px;background:#fff;transition:.15s}
+  .reco-res{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr));gap:12px;margin-top:6px}
+  .rc{border:1.5px solid var(--line-2);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:7px;background:var(--card);transition:.15s}
   .rc:hover{border-color:#c4b5fd;transform:translateY(-2px)}
   .rc-src{font-size:.68rem;font-weight:900;letter-spacing:.3px;padding:3px 9px;border-radius:999px;align-self:flex-start}
   .rc h4{font-size:.95rem;font-weight:800;line-height:1.25}
@@ -282,7 +286,42 @@
   .rc a,.rc button.go2{align-self:flex-start;text-decoration:none;font:inherit;font-weight:800;font-size:.8rem;padding:6px 13px;border-radius:10px;color:#fff;background:#7c3aed;border:none;cursor:pointer}
   .reco-more{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;font-size:.82rem;align-items:center;color:var(--muted);font-weight:700}
   .reco-more a{color:#6d28d9;font-weight:800;text-decoration:none;background:#f3e8ff;padding:5px 12px;border-radius:999px}
+
+  /* ===== ESO y Bachillerato ===== */
+  .tab[data-etapa="eso"].active{background:var(--secundaria)}
+  .tab[data-etapa="bach"].active{background:var(--bach)}
+  .card.eso{border-color:var(--secundaria)} .card.bach{border-color:var(--bach)}
+  .eso .icon{background:var(--secundaria-soft)} .bach .icon{background:var(--bach-soft)}
+  .eso .badge.etapa,.eso a.go{background:var(--secundaria)} .bach .badge.etapa,.bach a.go{background:var(--bach)}
+  .eso a.go.alt{color:var(--secundaria)} .bach a.go.alt{color:var(--bach)}
+
+  /* ===== Idioma ===== */
+  .badge.idioma{background:var(--chip-bg);color:var(--muted)}
+  .countbar{max-width:1080px;margin:14px auto 0;padding:0 24px;display:flex;align-items:center;
+    justify-content:space-between;gap:8px 14px;flex-wrap:wrap}
+  .countbar .count{margin:0;padding:0;max-width:none}
+  .toggle-es{display:inline-flex;align-items:center;gap:8px;font-size:.84rem;font-weight:800;color:var(--muted);
+    cursor:pointer;user-select:none}
+  .toggle-es input{position:absolute;opacity:0;width:1px;height:1px}
+  .toggle-es .sw{width:36px;height:20px;border-radius:999px;background:var(--line);position:relative;transition:.18s;flex-shrink:0}
+  .toggle-es .sw::after{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);box-shadow:0 1px 3px rgba(0,0,0,.25);transition:.18s}
+  .toggle-es input:checked + .sw{background:var(--proyecto)}
+  .toggle-es input:checked + .sw::after{left:19px}
+  .toggle-es input:focus-visible + .sw{outline:3px solid var(--primaria);outline-offset:2px}
+  .toggle-es:has(input:checked){color:var(--ink)}
+
+  /* ===== Aviso de catálogos por etapa ===== */
+  .etapa-nota{max-width:1032px;margin:10px auto 0;padding:10px 16px;display:flex;gap:10px;align-items:flex-start;
+    font-size:.86rem;line-height:1.5;color:var(--ink);background:var(--card);border-radius:14px;
+    border-left:4px solid var(--secundaria);box-shadow:0 2px 8px rgba(43,43,58,.05)}
+  .etapa-nota[hidden]{display:none}
+  .etapa-nota a{color:#6d28d9;font-weight:800}
+  @media (max-width:1080px){.etapa-nota{margin-left:20px;margin-right:20px}}
+  @media (max-width:560px){.etapa-nota{margin-left:16px;margin-right:16px}}
 </style>
+<link rel="stylesheet" href="tema.css">
+<script>(function(){var t=null;try{t=localStorage.getItem("tema")}catch(e){}var d=t?t==="oscuro":!!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.dataset.theme=d?"dark":"light";})();</script>
 </head>
 <body>
 
@@ -323,12 +362,20 @@
   <button class="tab active" data-etapa="todas">✨ Todas</button>
   <button class="tab" data-etapa="infantil">🧸 Infantil</button>
   <button class="tab" data-etapa="primaria">✏️ Primaria</button>
+  <button class="tab" data-etapa="eso">🎓 ESO</button>
+  <button class="tab" data-etapa="bach">📚 Bachillerato</button>
   <button class="tab" data-etapa="proyecto">🚀 Proyectos</button>
   <button class="tab" data-etapa="rubricas">⚖️ Rúbricas IA</button>
 </nav>
 
 <div class="chips" id="chips"></div>
-<div class="count" id="count"></div>
+<div class="countbar" id="countBar">
+  <div class="count" id="count"></div>
+  <label class="toggle-es" title="Muestra solo los recursos en castellano o que no dependen del idioma">
+    <input type="checkbox" id="soloEs"><span class="sw" aria-hidden="true"></span> Solo en castellano
+  </label>
+</div>
+<div class="etapa-nota" id="etapaNota" hidden></div>
 <main class="grid" id="grid"></main>
 
 <!-- ===== Sección de rúbricas ===== -->
@@ -369,14 +416,26 @@
         <select id="fEtapa" required>
           <option value="infantil">🧸 Infantil</option>
           <option value="primaria" selected>✏️ Primaria</option>
+          <option value="eso">🎓 ESO</option>
+          <option value="bach">📚 Bachillerato</option>
           <option value="proyecto">🚀 Proyecto</option>
         </select>
       </div>
       <div class="field"><label>Edad recomendada</label><input id="fEdad" maxlength="30" placeholder="Ej. 6-8 años"></div>
     </div>
-    <div class="field"><label>Categoría</label>
-      <input id="fCat" list="catList" maxlength="40" placeholder="Ej. IA y pensamiento computacional">
-      <datalist id="catList"></datalist>
+    <div class="row2">
+      <div class="field"><label>Categoría</label>
+        <input id="fCat" list="catList" maxlength="40" placeholder="Ej. IA y pensamiento computacional">
+        <datalist id="catList"></datalist>
+      </div>
+      <div class="field"><label>Idioma</label>
+        <select id="fIdioma">
+          <option value="es" selected>Castellano</option>
+          <option value="mix">Castellano e inglés</option>
+          <option value="en">Inglés</option>
+          <option value="sin">Sin idioma (visual o sonoro)</option>
+        </select>
+      </div>
     </div>
     <div class="field"><label>Descripción</label><textarea id="fDesc" maxlength="400" placeholder="¿Para qué lo usas en el aula?"></textarea></div>
     <div class="field"><label>Enlace (URL) *</label><input id="fUrl" type="url" required placeholder="https://…"></div>
@@ -389,158 +448,159 @@
 </div>
 
 <script>
-const ETAPAS = {infantil:'Infantil', primaria:'Primaria', secundaria:'Secundaria', proyecto:'Proyecto'};
+const ETAPAS = {infantil:'Infantil', primaria:'Primaria', eso:'ESO', bach:'Bachillerato', secundaria:'Secundaria', proyecto:'Proyecto'};
+const IDIOMAS = {es:'💬 Castellano', mix:'💬 Castellano e inglés', en:'💬 Inglés', sin:'🌍 Sin idioma'};
 
 const RECURSOS = [
   // ══════════ INFANTIL (3-6 años) ══════════
-  {etapa:'infantil', icon:'🖍️', nombre:'Animated Drawings', cat:'Arte y creatividad', edad:'3-6 años',
+  {etapa:'infantil', icon:'🖍️', nombre:'Animated Drawings', idioma:'en', cat:'Arte y creatividad', edad:'3-6 años',
    desc:'La IA anima los dibujos que hacen los alumnos: suben su dibujo y cobra vida moviéndose y bailando. Motivación asegurada.',
    links:[{txt:'Abrir', url:'https://sketch.metademolab.com/'}]},
-  {etapa:'infantil', icon:'🎤', nombre:'Speechnotes', cat:'Lenguaje y lectoescritura', edad:'3-6 años',
+  {etapa:'infantil', icon:'🎤', nombre:'Speechnotes', idioma:'es', cat:'Lenguaje y lectoescritura', edad:'3-6 años',
    desc:'Convierte audio a texto. Útil para que los peques "escriban" hablando y vean cómo sus palabras se transforman en letras.',
    links:[{txt:'Abrir', url:'https://speechnotes.co/es/'}]},
-  {etapa:'infantil', icon:'🔊', nombre:'TTSMaker', cat:'Lenguaje y lectoescritura', edad:'3-6 años',
+  {etapa:'infantil', icon:'🔊', nombre:'TTSMaker', idioma:'es', cat:'Lenguaje y lectoescritura', edad:'3-6 años',
    desc:'Convierte texto a audio con voces naturales. Ideal para crear audiocuentos o consignas sonoras para rincones.',
    links:[{txt:'Abrir', url:'https://ttsmaker.com/'}]},
-  {etapa:'infantil', icon:'🎵', nombre:'Suno', cat:'Música', edad:'3-6 años',
+  {etapa:'infantil', icon:'🎵', nombre:'Suno', idioma:'en', cat:'Música', edad:'3-6 años',
    desc:'Crea canciones personalizadas con IA: canciones de rutinas, de cumpleaños, de proyectos… con la letra que tú elijas.',
    links:[{txt:'Abrir', url:'https://www.suno.ai/'}]},
-  {etapa:'infantil', icon:'🎨', nombre:'Copilot (imágenes para colorear)', cat:'Arte y creatividad', edad:'3-6 años',
+  {etapa:'infantil', icon:'🎨', nombre:'Copilot (imágenes para colorear)', idioma:'es', cat:'Arte y creatividad', edad:'3-6 años',
    desc:'Genera imágenes para colorear a gusto de los niños: pide un dibujo de línea sobre cualquier tema y imprímelo al momento.',
    links:[{txt:'Abrir', url:'https://copilot.microsoft.com/'}]},
-  {etapa:'infantil', icon:'✏️', nombre:'Quick, Draw!', cat:'Alfabetización en IA', edad:'3-6 años',
+  {etapa:'infantil', icon:'✏️', nombre:'Quick, Draw!', idioma:'es', cat:'Alfabetización en IA', edad:'3-6 años',
    desc:'Dibujan en la pizarra digital y la IA intenta adivinar qué es. Primer contacto con el reconocimiento de imágenes, con muchas risas.',
    links:[{txt:'Abrir', url:'https://quickdraw.withgoogle.com/'}]},
-  {etapa:'infantil', icon:'📚', nombre:'Khan Academy Kids', cat:'Multiárea', edad:'3-6 años',
+  {etapa:'infantil', icon:'📚', nombre:'Khan Academy Kids', idioma:'es', cat:'Multiárea', edad:'3-6 años',
    desc:'Amplia variedad de actividades educativas: matemáticas, lectura, escritura y habilidades socioemocionales. Gratuito y en español.',
    links:[{txt:'Abrir', url:'https://es.khanacademy.org/kids'}]},
-  {etapa:'infantil', icon:'🎹', nombre:'AI Duet (Piano virtual)', cat:'Música', edad:'3-6 años',
+  {etapa:'infantil', icon:'🎹', nombre:'AI Duet (Piano virtual)', idioma:'sin', cat:'Música', edad:'3-6 años',
    desc:'Piano virtual que responde: el niño toca unas notas y la IA improvisa un dueto con él. Exploración musical libre.',
    links:[{txt:'Abrir', url:'https://experiments.withgoogle.com/ai/ai-duet/view/'}]},
-  {etapa:'infantil', icon:'🐼', nombre:'Scarlett Panda', cat:'Lenguaje y lectoescritura', edad:'3-6 años',
+  {etapa:'infantil', icon:'🐼', nombre:'Scarlett Panda', idioma:'en', cat:'Lenguaje y lectoescritura', edad:'3-6 años',
    desc:'Generador de cuentos personalizados: crea historias con los nombres de los alumnos y los temas del proyecto de aula.',
    links:[{txt:'Abrir', url:'https://www.scarlettpanda.com/'}]},
-  {etapa:'infantil', icon:'🖤', nombre:'PineTools · Blanco y negro', cat:'Utilidades', edad:'3-6 años',
+  {etapa:'infantil', icon:'🖤', nombre:'PineTools · Blanco y negro', idioma:'es', cat:'Utilidades', edad:'3-6 años',
    desc:'Convierte cualquier imagen a blanco y negro en segundos. Práctico para preparar fichas para colorear a partir de fotos.',
    links:[{txt:'Abrir', url:'https://pinetools.com/es/convertir-blanco-y-negro'}]},
-  {etapa:'infantil', icon:'🎼', nombre:'Musical Canvas', cat:'Arte y creatividad', edad:'3-6 años',
+  {etapa:'infantil', icon:'🎼', nombre:'Musical Canvas', idioma:'sin', cat:'Arte y creatividad', edad:'3-6 años',
    desc:'Realizan un dibujo y la IA lo transforma en música. Une plástica y música en una misma experiencia sensorial.',
    links:[{txt:'Abrir', url:'https://artsandculture.google.com/experiment/musical-canvas'}]},
-  {etapa:'infantil', icon:'🪄', nombre:'Semi-Conductor', cat:'Música', edad:'3-6 años',
+  {etapa:'infantil', icon:'🪄', nombre:'Semi-Conductor', idioma:'sin', cat:'Música', edad:'3-6 años',
    desc:'Los niños/as se convierten en directores de orquesta: la cámara analiza sus movimientos y la orquesta les obedece.',
    links:[{txt:'Abrir', url:'https://semiconductor.withgoogle.com/'}]},
 
   // ── Nuevos · Infantil · Alfabetización en IA ──
-  {etapa:'infantil', icon:'✨', nombre:'AutoDraw', cat:'Alfabetización en IA', edad:'3-6 años', nuevo:true,
+  {etapa:'infantil', icon:'✨', nombre:'AutoDraw', idioma:'sin', cat:'Alfabetización en IA', edad:'3-6 años', nuevo:true,
    desc:'Dibujan un garabato y la IA sugiere dibujos "perfeccionados" de lo que ha reconocido. Ideal para hablar de cómo la máquina "adivina" lo que vemos.',
    links:[{txt:'Abrir', url:'https://www.autodraw.com/'}]},
-  {etapa:'infantil', icon:'🔎', nombre:'Emoji Scavenger Hunt', cat:'Alfabetización en IA', edad:'4-6 años', nuevo:true,
+  {etapa:'infantil', icon:'🔎', nombre:'Emoji Scavenger Hunt', idioma:'sin', cat:'Alfabetización en IA', edad:'4-6 años', nuevo:true,
    desc:'La app muestra un emoji y hay que encontrar el objeto real antes de que acabe el tiempo: la cámara lo reconoce con IA. Interfaz en inglés pero casi sin texto.',
    links:[{txt:'Jugar', url:'https://emojiscavengerhunt.withgoogle.com/'}]},
-  {etapa:'infantil', icon:'🎭', nombre:'Blob Opera', cat:'Música', edad:'3-6 años', nuevo:true,
+  {etapa:'infantil', icon:'🎭', nombre:'Blob Opera', idioma:'sin', cat:'Música', edad:'3-6 años', nuevo:true,
    desc:'Cuatro "blobs" cantarines entrenados con voces de ópera reales. Los niños dirigen el coro arrastrándolos. Muy útil para explicar que la IA "aprende" de ejemplos.',
    links:[{txt:'Jugar', url:'https://artsandculture.google.com/experiment/blob-opera/AAHWrq360NcGbw'}]},
 
   // ══════════ PRIMARIA · 6-8 años ══════════
-  {etapa:'primaria', icon:'🈺', nombre:'Las palabras misteriosas', cat:'Alfabetización en IA', edad:'6-8 años',
+  {etapa:'primaria', icon:'🈺', nombre:'Las palabras misteriosas', idioma:'es', cat:'Alfabetización en IA', edad:'6-8 años',
    desc:'Descubren cómo funciona una IA de Procesamiento de Lenguaje Natural (PLN) traduciendo palabras a otro idioma. Actividad completa con materiales.',
    links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1vAUspRuZkxt5efoDmeV-ks4HrwiWiqyN?usp=drive_link'}]},
-  {etapa:'primaria', icon:'🖼️', nombre:'En busca del arte perdido', cat:'Alfabetización en IA', edad:'6-8 años',
+  {etapa:'primaria', icon:'🖼️', nombre:'En busca del arte perdido', idioma:'es', cat:'Alfabetización en IA', edad:'6-8 años',
    desc:'Aprenden cómo funciona un chatbot a través de una búsqueda con temática artística. Actividad guiada con materiales descargables.',
    links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1RTOnJQZXERw9ugS2y59Ekft5s4Wfh_hv?usp=drive_link'}]},
-  {etapa:'primaria', icon:'😊', nombre:'La Inteligencia Artificial Feliz', cat:'Emociones', edad:'6-8 años',
+  {etapa:'primaria', icon:'😊', nombre:'La Inteligencia Artificial Feliz', idioma:'es', cat:'Emociones', edad:'6-8 años',
    desc:'Descubren que la IA puede servir para reconocer emociones. Conecta tecnología con educación emocional.',
    links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1eXLYTC1YzVLQDOmYbJPwvS7OiTQdoArq?usp=drive_link'}]},
-  {etapa:'primaria', icon:'💃', nombre:'K-Pop Dance Challenge', cat:'Movimiento y baile', edad:'6-9 años',
+  {etapa:'primaria', icon:'💃', nombre:'K-Pop Dance Challenge', idioma:'sin', cat:'Movimiento y baile', edad:'6-9 años',
    desc:'Imitan coreografías por niveles de dificultad y la IA puntúa sus movimientos. Genial para descansos activos o Educación Física.',
    links:[{txt:'Jugar', url:'https://artsandculture.google.com/experiment/k-pop-dance-challenge/ugGuLJ2ruXjWlg'}]},
 
   // ── Nuevo · 6-12 ──
-  {etapa:'primaria', icon:'🧞', nombre:'Akinator', cat:'Alfabetización en IA', edad:'6-12 años', nuevo:true,
+  {etapa:'primaria', icon:'🧞', nombre:'Akinator', idioma:'es', cat:'Alfabetización en IA', edad:'6-12 años', nuevo:true,
    desc:'El genio adivina el personaje en el que piensan haciendo preguntas. Perfecto para debatir después: ¿cómo lo hace? Introduce los árboles de decisión sin nombrarlos.',
    links:[{txt:'Jugar', url:'https://es.akinator.com/'}]},
 
   // ══════════ PRIMARIA · 9-12 años ══════════
-  {etapa:'primaria', icon:'🪐', nombre:'¿De qué planeta eres?', cat:'Alfabetización en IA', edad:'9-12 años',
+  {etapa:'primaria', icon:'🪐', nombre:'¿De qué planeta eres?', idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años',
    desc:'Los alumnos comienzan a trabajar tal y como lo hace un tipo de inteligencia artificial. Actividad de iniciación con materiales completos.',
    links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1I2egIdaB43EkRO-c3qP977aSXIqaAv93?usp=sharing'}]},
-  {etapa:'primaria', icon:'🔷', nombre:'El camino de los rombos', cat:'Programación', edad:'9-12 años',
+  {etapa:'primaria', icon:'🔷', nombre:'El camino de los rombos', idioma:'es', cat:'Programación', edad:'9-12 años',
    desc:'Conocen aspectos básicos de los fundamentos de la programación mediante una actividad desenchufada y guiada.',
    links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1Ztu3fgECkOXO8UD_9NEJrJucZj7uMnKr?usp=drive_link'}]},
-  {etapa:'primaria', icon:'🌿', nombre:'Conociendo nuestro entorno con la IA', cat:'Ciencias naturales', edad:'9-12 años',
+  {etapa:'primaria', icon:'🌿', nombre:'Conociendo nuestro entorno con la IA', idioma:'es', cat:'Ciencias naturales', edad:'9-12 años',
    desc:'Usan una herramienta de IA que reconoce plantas y animales. Perfecta para salidas al entorno natural del cole.',
    links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1g1hjqZ9nmWNSExfcTaMywpd5gCJyiKRB?usp=drive_link'}]},
-  {etapa:'primaria', icon:'🔍', nombre:'¿Qué es qué?', cat:'Alfabetización en IA', edad:'9-12 años',
+  {etapa:'primaria', icon:'🔍', nombre:'¿Qué es qué?', idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años',
    desc:'Aprenden qué es la inteligencia artificial y cómo clasifica las imágenes, con dinámicas prácticas.',
    links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1IxEdLHhqOnhtOz_CrCIm8Y5eMb5NQOsf?usp=drive_link'}]},
-  {etapa:'primaria', icon:'💬', nombre:'Chateando con una IA: descubre ChatGPT', cat:'Alfabetización en IA', edad:'9-12 años',
+  {etapa:'primaria', icon:'💬', nombre:'Chateando con una IA: descubre ChatGPT', idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años',
    desc:'Aprenden a usar ChatGPT interactuando con él y debatiendo sobre sus usos y limitaciones. Fomenta el espíritu crítico.',
    links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1ya6qOYXvpj77vUyjOrJ-TuHypOS_poVR?usp=drive_link'}]},
-  {etapa:'primaria', icon:'🛡️', nombre:'El VigilaChat', cat:'Seguridad digital', edad:'9-12 años',
+  {etapa:'primaria', icon:'🛡️', nombre:'El VigilaChat', idioma:'es', cat:'Seguridad digital', edad:'9-12 años',
    desc:'Entrenan una IA con Machine Learning for Kids y la implementan en Scratch para detectar si alguien expone datos personales al chatear en Internet.',
    links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1zVbK1RNj45CkwKZGtyHsP-owfKnBvFCW?usp=drive_link'}]},
-  {etapa:'primaria', icon:'🤖', nombre:'Entrenamos una IA', cat:'Alfabetización en IA', edad:'9-12 años',
+  {etapa:'primaria', icon:'🤖', nombre:'Entrenamos una IA', idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años',
    desc:'Descubren cómo funciona una IA que identifica dibujos y entrenan la suya propia para reconocer gatos y manzanas, usando imágenes con licencia Creative Commons.',
    links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/104p0bBj1_JQotqQEUEmZ52rBEFMLxyzD?usp=drive_link'}]},
-  {etapa:'primaria', icon:'🎭', nombre:'Galería Virtual Familiar', cat:'Arte y creatividad', edad:'9-12 años',
+  {etapa:'primaria', icon:'🎭', nombre:'Galería Virtual Familiar', idioma:'es', cat:'Arte y creatividad', edad:'9-12 años',
    desc:'A partir de un dibujo del alumno, la IA lo convierte en una obra al estilo de un pintor reconocido. Termina en exposición de aula.',
    links:[{txt:'Materiales', url:'https://drive.google.com/drive/folders/1264zwVi3Haq-Y5fsvTDrRJfiI79gOveT?usp=drive_link'}]},
-  {etapa:'primaria', icon:'🧠', nombre:'Google Teachable Machine', cat:'Alfabetización en IA', edad:'9-12 años',
+  {etapa:'primaria', icon:'🧠', nombre:'Google Teachable Machine', idioma:'en', cat:'Alfabetización en IA', edad:'9-12 años',
    desc:'Crean modelos sencillos de IA que clasifican imágenes, sonidos o posturas. Sin programar y con resultados inmediatos.',
    links:[{txt:'Abrir', url:'https://teachablemachine.withgoogle.com/'}]},
-  {etapa:'primaria', icon:'🕵️', nombre:'Odd One Out', cat:'Alfabetización en IA', edad:'9-12 años',
+  {etapa:'primaria', icon:'🕵️', nombre:'Odd One Out', idioma:'sin', cat:'Alfabetización en IA', edad:'9-12 años',
    desc:'Los jugadores deben identificar los «impostores» generados por IA ocultos entre obras de arte reales. Agudiza la observación y el pensamiento crítico.',
    links:[{txt:'Jugar', url:'https://artsandculture.google.com/experiment/odd-one-out/wAHNn4JsVTFOiw'}]},
-  {etapa:'primaria', icon:'⚙️', nombre:'Machine Learning for Kids', cat:'Alfabetización en IA', edad:'9-12 años',
+  {etapa:'primaria', icon:'⚙️', nombre:'Machine Learning for Kids', idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años',
    desc:'Plataforma para introducir el aprendizaje automático de forma accesible y divertida, con herramientas visuales y proyectos prácticos conectados a Scratch.',
    links:[{txt:'Abrir', url:'https://machinelearningforkids.co.uk/'}]},
-  {etapa:'primaria', icon:'📸', nombre:'INTEF · Reconocimiento de imágenes', cat:'Alfabetización en IA', edad:'9-12 años',
+  {etapa:'primaria', icon:'📸', nombre:'INTEF · Reconocimiento de imágenes', idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años',
    desc:'Propuesta didáctica oficial del INTEF para trabajar el reconocimiento de imágenes utilizando la IA.',
    links:[{txt:'Abrir', url:'https://code.intef.es/prop_didacticas/reconocimiento-de-imagenes-utilizando-la-ia/'}]},
-  {etapa:'primaria', icon:'🧙', nombre:'Reto Gandalf', cat:'Seguridad digital', edad:'9-12 años',
+  {etapa:'primaria', icon:'🧙', nombre:'Reto Gandalf', idioma:'en', cat:'Seguridad digital', edad:'9-12 años',
    desc:'Se ponen en la piel de un "atacante" que intenta sonsacar una contraseña a un asistente LLM que no debe revelarla. ¿Superarán los 8 niveles? Muy útil para hablar de ciberseguridad.',
    links:[{txt:'Jugar', url:'https://gandalf.lakera.ai/intro'}]},
 
   // ── Nuevos · Primaria · Alfabetización en IA ──
-  {etapa:'primaria', icon:'🐠', nombre:'AI for Oceans (Code.org)', cat:'Alfabetización en IA', edad:'8-12 años', nuevo:true,
+  {etapa:'primaria', icon:'🐠', nombre:'AI for Oceans (Code.org)', idioma:'es', cat:'Alfabetización en IA', edad:'8-12 años', nuevo:true,
    desc:'Entrenan una IA para clasificar peces y basura marina, y descubren qué son los datos de entrenamiento y los sesgos. En español, con vídeos y guía docente. Un clásico imprescindible.',
    links:[{txt:'Abrir', url:'https://code.org/oceans'}]},
-  {etapa:'primaria', icon:'🇪🇸', nombre:'LearningML', cat:'Alfabetización en IA', edad:'9-12 años', nuevo:true,
+  {etapa:'primaria', icon:'🇪🇸', nombre:'LearningML', idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años', nuevo:true,
    desc:'Plataforma española (y en español) para entrenar modelos de reconocimiento de textos e imágenes y usarlos luego en proyectos de Scratch. Alternativa cercana a ML for Kids.',
    links:[{txt:'Abrir', url:'https://learningml.org/'}]},
-  {etapa:'primaria', icon:'🔌', nombre:'AI Unplugged', cat:'Alfabetización en IA', edad:'9-12 años', nuevo:true,
+  {etapa:'primaria', icon:'🔌', nombre:'AI Unplugged', idioma:'en', cat:'Alfabetización en IA', edad:'9-12 años', nuevo:true,
    desc:'Colección de actividades "desenchufadas" (sin ordenador) para entender cómo decide una IA: árboles de decisión, aprendizaje por refuerzo… Con versión en español descargable.',
    links:[{txt:'Abrir', url:'https://www.aiunplugged.org/'}]},
-  {etapa:'primaria', icon:'😮', nombre:'Scratch Lab · Face Sensing', cat:'Alfabetización en IA', edad:'9-12 años', nuevo:true,
+  {etapa:'primaria', icon:'😮', nombre:'Scratch Lab · Face Sensing', idioma:'es', cat:'Alfabetización en IA', edad:'9-12 años', nuevo:true,
    desc:'Bloques experimentales de Scratch que detectan la cara con la cámara: programan juegos controlados con gestos y comprenden qué "ve" un modelo de visión.',
    links:[{txt:'Abrir', url:'https://lab.scratch.mit.edu/face/'}]},
-  {etapa:'primaria', icon:'🗨️', nombre:'Say What You See', cat:'Alfabetización en IA', edad:'10-12 años', nuevo:true,
+  {etapa:'primaria', icon:'🗨️', nombre:'Say What You See', idioma:'en', cat:'Alfabetización en IA', edad:'10-12 años', nuevo:true,
    desc:'Juego de Google Arts & Culture para aprender a describir imágenes con precisión hasta que la IA genere una parecida. Introducción perfecta al arte del "prompting".',
    links:[{txt:'Jugar', url:'https://artsandculture.google.com/experiment/say-what-you-see/jwG3m7wQShZngw'}]},
 
   // ══════════ PROYECTOS ══════════
-  {etapa:'proyecto', icon:'🐝', nombre:'Hello BEBRAS', cat:'Pensamiento computacional', edad:'Primaria a Bachillerato',
+  {etapa:'proyecto', icon:'🐝', nombre:'Hello BEBRAS', idioma:'es', cat:'Pensamiento computacional', edad:'Primaria a Bachillerato',
    desc:'Interesante propuesta de EduCaixa para trabajar el pensamiento computacional. Abarca todas las áreas desde Primaria hasta Bachillerato.',
    links:[{txt:'Abrir', url:'https://educaixa.org/es/-/hellobebras?s=03'}]},
-  {etapa:'proyecto', icon:'🍓', nombre:'Experience AI', cat:'Alfabetización en IA', edad:'11-14 años', nuevo:true,
+  {etapa:'proyecto', icon:'🍓', nombre:'Experience AI', idioma:'es', cat:'Alfabetización en IA', edad:'11-14 años', nuevo:true,
    desc:'Programa gratuito de la Raspberry Pi Foundation y Google DeepMind: lecciones completas (presentaciones, fichas, vídeos) sobre qué es la IA, modelos y sesgos. Disponible en español.',
    links:[{txt:'Abrir', url:'https://experience-ai.org/'}]},
-  {etapa:'proyecto', icon:'🎓', nombre:'Day of AI', cat:'Alfabetización en IA', edad:'Desde 5 años', nuevo:true,
+  {etapa:'proyecto', icon:'🎓', nombre:'Day of AI', idioma:'en', cat:'Alfabetización en IA', edad:'Desde 5 años', nuevo:true,
    desc:'Currículo gratuito del MIT con itinerarios por edades (desde Infantil): qué es la IA, deepfakes, chatbots, ciudadanía digital… Requiere registro docente gratuito.',
    links:[{txt:'Abrir', url:'https://dayofai.org/'}]},
-  {etapa:'proyecto', icon:'💻', nombre:'Code.org · Catálogo de cursos', cat:'Pensamiento computacional', edad:'Infantil a Bachillerato', nuevo:true,
+  {etapa:'proyecto', icon:'💻', nombre:'Code.org · Catálogo de cursos', idioma:'mix', cat:'Pensamiento computacional', edad:'Infantil a Bachillerato', nuevo:true,
    desc:'Los 131 cursos y actividades gratuitas de Code.org (programación, IA, datos, ciberseguridad…) con descripción en castellano, buscador y filtros por etapa, tema y duración.',
    links:[{txt:'Ver catálogo', url:'codeorg.html'},{txt:'Web oficial', url:'https://studio.code.org/catalog', alt:true}]},
-  {etapa:'proyecto', icon:'🍓', nombre:'Raspberry Pi · Proyectos guiados', cat:'Pensamiento computacional', edad:'Primaria a Bachillerato', nuevo:true,
+  {etapa:'proyecto', icon:'🍓', nombre:'Raspberry Pi · Proyectos guiados', idioma:'mix', cat:'Pensamiento computacional', edad:'Primaria a Bachillerato', nuevo:true,
    desc:'306 proyectos paso a paso de la Raspberry Pi Foundation (Scratch, Python, web, IA, micro:bit, electrónica y 3D), 52 de ellos en castellano, con buscador y filtros por tecnología, nivel, tema e idioma.',
    links:[{txt:'Ver catálogo', url:'raspberrypi.html'},{txt:'Web oficial', url:'https://projects.raspberrypi.org/es-ES/projects', alt:true}]},
-  {etapa:'proyecto', icon:'🇪🇸', nombre:'Code INTEF · Pensamiento computacional e IA', cat:'Pensamiento computacional', edad:'Infantil a Bachillerato', nuevo:true,
+  {etapa:'proyecto', icon:'🇪🇸', nombre:'Code INTEF · Pensamiento computacional e IA', idioma:'es', cat:'Pensamiento computacional', edad:'Infantil a Bachillerato', nuevo:true,
    desc:'Portal del Ministerio (INTEF) con propuestas didácticas de programación, robótica e IA en castellano, el programa Código Escuela 4.0, formación docente y el Observatorio de la IA.',
    links:[{txt:'Propuestas didácticas', url:'https://code.intef.es/recursos/?recurso=prop_didacticas'},{txt:'Portal', url:'https://code.intef.es/', alt:true}]},
-  {etapa:'proyecto', icon:'🧠', nombre:'Pensamiento crítico en la era de la IA', cat:'Alfabetización en IA', edad:'Primaria a Bachillerato y profesorado', nuevo:true,
+  {etapa:'proyecto', icon:'🧠', nombre:'Pensamiento crítico en la era de la IA', idioma:'es', cat:'Alfabetización en IA', edad:'Primaria a Bachillerato y profesorado', nuevo:true,
    desc:'13 actividades prácticas (10-30 min) para que el alumnado cuestione, verifique y debata lo que produce la IA: detective de alucinaciones, preguntas socráticas, debate a favor y en contra, comparación a ciegas… Traducidas y adaptadas de Med Kharbach (CC BY-NC-SA).',
    links:[{txt:'Ver actividades', url:'pensamiento-critico.html'}]},
-  {etapa:'proyecto', icon:'🔎', nombre:'Verificar lo que dice la IA', cat:'Alfabetización en IA', edad:'6.º Primaria a Bachillerato', nuevo:true,
+  {etapa:'proyecto', icon:'🔎', nombre:'Verificar lo que dice la IA', idioma:'es', cat:'Alfabetización en IA', edad:'6.º Primaria a Bachillerato', nuevo:true,
    desc:'12 actividades de fact-checking en tres niveles para comprobar afirmaciones, fuentes, citas bibliográficas, estadísticas, citas textuales e imágenes, con una rutina de seis pasos y etiquetas de verificación. Basadas en Med Kharbach.',
    links:[{txt:'Ver actividades', url:'verificacion-ia.html'},{txt:'Fichas originales', url:'https://www.educatorstechnology.com/2026/10/ai-fact-checking-activities-for-teachers-and-students.html', alt:true}]},
 ];
@@ -788,6 +848,8 @@ rubBody.addEventListener('input',e=>{
 function tramoDeRecurso(r){
   if(r.etapa==='infantil') return 'A';
   if(r.etapa==='primaria') return 'B';
+  if(r.etapa==='eso'||r.etapa==='secundaria') return 'C';
+  if(r.etapa==='bach') return 'D';
   const m=(r.edad||'').match(/(\d+)/); const n=m?+m[1]:8;
   return n<6?'A':n<12?'B':n<16?'C':'D';
 }
@@ -812,16 +874,70 @@ function saveCustom(arr){ try{ localStorage.setItem(LS_KEY, JSON.stringify(arr))
 let customs = loadCustom();
 function allRecursos(){ return RECURSOS.concat(customs); }
 
+/* Niveles (inf, pri, eso, bach) a los que sirve cada recurso, según su etapa o su rango de edad */
+function nivelesDe(r){
+  if(r.etapa==='infantil') return ['inf'];
+  if(r.etapa==='primaria') return ['pri'];
+  if(r.etapa==='secundaria') return ['eso','bach'];
+  if(r.etapa==='eso') return ['eso'];
+  if(r.etapa==='bach') return ['bach'];
+  const t=(r.edad||'')+' ';
+  const rangos={inf:[3,5],pri:[6,11],eso:[12,15],bach:[16,18]};
+  let lo=99,hi=-1;
+  if(/infantil/i.test(t)){lo=Math.min(lo,3);hi=Math.max(hi,5);}
+  if(/primaria/i.test(t)){lo=Math.min(lo,6);hi=Math.max(hi,11);}
+  if(/eso|secundaria/i.test(t)){lo=Math.min(lo,12);hi=Math.max(hi,15);}
+  if(/bachiller/i.test(t)){lo=Math.min(lo,16);hi=Math.max(hi,18);}
+  const nums=(t.match(/\d+/g)||[]).map(Number);
+  if(nums.length){ lo=Math.min(lo,nums[0]); hi=Math.max(hi,/desde/i.test(t)?18:nums[nums.length-1]); }
+  if(hi<0) return ['pri','eso','bach'];
+  return Object.entries(rangos).filter(([k,[a,b]])=>a<=hi&&b>=lo).map(([k])=>k);
+}
+
+const NIVEL_TAB={infantil:'inf', primaria:'pri', eso:'eso', bach:'bach'};
+function pasaEtapa(r,et=etapaActiva){
+  if(et==='todas') return true;
+  if(et==='proyecto') return r.etapa==='proyecto';
+  return NIVEL_TAB[et] ? nivelesDe(r).includes(NIVEL_TAB[et]) : r.etapa===et;
+}
+const ES_KEY='soloCastellano';
+let soloEs=false; try{ soloEs=localStorage.getItem(ES_KEY)==='1'; }catch(e){}
+function pasaIdioma(r){ return !soloEs || r.idioma!=='en'; }
+
+/* Datos de los catálogos (Code.org, Raspberry Pi…) compartidos con el recomendador */
+let _ext=null;
+function cargarExt(){ return _ext || (_ext=fetch('data/recomendador.json').then(r=>r.ok?r.json():[]).catch(()=>[])); }
+
 let etapaActiva='todas', catActiva='todas', query='';
 const grid=document.getElementById('grid'), chipsEl=document.getElementById('chips'),
-      countEl=document.getElementById('count'), statsEl=document.getElementById('stats');
+      countEl=document.getElementById('count'), statsEl=document.getElementById('stats'),
+      countBar=document.getElementById('countBar'), notaEl=document.getElementById('etapaNota');
+
+/* Aviso con los catálogos que tienen más recursos para la etapa elegida */
+const NOMBRE_ETAPA={inf:'Infantil',pri:'Primaria',eso:'ESO',bach:'Bachillerato'};
+const CODEORG_ETAPA={inf:'Infantil',pri:'Primaria',eso:'ESO',bach:'Bachillerato'};
+function renderNotaEtapa(){
+  const nv=NIVEL_TAB[etapaActiva];
+  if(!nv){ notaEl.hidden=true; return; }
+  const et=etapaActiva, es=soloEs;
+  cargarExt().then(d=>{
+    if(etapaActiva!==et||soloEs!==es) return;
+    const n=f=>d.filter(x=>x.f===f&&x.e.includes(nv)&&(!soloEs||x.es)).length;
+    const co=n('codeorg'), rp=n('rpi'), partes=[];
+    if(co) partes.push(`el <a href="codeorg.html?etapa=${CODEORG_ETAPA[nv]}">catálogo de Code.org</a> tiene <strong>${co} ${co===1?'curso':'cursos'}</strong>`);
+    if(rp) partes.push(`${co?'el de':'el catálogo de'} <a href="raspberrypi.html${soloEs?'?es=1':''}">Raspberry Pi</a> tiene <strong>${rp} ${rp===1?'proyecto':'proyectos'}</strong>`);
+    if(!partes.length){ notaEl.hidden=true; return; }
+    notaEl.innerHTML=`🔭 <span><strong>¿Buscas más?</strong> Además de lo que ves aquí, ${partes.join(' y ')} para ${NOMBRE_ETAPA[nv]}${soloEs?' en castellano':''}.</span>`;
+    notaEl.hidden=false;
+  });
+}
 
 function norm(s){return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');}
 function esc(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
 
 function catsVisibles(){
   const set=new Set();
-  allRecursos().forEach(r=>{ if(etapaActiva==='todas'||r.etapa===etapaActiva) set.add(r.cat); });
+  allRecursos().forEach(r=>{ if(pasaEtapa(r)&&pasaIdioma(r)) set.add(r.cat); });
   return [...set].sort();
 }
 
@@ -843,32 +959,34 @@ function renderChips(){
 
 function renderStats(){
   const rs=allRecursos();
-  const n=e=>rs.filter(r=>r.etapa===e).length;
+  const n=e=>rs.filter(r=>pasaEtapa(r,e)).length;
   statsEl.innerHTML=`
     <span class="stat">📦 ${rs.length} recursos</span>
     <span class="stat">🧸 ${n('infantil')} Infantil</span>
     <span class="stat">✏️ ${n('primaria')} Primaria</span>
-    <span class="stat">🚀 ${n('proyecto')} Proyectos</span>
+    <span class="stat">🎓 ${n('eso')} ESO</span>
+    <span class="stat">📚 ${n('bach')} Bachillerato</span>
     <span class="stat">⚖️ 2 rúbricas</span>`;
 }
 
 function render(){
   const enRub=etapaActiva==='rubricas';
   rubSection.classList.toggle('show',enRub);
-  [chipsEl,countEl,grid].forEach(el=>el.style.display=enRub?'none':'');
+  [chipsEl,countBar,grid,notaEl].forEach(el=>el.style.display=enRub?'none':'');
   renderStats();
   if(enRub){ renderRubrica(); return; }
   renderChips();
+  renderNotaEtapa();
   const q=norm(query);
   const items=allRecursos().filter(r=>
-    (etapaActiva==='todas'||r.etapa===etapaActiva) &&
+    pasaEtapa(r) && pasaIdioma(r) &&
     (catActiva==='todas'||r.cat===catActiva) &&
     (!q || norm(r.nombre+' '+r.desc+' '+r.cat+' '+r.edad).includes(q))
   );
   countEl.textContent=items.length===1?'1 recurso encontrado':items.length+' recursos encontrados';
   grid.innerHTML='';
   if(!items.length){
-    grid.innerHTML='<div class="empty"><div class="big">🔍</div><strong>No hay resultados.</strong><br>Prueba con otra búsqueda o quita algún filtro.</div>';
+    grid.innerHTML='<div class="empty"><div class="big">🔍</div><strong>No hay resultados.</strong><br>Prueba con otra búsqueda o quita algún filtro'+(soloEs?' (por ejemplo, «Solo en castellano»)':'')+'.</div>';
     return;
   }
   items.forEach(r=>{
@@ -885,6 +1003,7 @@ function render(){
           <div class="badges" style="margin-top:6px">
             <span class="badge etapa">${ETAPAS[r.etapa]}</span>
             ${r.edad?`<span class="badge edad">👶 ${esc(r.edad)}</span>`:''}
+            ${IDIOMAS[r.idioma]?`<span class="badge idioma">${IDIOMAS[r.idioma]}</span>`:''}
           </div>
         </div>
       </div>
@@ -938,6 +1057,7 @@ formAdd.addEventListener('submit',e=>{
     nombre,
     cat:document.getElementById('fCat').value.trim()||'Sin categoría',
     edad:document.getElementById('fEdad').value.trim(),
+    idioma:document.getElementById('fIdioma').value,
     desc:document.getElementById('fDesc').value.trim(),
     links:[{txt:'Abrir', url}]
   });
@@ -961,6 +1081,13 @@ document.getElementById('search').addEventListener('input',e=>{
   if(etapaActiva==='rubricas') setEtapa('todas'); else render();
 });
 if(location.hash==='#rubricas') setEtapa('rubricas');
+const soloEsEl=document.getElementById('soloEs');
+soloEsEl.checked=soloEs;
+soloEsEl.addEventListener('change',()=>{
+  soloEs=soloEsEl.checked;
+  try{ localStorage.setItem(ES_KEY, soloEs?'1':'0'); }catch(e){}
+  render();
+});
 
 render();
 
@@ -1001,27 +1128,12 @@ render();
 
   function cargar(){
     if(ext) return Promise.resolve(ext);
-    if(!cargando) cargando=fetch('data/recomendador.json').then(r=>r.ok?r.json():[]).catch(()=>[]).then(d=>(ext=d));
+    if(!cargando) cargando=cargarExt().then(d=>(ext=d));
     return cargando;
   }
 
   // Normaliza los recursos propios de esta página
-  function etapasDe(r){
-    if(r.etapa==='infantil') return ['inf'];
-    if(r.etapa==='primaria') return ['pri'];
-    if(r.etapa==='secundaria') return ['eso','bach'];
-    const t=(r.edad||'')+' ';
-    const rangos={inf:[3,5],pri:[6,11],eso:[12,15],bach:[16,18]};
-    let lo=99,hi=-1;
-    if(/infantil/i.test(t)){lo=Math.min(lo,3);hi=Math.max(hi,5);}
-    if(/primaria/i.test(t)){lo=Math.min(lo,6);hi=Math.max(hi,11);}
-    if(/eso|secundaria/i.test(t)){lo=Math.min(lo,12);hi=Math.max(hi,15);}
-    if(/bachiller/i.test(t)){lo=Math.min(lo,16);hi=Math.max(hi,18);}
-    const nums=(t.match(/\d+/g)||[]).map(Number);
-    if(nums.length){ lo=Math.min(lo,nums[0]); hi=Math.max(hi,/desde/i.test(t)?18:nums[nums.length-1]); }
-    if(hi<0) return ['pri','eso','bach'];
-    return Object.entries(rangos).filter(([k,[a,b]])=>a<=hi&&b>=lo).map(([k])=>k);
-  }
+  const etapasDe=nivelesDe;
   function objsDe(r){
     const o=new Set(), txt=(r.nombre+' '+r.desc).toLowerCase();
     const c=r.cat||'';
@@ -1038,7 +1150,7 @@ render();
   }
   function propios(){
     return allRecursos().filter(r=>r.links&&r.links[0]&&!/^(codeorg|raspberrypi|pensamiento-critico|verificacion-ia)\.html/.test(r.links[0].url))
-      .map(r=>({t:r.nombre,d:r.desc,u:r.links[0].url,f:'mis',e:etapasDe(r),o:objsDe(r),r:r.etapa==='proyecto'?'semanas':'sesion',x:r.edad||'',es:1}));
+      .map(r=>({t:r.nombre,d:r.desc,u:r.links[0].url,f:'mis',e:etapasDe(r),o:objsDe(r),r:r.etapa==='proyecto'?'semanas':'sesion',x:r.edad||'',es:r.idioma==='en'?0:1}));
   }
   const ESPECIALES=[
     {t:'Rúbricas de idoneidad de IA',d:'Valora si una herramienta de IA es adecuada para una edad y si una actividad con IA está bien planteada, con dictamen final tipo semáforo.',accion:'rubricas',f:'mis',e:['doc'],o:['docente','critico','seguridad'],r:'sesion',x:'Dentro de esta web',es:1}
@@ -1110,5 +1222,6 @@ render();
   if(sel.etapa&&sel.obj) mostrar();
 })();
 </script>
+<script src="tema.js"></script>
 </body>
 </html>

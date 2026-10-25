@@ -1,0 +1,129 @@
+/* ════════════════════════════════════════════════════════════════
+   tema.css · Modo oscuro y ajustes para móvil, compartidos por
+   todas las páginas de «Mis Recursos de Aula».
+   El atributo data-theme lo fija un script en <head> según la
+   preferencia guardada o la del sistema.
+   ════════════════════════════════════════════════════════════════ */
+
+:root{color-scheme:light}
+
+/* ───────── Botón de tema (lo añade tema.js en la cabecera) ───────── */
+.theme-btn{position:absolute;top:14px;right:14px;z-index:3;width:40px;height:40px;border-radius:50%;
+  display:grid;place-items:center;font-size:1.1rem;line-height:1;cursor:pointer;color:#fff;
+  background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);transition:.15s}
+.theme-btn:hover{background:rgba(255,255,255,.32);transform:scale(1.06)}
+.theme-btn:focus-visible{outline:3px solid #fff;outline-offset:2px}
+@media print{.theme-btn{display:none}}
+
+/* ════════════════════════ MODO OSCURO ════════════════════════ */
+@media screen{
+  :root[data-theme="dark"]{
+    color-scheme:dark;
+    --bg:#14141c; --card:#1f1f2b; --ink:#ececf3; --muted:#a9a9bb;
+    --field:#272735; --line:#3a3a50; --line-2:#30303f; --line-strong:#52526b; --line-soft:#2c2c3b;
+    --chip-bg:#2c2c3b; --chip-hover:#38384a; --label:#cfcfdc;
+    --on-ink:#16161f;
+    --infantil-soft:color-mix(in srgb,#f59e0b 22%,#1f1f2b);
+    --primaria-soft:color-mix(in srgb,#0ea5e9 22%,#1f1f2b);
+    --secundaria-soft:color-mix(in srgb,#8b5cf6 24%,#1f1f2b);
+    --proyecto-soft:color-mix(in srgb,#10b981 22%,#1f1f2b);
+    --bach-soft:color-mix(in srgb,#6366f1 24%,#1f1f2b);
+    --eso-soft:color-mix(in srgb,#8b5cf6 24%,#1f1f2b);
+    --rubrica-soft:color-mix(in srgb,#e11d48 22%,#1f1f2b);
+    --ok:#4ade80; --ok-soft:color-mix(in srgb,#22c55e 18%,#1f1f2b);
+    --med:#facc15; --med-soft:color-mix(in srgb,#eab308 18%,#1f1f2b);
+    --no:#f87171; --no-soft:color-mix(in srgb,#ef4444 18%,#1f1f2b);
+    --soft:color-mix(in srgb,var(--pc,#7c3aed) 24%,#1f1f2b);
+    --otros:#9ca3af;
+  }
+
+  /* Elementos con fondo oscuro (--ink) y texto blanco: invertir el texto */
+  [data-theme="dark"] .chip.active,
+  [data-theme="dark"] .tab[data-etapa="todas"].active,
+  [data-theme="dark"] .tab[data-e="todas"].active,
+  [data-theme="dark"] .tab[data-k="todas"].active,
+  [data-theme="dark"] .btn-add:not(.btn-sug):not(.btn-mio),
+  [data-theme="dark"] .rub-block h3 .num{color:var(--on-ink)}
+  [data-theme="dark"] .btn-add:not(.btn-sug):not(.btn-mio):hover{background:#fff}
+  [data-theme="dark"] .yn button.si.on,[data-theme="dark"] .yn button.no.on{color:#16161f}
+
+  /* Superficies blancas fijas de las subpáginas */
+  [data-theme="dark"] .tab:not(.active),
+  [data-theme="dark"] .note,
+  [data-theme="dark"] .cierre .box{background:var(--card)}
+  [data-theme="dark"] .note{color:var(--muted)}
+  [data-theme="dark"] .chip:not(.active){border-color:var(--line,#3a3a50)}
+  [data-theme="dark"] details:not(.nota){background:#262634}
+  [data-theme="dark"] .desc,
+  [data-theme="dark"] ol,
+  [data-theme="dark"] .cierre p,[data-theme="dark"] .cierre li{color:#c4c4d2}
+
+  /* Etiquetas de colores pastel */
+  [data-theme="dark"] .badge.cat,[data-theme="dark"] .badge.tema{background:#26264a;color:#a5b4fc}
+  [data-theme="dark"] .badge.nivel,[data-theme="dark"] .badge.p,
+  [data-theme="dark"] .lang.en{background:#2c2c3b;color:#c4c4d2}
+  [data-theme="dark"] .badge.dur,[data-theme="dark"] .badge.t{background:#0f2f35;color:#67e8f9}
+  [data-theme="dark"] .badge.largo{background:#33290a;color:#facc15}
+  [data-theme="dark"] .badge.hw{background:#3a1f0a;color:#fdba74}
+  [data-theme="dark"] .badge.h{background:var(--soft);color:color-mix(in srgb,var(--pc,#7c3aed) 45%,#fff)}
+  [data-theme="dark"] .flag.nuevo,[data-theme="dark"] .lang.es{background:#0f2f1c;color:#4ade80}
+  [data-theme="dark"] .flag.mio{background:#3b1530;color:#f9a8d4}
+
+  /* Recomendador */
+  [data-theme="dark"] .reco-box{border-color:#3b2e5a}
+  [data-theme="dark"] .reco-toggle,[data-theme="dark"] .reco-more a{background:#2e2147;color:#c4b5fd}
+  [data-theme="dark"] .rc-why{color:#c4b5fd}
+  [data-theme="dark"] .rc:hover{border-color:#6d28d9}
+  [data-theme="dark"] .rq-opt:hover{border-color:#a78bfa;color:#c4b5fd}
+
+  /* Rúbricas */
+  [data-theme="dark"] .veredicto .luz{background:#4a4a5c}
+  [data-theme="dark"] .cell.ok:hover{border-color:#166534}
+  [data-theme="dark"] .cell.med:hover{border-color:#854d0e}
+  [data-theme="dark"] .cell.no:hover{border-color:#991b1b}
+
+  /* Enlaces dentro de texto */
+  [data-theme="dark"] .note a,[data-theme="dark"] .modal .sub a,
+  [data-theme="dark"] .etapa-nota a{color:#93c5fd}
+  [data-theme="dark"] .src a,[data-theme="dark"] details:not(.nota) summary{color:color-mix(in srgb,var(--pc,#7c3aed) 55%,#fff)}
+  [data-theme="dark"] .nb-tip a{color:#fb7185}
+
+  /* Sombras más suaves y formularios */
+  [data-theme="dark"] .card{box-shadow:0 3px 12px rgba(0,0,0,.35)}
+  [data-theme="dark"] .card:hover{box-shadow:0 12px 28px rgba(0,0,0,.5)}
+  [data-theme="dark"] select,[data-theme="dark"] input,[data-theme="dark"] textarea{color:var(--ink)}
+  [data-theme="dark"] header::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,.22);pointer-events:none}
+  [data-theme="dark"] header > *:not(.theme-btn){position:relative}
+}
+
+/* ════════════════════════ MÓVIL ════════════════════════ */
+@media (max-width:560px){
+  header{padding-left:16px!important;padding-right:16px!important}
+  header h1{padding:0 36px}
+  header p{font-size:.95rem}
+  .stats{gap:6px}
+  .stat{font-size:.76rem;padding:4px 11px}
+  .toolbar,.grid,.reco,.rub,.countbar,.etapa-nota,.cierre{padding-left:16px;padding-right:16px}
+  .count{padding-left:16px;padding-right:16px}
+  .countbar .count{padding:0}
+  .note{margin-left:16px;margin-right:16px}
+
+  /* Pestañas y categorías en una fila deslizable en lugar de varias filas */
+  .tabs,.chips{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;padding:2px 16px 8px;
+    scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+  .tabs::-webkit-scrollbar,.chips::-webkit-scrollbar{display:none}
+  .tab,.chip{flex:0 0 auto;scroll-snap-align:start}
+  .tab{padding:9px 16px}
+
+  .grid{grid-template-columns:1fr;gap:14px}
+  .card{padding:16px}
+  .card:hover{transform:none}
+  .reco-box{padding:16px}
+  .reco-res{grid-template-columns:1fr}
+  .modal{padding:20px;border-radius:18px}
+  .rub-intro,.rub-block{padding:16px}
+
+  /* Evita el zoom automático de iOS al escribir */
+  input,select,textarea{font-size:16px!important}
+  .btn-add{justify-content:center;text-align:center}
+}
