@@ -268,7 +268,7 @@ VA.edad = function(e){
 };
 VA.novedades = [
  {
-  "fecha": "2026-10-25",
+  "fecha": "2026-10-26",
   "items": [
    "Pestanyes d'ESO i Batxillerat, etiqueta d'idioma amb el filtre «Només en castellà» i mode fosc.",
    "Fitxa de cada recurs amb una idea per a usar-lo a l'aula i la valoració que n'hages fet.",
