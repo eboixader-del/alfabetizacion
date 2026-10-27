@@ -1,6 +1,16 @@
 /* Mis Recursos de Aula · página principal en valenciano.
    Generado desde las tablas de traducción; para cambiar un texto, edítalo aquí o en ellas. */
 Object.assign(VA.ui, {
+"🧭 ¿No sabes por dónde empezar?": "🧭 No saps per on començar?",
+"Responde tres preguntas y te recomiendo recursos de toda la web.": "Respon tres preguntes i et recomane recursos de tota la web.",
+"Empezar": "Començar",
+"Ver": "Veure",
+"Ver ficha": "Veure la fitxa",
+"en inglés": "en anglés",
+"Tema": "Tema",
+"Todos los temas": "Tots els temes",
+"¿Echas en falta algún recurso?": "Trobes a faltar algun recurs?",
+"← Volver a los recursos": "← Tornar als recursos",
  "Recursos de Aula · IA de Infantil a Bachillerato": "Recursos d'Aula · IA d'Infantil a Batxillerat",
  "Herramientas, cursos y actividades con IA de Infantil a Bachillerato, con rúbricas para valorar si son adecuadas a cada edad.": "Eines, cursos i activitats amb IA d'Infantil a Batxillerat, amb rúbriques per a valorar si són adequades a cada edat.",
  "Mis Recursos de Aula": "Els meus Recursos d'Aula",
@@ -258,7 +268,7 @@ Object.assign(VA.ui, {
 });
 Object.assign(VA.html, {
  "rubIntro": "Dos rúbriques complementàries que s'apliquen en orde. Primer es valida <strong>l'eina</strong> (aspectes legals, de dades i d'edat mínima) i, després, <strong>l'activitat concreta</strong> que es vol fer amb ella (aspectes pedagògics). Marca les caselles i el semàfor calcula el dictamen automàticament.",
- "nbTip": "💬 <strong>Dubtes en aplicar-les?</strong> Pregunta al <a href=\"https://notebook.google.com/notebook/54c403dc-e190-4c6c-bfb1-77b207a53b6f\" target=\"_blank\" rel=\"noopener\">quadern de Gemini NotebookLM amb les rúbriques ↗</a> (en castellà).",
+ "nbTip": "💬 <strong>Dubtes en aplicar-les?</strong> <a class=\"nb-btn\" href=\"https://notebook.google.com/notebook/54c403dc-e190-4c6c-bfb1-77b207a53b6f\" target=\"_blank\" rel=\"noopener\">Pregunta al quadern de NotebookLM amb les rúbriques (en castellà) ↗</a>",
  "modalSub": "Es guardarà <strong>només en este navegador</strong> i apareixerà amb l'etiqueta <strong>MEU</strong>; ningú més el veurà. Si vols que es publique en la web per a tothom, <a href=\"https://docs.google.com/forms/d/e/1FAIpQLScXIdWQmBWoYu3mK4ap3EAeZCtEFbtjb1sVy2T3nXm9a5tOEQ/viewform\" target=\"_blank\" rel=\"noopener\">suggerix-lo ací</a>."
 });
 VA.edad = function(e){
@@ -267,6 +277,9 @@ VA.edad = function(e){
     .replace(/Infantil a /g,'Infantil a ');
 };
 VA.novedades = [
+  {fecha:'2026-10-27', items:[
+    'Portada més senzilla: les rúbriques i el quadern de NotebookLM, a un clic al costat del cercador.',
+    'Novetats i recomanador plegats, temes en un desplegable i targetes més netes.']},
  {
   "fecha": "2026-10-26",
   "items": [

@@ -497,6 +497,66 @@
   .tab[data-etapa="favoritos"].active{background:#b45309}
   .lp-btn.pri{background:#b45309;border-color:#b45309;color:#fff}
   .fav-btn.on,.fav-btn:hover{color:#d97706}
+
+  /* ===== Interfaz simplificada ===== */
+  .toolbar{flex-wrap:wrap}
+  .search-box{flex:1 1 320px}
+  .nav-btn{display:inline-flex;align-items:center;gap:6px;background:var(--card);color:var(--ink);border:2px solid var(--line)!important;
+    box-shadow:0 8px 24px rgba(43,43,58,.08)}
+  .nav-btn:hover{background:var(--chip-bg)}
+  .nav-btn.nav-rub{background:#be123c;color:#fff;border-color:#be123c!important}
+  .nav-btn.nav-rub:hover{background:#9f1239}
+  .nav-btn.active{outline:3px solid var(--ink);outline-offset:2px}
+  .nav-btn.nav-fav.active{background:#b45309;border-color:#b45309!important;color:#fff}
+  .nav-btn .tab-n{background:var(--chip-bg);color:var(--ink)}
+  .nav-btn.active .tab-n{background:rgba(255,255,255,.3);color:#fff}
+
+  .reco-box,.nov-box{padding:14px 20px}
+  .reco-head h2,.nov-head h2{font-size:1.02rem}
+  .reco-head p,.nov-head p{font-size:.84rem}
+  .reco-toggle{background:#7c3aed;color:#fff}
+  .reco.open .reco-toggle{background:#f3e8ff;color:#6d28d9}
+  .nov-head{gap:6px 12px}
+  .nov-head h2{margin:0}
+  .nov-head p{margin:0}
+  .nov-head .nov-toggle{margin-left:auto}
+
+  .countbar{justify-content:flex-start;gap:10px 18px;margin-top:16px}
+  .countbar .count{margin-left:auto}
+  .sel-tema{display:inline-flex;align-items:center;gap:8px;font-size:.84rem;font-weight:800;color:var(--muted)}
+  .sel-tema select{font:inherit;font-size:.86rem;font-weight:700;color:var(--ink);background:var(--card);border:1.5px solid var(--line);
+    border-radius:999px;padding:7px 14px;cursor:pointer;max-width:62vw}
+  .sel-tema select:focus-visible{outline:3px solid var(--primaria);outline-offset:2px}
+
+  .card .meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:6px}
+  .edad-txt{font-size:.78rem;font-weight:700;color:var(--muted)}
+  .card .desc{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;flex-grow:0;max-height:4.5em;margin-bottom:auto}
+  .card .links{margin-top:auto;padding-top:4px}
+  .card .btn-ficha{border:none;background:none;padding:6px 4px;font-size:.84rem;font-weight:800;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+  .card .btn-ficha:hover{color:var(--ink);background:none}
+
+  .aporta{max-width:1032px;margin:-30px auto 50px;padding:14px 18px;display:flex;align-items:center;justify-content:center;gap:8px 12px;
+    flex-wrap:wrap;font-size:.88rem;color:var(--muted);font-weight:700;border:1.5px dashed var(--line);border-radius:16px}
+  .aporta-btn{font:inherit;font-size:.86rem;font-weight:800;color:var(--ink);background:var(--card);border:1.5px solid var(--line);
+    border-radius:999px;padding:7px 14px;cursor:pointer;text-decoration:none}
+  .aporta-btn:hover{border-color:var(--ink)}
+  @media (max-width:1080px){.aporta{margin-left:20px;margin-right:20px}}
+
+  .volver{border:none;background:var(--chip-bg);color:var(--ink);font:inherit;font-weight:800;font-size:.84rem;padding:7px 14px;
+    border-radius:999px;cursor:pointer;margin-bottom:12px}
+  .volver:hover{background:var(--chip-hover)}
+  .nb-btn{display:inline-block;margin-left:4px;background:#be123c;color:#fff!important;text-decoration:none;padding:5px 12px;border-radius:999px}
+  .nb-btn:hover{background:#9f1239}
+
+  @media (max-width:560px){
+    .toolbar{gap:10px;flex-direction:row}
+    .search-box{flex:1 1 100%}
+    .nav-btn{flex:1 1 0;justify-content:center;padding:11px 10px;font-size:.9rem}
+    .countbar .count{margin-left:0;width:100%}
+    .aporta{margin-left:16px;margin-right:16px;margin-top:-30px}
+    .nb-btn{margin:6px 0 0}
+  }
+  @media print{.aporta,.volver,.nav-btn{display:none!important}}
 </style>
 <link rel="stylesheet" href="tema.css">
 <script>(function(){var t=null;try{t=localStorage.getItem("tema")}catch(e){}var d=t?t==="oscuro":!!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.dataset.theme=d?"dark":"light";})();</script>
@@ -516,20 +576,20 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
     <input id="search" type="search" placeholder="Buscar recurso… (ej. música, cuentos, programación)">
   </div>
-  <a class="btn-add btn-sug" href="https://docs.google.com/forms/d/e/1FAIpQLScXIdWQmBWoYu3mK4ap3EAeZCtEFbtjb1sVy2T3nXm9a5tOEQ/viewform" target="_blank" rel="noopener" title="Propón un recurso para que se publique en esta web">💡 Sugerir recurso</a>
-  <button type="button" class="btn-add btn-mio" id="btnAdd" title="Guarda un recurso solo en este navegador">➕ Añadir para mí</button>
+  <button type="button" class="btn-add nav-btn nav-rub" data-etapa="rubricas" aria-pressed="false">⚖️ Rúbricas IA</button>
+  <button type="button" class="btn-add nav-btn nav-fav" data-etapa="favoritos" aria-pressed="false">⭐ Favoritos <span class="tab-n" id="favN"></span></button>
 </div>
 
 <section class="nov" id="nov" aria-label="Novedades"></section>
 
-<section class="reco open" id="reco">
+<section class="reco" id="reco">
   <div class="reco-box">
     <div class="reco-head" id="recoHead">
       <div>
-        <h2>🧭 ¿Qué quieres conseguir?</h2>
-        <p>Responde tres preguntas y te recomiendo recursos de toda la web: mis recursos, Code.org, Raspberry Pi y actividades de pensamiento crítico y de verificación.</p>
+        <h2>🧭 ¿No sabes por dónde empezar?</h2>
+        <p>Responde tres preguntas y te recomiendo recursos de toda la web.</p>
       </div>
-      <button class="reco-toggle" id="recoToggle" type="button">Ocultar</button>
+      <button class="reco-toggle" id="recoToggle" type="button" aria-expanded="false">Empezar</button>
     </div>
     <div class="reco-body">
       <div class="rq"><div class="rq-t"><span>1</span>¿Con quién vas a trabajar?</div><div class="rq-opts" data-q="etapa"></div></div>
@@ -547,27 +607,31 @@
   <button type="button" class="tab" data-etapa="eso">🎓 ESO</button>
   <button type="button" class="tab" data-etapa="bach">📚 Bachillerato</button>
   <button type="button" class="tab" data-etapa="proyecto">🚀 Proyectos</button>
-  <button type="button" class="tab tab-fav" data-etapa="favoritos">⭐ Favoritos <span class="tab-n" id="favN"></span></button>
-  <button type="button" class="tab" data-etapa="rubricas">⚖️ Rúbricas IA</button>
 </nav>
 
 <section class="lista-panel" id="listaPanel" hidden aria-live="polite"></section>
-<div class="chips" id="chips"></div>
 <div class="countbar" id="countBar">
-  <div class="count" id="count"></div>
+  <label class="sel-tema">Tema <select id="chips"></select></label>
   <label class="toggle-es" title="Muestra solo los recursos en castellano o que no dependen del idioma">
     <input type="checkbox" id="soloEs"><span class="sw" aria-hidden="true"></span> Solo en castellano
   </label>
+  <div class="count" id="count" aria-live="polite"></div>
 </div>
 <div class="etapa-nota" id="etapaNota" hidden></div>
 <div class="grid" id="grid"></div>
+<div class="aporta" id="aporta">
+  <span>¿Echas en falta algún recurso?</span>
+  <a class="aporta-btn" href="https://docs.google.com/forms/d/e/1FAIpQLScXIdWQmBWoYu3mK4ap3EAeZCtEFbtjb1sVy2T3nXm9a5tOEQ/viewform" target="_blank" rel="noopener" title="Propón un recurso para que se publique en esta web">💡 Sugerir recurso</a>
+  <button type="button" class="aporta-btn" id="btnAdd" title="Guarda un recurso solo en este navegador">➕ Añadir para mí</button>
+</div>
 
 <!-- ===== Sección de rúbricas ===== -->
 <section class="rub" id="rub">
   <div class="rub-intro">
+    <button type="button" class="volver" data-volver>← Volver a los recursos</button>
     <h2>⚖️ ¿Es adecuada esta IA para esta edad?</h2>
     <p data-i18n="rubIntro">Dos rúbricas complementarias que se aplican en orden. Primero se valida <strong>la herramienta</strong> (aspectos legales, de datos y de edad mínima) y, después, <strong>la actividad concreta</strong> que se quiere hacer con ella (aspectos pedagógicos). Marca las casillas y el semáforo calcula el dictamen automáticamente.</p>
-    <p class="nb-tip" data-i18n="nbTip">💬 <strong>¿Dudas al aplicarlas?</strong> Pregunta al <a href="https://notebook.google.com/notebook/54c403dc-e190-4c6c-bfb1-77b207a53b6f" target="_blank" rel="noopener">cuaderno de Gemini NotebookLM con las rúbricas ↗</a></p>
+    <p class="nb-tip" data-i18n="nbTip">💬 <strong>¿Dudas al aplicarlas?</strong> <a class="nb-btn" href="https://notebook.google.com/notebook/54c403dc-e190-4c6c-bfb1-77b207a53b6f" target="_blank" rel="noopener">Pregunta al cuaderno de NotebookLM con las rúbricas ↗</a></p>
     <div class="rub-flow">
       <button type="button" class="rub-pick" data-rub="herramienta">
         <span class="step">1</span>
@@ -649,6 +713,9 @@ function enEs(r,k){ return r._es&&r._es[k]!=null?r._es[k]:r[k]; }
    Añade arriba una entrada cada vez que cambie la web. Los recursos nuevos
    aparecen solos a partir de su fecha «alta». */
 const NOVEDADES_WEB = [
+  {fecha:'2026-10-27', items:[
+    'Portada más sencilla: las rúbricas y el cuaderno de NotebookLM, a un clic junto al buscador.',
+    'Novedades y recomendador plegados, temas en un desplegable y tarjetas más limpias.']},
   {fecha:'2026-10-26', items:[
     'Pestañas de ESO y Bachillerato, etiqueta de idioma con el filtro «Solo en castellano» y modo oscuro.',
     'Ficha de cada recurso con una idea para usarlo en el aula y la valoración que hayas hecho.',
@@ -1301,7 +1368,7 @@ function abrirRubrica(r){
   });
   rubActiva='herramienta'; saveRub();
   setEtapa('rubricas');
-  window.scrollTo({top:document.getElementById('tabs').offsetTop-10,behavior:'smooth'});
+  document.getElementById('rub').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 /* ===== Recursos personalizados (localStorage) ===== */
@@ -1380,7 +1447,8 @@ function cargarExt(){ return _ext || (_ext=fetch(LANG==='va'?'data/recomendador.
 let etapaActiva='todas', catActiva='todas', query='', itemsVisibles=[];
 const grid=document.getElementById('grid'), chipsEl=document.getElementById('chips'),
       countEl=document.getElementById('count'), statsEl=document.getElementById('stats'),
-      countBar=document.getElementById('countBar'), notaEl=document.getElementById('etapaNota');
+      countBar=document.getElementById('countBar'), notaEl=document.getElementById('etapaNota'),
+      aportaEl=document.getElementById('aporta');
 
 /* Aviso con los catálogos que tienen más recursos para la etapa elegida */
 const NOMBRE_ETAPA={inf:tr('Infantil'),pri:tr('Primaria'),eso:'ESO',bach:tr('Bachillerato')};
@@ -1410,21 +1478,15 @@ function catsVisibles(){
   return [...set].sort((a,b)=>tr(a).localeCompare(tr(b),LANG==='va'?'ca':'es'));
 }
 
+/* Desplegable «Tema» con las categorías que hay en la vista actual */
 function renderChips(){
   const cats=catsVisibles();
   if(!cats.includes(catActiva)) catActiva='todas';
-  chipsEl.innerHTML='';
-  const all=document.createElement('button');
-  all.className='chip'+(catActiva==='todas'?' active':''); all.textContent=tr('Todas las categorías');
-  all.onclick=()=>{catActiva='todas';render();};
-  chipsEl.appendChild(all);
-  cats.forEach(c=>{
-    const b=document.createElement('button');
-    b.className='chip'+(catActiva===c?' active':''); b.textContent=tr(c);
-    b.onclick=()=>{catActiva=(catActiva===c?'todas':c);render();};
-    chipsEl.appendChild(b);
-  });
+  chipsEl.innerHTML=`<option value="todas">${tr('Todos los temas')}</option>`+
+    cats.map(c=>`<option value="${esc(c)}"${c===catActiva?' selected':''}>${esc(tr(c))}</option>`).join('');
+  chipsEl.value=catActiva;
 }
+chipsEl.addEventListener('change',()=>{ catActiva=chipsEl.value; render(); });
 
 function renderStats(){
   const rs=allRecursos();
@@ -1441,7 +1503,7 @@ function renderStats(){
 function render(){
   const enRub=etapaActiva==='rubricas';
   rubSection.classList.toggle('show',enRub);
-  [chipsEl,countBar,grid,notaEl,listaPanel].forEach(el=>el.style.display=enRub?'none':'');
+  [countBar,grid,notaEl,listaPanel,aportaEl].forEach(el=>el.style.display=enRub?'none':'');
   renderStats();
   if(enRub){ renderRubrica(); return; }
   renderChips();
@@ -1477,20 +1539,18 @@ function render(){
         <div class="icon">${esc(r.icon)||'⭐'}</div>
         <div>
           <h3>${esc(r.nombre)}</h3>
-          <div class="badges" style="margin-top:6px">
+          <div class="meta">
             <span class="badge etapa">${ETAPAS[r.etapa]}</span>${flag}
-            ${r.edad?`<span class="badge edad">👶 ${esc(edadTxt(r.edad))}</span>`:''}
-            ${IDIOMAS[r.idioma]?`<span class="badge idioma">${IDIOMAS[r.idioma]}</span>`:''}
+            ${r.edad?`<span class="edad-txt">${esc(edadTxt(r.edad))}</span>`:''}
+            ${r.idioma==='en'?`<span class="edad-txt">· ${tr('en inglés')}</span>`:''}
           </div>
         </div>
       </div>
       <p class="desc">${esc(r.desc)}</p>
-      <div class="badges">${r.cat?`<span class="badge cat">${esc(tr(r.cat))}</span>`:''}</div>
-      <div class="links">${r.links.map(l=>
-        `<a class="go${l.alt?' alt':''}" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(tr(l.txt))} ↗</a>`).join('')}
-        <button class="btn-ficha" title="${tr('Ver la ficha completa')}" data-idx="${idx}">📄 ${tr('Ficha')}</button>
-        <button class="btn-eval" title="${tr('Valorar su idoneidad con las rúbricas')}" data-idx="${idx}">⚖️ ${tr('Valorar')}</button>
-        ${r.custom?`<button class="btn-del" title="${tr('Eliminar este recurso')}" data-id="${r.id}">🗑️</button>`:''}
+      <div class="links">${r.links.slice(0,1).map(l=>
+        `<a class="go" href="${esc(l.url)}"${/^https?:/.test(l.url)?' target="_blank" rel="noopener"':''}>${esc(tr(l.txt))} ${/^https?:/.test(l.url)?'↗':'→'}</a>`).join('')}
+        <button type="button" class="btn-ficha" data-idx="${idx}">${tr('Ver ficha')}</button>
+        ${r.custom?`<button type="button" class="btn-del" title="${tr('Eliminar este recurso')}" aria-label="${tr('Eliminar este recurso')}" data-id="${r.id}">🗑️</button>`:''}
       </div>`;
     grid.appendChild(card);
   });
@@ -1564,12 +1624,19 @@ function setEtapa(et){
     if(/^#lista=/.test(location.hash)) history.replaceState(null,'',location.pathname+location.search);
   }
   etapaActiva=et;
-  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.etapa===et));
+  document.querySelectorAll('[data-etapa]').forEach(x=>{ x.classList.toggle('active',x.dataset.etapa===et); if(x.classList.contains('nav-btn')) x.setAttribute('aria-pressed',x.dataset.etapa===et); });
   render();
 }
 document.getElementById('tabs').addEventListener('click',e=>{
   const t=e.target.closest('.tab'); if(!t) return; setEtapa(t.dataset.etapa);
 });
+/* Botones «Rúbricas» y «Favoritos»: abren su sección; pulsados otra vez, vuelven a los recursos */
+document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>{
+  const et=b.dataset.etapa;
+  setEtapa(etapaActiva===et?'todas':et);
+  if(etapaActiva===et){ const dest=document.getElementById(et==='rubricas'?'rub':'listaPanel'); if(dest) dest.scrollIntoView({behavior:'smooth',block:'start'}); }
+}));
+document.querySelector('[data-volver]').addEventListener('click',()=>{ setEtapa('todas'); document.getElementById('tabs').scrollIntoView({behavior:'smooth',block:'start'}); });
 document.getElementById('search').addEventListener('input',e=>{
   query=e.target.value;
   if(etapaActiva==='rubricas') setEtapa('todas'); else render();
@@ -1830,11 +1897,11 @@ function listaDesdeHash(){
   const slugs=(pr.get('lista')||'').split(',').map(x=>x.trim()).filter(Boolean);
   listaCompartida={slugs, titulo:(pr.get('t')||'').slice(0,60)};
   etapaActiva='lista';
-  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('[data-etapa]').forEach(x=>x.classList.remove('active'));
   render();
   // quien recibe la lista va directo a ella: se pliega el recomendador
   const reco=document.getElementById('reco');
-  if(reco&&reco.classList.contains('open')){ reco.classList.remove('open'); const t=document.getElementById('recoToggle'); if(t) t.textContent=tr('Mostrar'); }
+  if(reco&&reco.classList.contains('open')){ reco.classList.remove('open'); const t=document.getElementById('recoToggle'); if(t){ t.textContent=tr('Empezar'); t.setAttribute('aria-expanded','false'); } }
   requestAnimationFrame(()=>listaPanel.scrollIntoView({block:'start'}));
   return true;
 }
@@ -1846,7 +1913,7 @@ const NOV_KEY='novPlegado';
 function verRecientes(){
   if(listaCompartida){ listaCompartida=null; if(/^#lista=/.test(location.hash)) history.replaceState(null,'',location.pathname+location.search); }
   etapaActiva='recientes';
-  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('[data-etapa]').forEach(x=>x.classList.remove('active'));
   render();
   listaPanel.scrollIntoView({behavior:'smooth',block:'start'});
 }
@@ -1860,7 +1927,7 @@ function renderNovedades(){
   const nWeb=NOVEDADES_WEB.filter(n=>nuevoParaTi(n.fecha)).reduce((a,n)=>a+n.items.length,0);
   const total=nRes+nWeb;
   let plegado=false; try{ plegado=localStorage.getItem(NOV_KEY)==='1'; }catch(e){}
-  if(total) plegado=false; // si hay novedades para ti, se muestra abierto
+  try{ if(localStorage.getItem(NOV_KEY)===null) plegado=true; }catch(e){ plegado=true; } // plegado de entrada
   novBox.classList.toggle('plegado',plegado);
   const mini=ultimos.map(r=>`<button type="button" class="nc ${r.etapa}" data-nov="${allRecursos().indexOf(r)}" title="${tr('Ver la ficha de {x}',{x:esc(r.nombre)})}">
       ${nuevoParaTi(r.alta)?`<span class="nc-punto" title="${tr('Nuevo desde tu última visita')}"></span>`:''}
@@ -1871,9 +1938,9 @@ function renderNovedades(){
       <ul>${n.items.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></li>`).join('');
   novBox.innerHTML=`<div class="nov-box">
     <div class="nov-head" data-n="toggle">
-      <div><h2>🆕 ${tr('Novedades')}</h2><p>${tr('Última actualización: {f}',{f:fechaLarga(ultimaAct)})}</p></div>
+      <h2>🆕 ${tr('Novedades')}</h2><p>${tr('Última actualización: {f}',{f:fechaLarga(ultimaAct)})}</p>
       ${total?`<span class="nov-badge" title="${tr('Tu última visita fue el {f}',{f:fechaLarga(visitaPrev)})}">✨ ${total===1?tr('1 novedad desde tu última visita'):tr('{n} novedades desde tu última visita',{n:total})}</span>`:''}
-      <button class="nov-toggle" type="button" aria-expanded="${!plegado}">${plegado?tr('Mostrar'):tr('Ocultar')}</button>
+      <button class="nov-toggle" type="button" aria-expanded="${!plegado}">${plegado?tr('Ver'):tr('Ocultar')}</button>
     </div>
     <div class="nov-body">
       <div class="nov-sub"><h3>${tr('Últimos recursos añadidos')}</h3>
@@ -1890,7 +1957,7 @@ novBox&&novBox.addEventListener('click',e=>{
   if(b.dataset.n==='toggle'){
     const pleg=!novBox.classList.contains('plegado');
     novBox.classList.toggle('plegado',pleg);
-    const t=novBox.querySelector('.nov-toggle'); t.textContent=pleg?tr('Mostrar'):tr('Ocultar'); t.setAttribute('aria-expanded',!pleg);
+    const t=novBox.querySelector('.nov-toggle'); t.textContent=pleg?tr('Ver'):tr('Ocultar'); t.setAttribute('aria-expanded',!pleg);
     try{ localStorage.setItem(NOV_KEY,pleg?'1':'0'); }catch(err){}
   }
 });
@@ -1940,7 +2007,8 @@ fichaDesdeHash();
 
   document.getElementById('recoHead').addEventListener('click',()=>{
     box.classList.toggle('open');
-    document.getElementById('recoToggle').textContent=box.classList.contains('open')?tr('Ocultar'):tr('Mostrar');
+    const ab=box.classList.contains('open'), tg=document.getElementById('recoToggle');
+    tg.textContent=ab?tr('Ocultar'):tr('Empezar'); tg.setAttribute('aria-expanded',ab);
   });
   document.querySelectorAll('.rq-opts').forEach(el=>{
     const k=el.dataset.q;

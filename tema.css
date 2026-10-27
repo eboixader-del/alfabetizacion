@@ -49,9 +49,9 @@
   [data-theme="dark"] .tab[data-etapa="todas"].active,
   [data-theme="dark"] .tab[data-e="todas"].active,
   [data-theme="dark"] .tab[data-k="todas"].active,
-  [data-theme="dark"] .btn-add:not(.btn-sug):not(.btn-mio),
+  [data-theme="dark"] .btn-add:not(.btn-sug):not(.btn-mio):not(.nav-btn),
   [data-theme="dark"] .rub-block h3 .num{color:var(--on-ink)}
-  [data-theme="dark"] .btn-add:not(.btn-sug):not(.btn-mio):hover{background:#fff}
+  [data-theme="dark"] .btn-add:not(.btn-sug):not(.btn-mio):not(.nav-btn):hover{background:#fff}
   [data-theme="dark"] .yn button.si.on,[data-theme="dark"] .yn button.no.on{color:#16161f}
 
   /* Superficies blancas fijas de las subpáginas */
