@@ -651,6 +651,7 @@
 </main>
 
 <footer>Recopilación personal de recursos educativos · Los recursos añadidos manualmente se guardan en este navegador</footer>
+<p class="licencia" data-i18n="licencia">Web cocreada por <strong>Ernest Boixader</strong> y <strong>Claude</strong> (Anthropic) · <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" target="_blank">CC BY-NC-SA 4.0</a>: puedes compartirla y adaptarla citando la autoría, sin fines comerciales y con la misma licencia. Los recursos enlazados conservan sus propias licencias.</p>
 
 <!-- Ficha de recurso -->
 <div class="overlay ficha-ov" id="fichaOv" aria-hidden="true">
@@ -1305,7 +1306,7 @@ async function descargarInforme(claves){
     doc.setPage(i);
     doc.setDrawColor(...COL.linea); doc.setLineWidth(.25); doc.line(M,H-M+2,W-M,H-M+2);
     fuente('normal',7.5); color(COL.muted);
-    doc.text(pdfTxt(`${tr('Mis Recursos de Aula')} · ${(location.host+location.pathname).replace(/index\.html$/,'').replace(/\/$/,'')} · ${tr('Generado el {f}',{f:hoyTxt})}`),M,H-M+6);
+    doc.text(pdfTxt(`${tr('Mis Recursos de Aula')} · ${(location.host+location.pathname).replace(/index\.html$/,'').replace(/\/$/,'')} · ${tr('Generado el {f}',{f:hoyTxt})} · CC BY-NC-SA 4.0`),M,H-M+6);
     doc.text(pdfTxt(tr('Página {i} de {n}',{i,n})),W-M,H-M+6,{align:'right'});
   }
 

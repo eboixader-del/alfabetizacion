@@ -29,3 +29,15 @@ Archivos compartidos: `tema.css` y `tema.js` (modo oscuro y móvil), `i18n.js` (
   ```
   python3 tools/generar_recomendador_va.py
   ```
+
+## Autoría y licencia
+
+Web cocreada por **Ernest Boixader** y **Claude** (Anthropic).
+
+El contenido propio (textos, selección y descripción de recursos, rúbricas y actividades) se comparte con licencia
+[Creative Commons Reconocimiento-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es):
+puedes copiarlo, compartirlo y adaptarlo citando la autoría, sin fines comerciales y con la misma licencia.
+
+Los recursos y sitios enlazados conservan sus propias licencias. Las actividades de *Pensamiento crítico* y *Verificar lo que dice la IA*
+son adaptaciones de Med Kharbach (educatorstechnology.com), indicadas en cada página. Las bibliotecas de `lib/`
+(jsPDF y qrcode) tienen licencia MIT.

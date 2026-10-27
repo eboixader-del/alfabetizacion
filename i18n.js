@@ -20,7 +20,12 @@
   document.documentElement.lang = L==='va' ? 'ca-ES-valencia' : 'es';
   window.VA={ui:{
     'Cambiar a modo claro':'Canviar al mode clar', 'Cambiar a modo oscuro':'Canviar al mode fosc'
-  }, html:{}};
+  }, html:{
+    licencia:'Web cocreada per <strong>Ernest Boixader</strong> i <strong>Claude</strong> (Anthropic) · '+
+      '<a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ca" target="_blank">CC BY-NC-SA 4.0</a>: '+
+      'pots compartir-la i adaptar-la citant l\'autoria, sense finalitats comercials i amb la mateixa llicència. '+
+      'Els recursos enllaçats mantenen les seues pròpies llicències.'
+  }};
 
   var me=document.currentScript, pagina=me&&me.getAttribute('data-pagina');
   if(L==='va'&&pagina) document.write('<script src="i18n/'+pagina+'.va.js"><\/script>');
