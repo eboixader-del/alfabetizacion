@@ -7,6 +7,7 @@ Object.assign(VA.ui, {
 "Ver": "Veure",
 "Ver ficha": "Veure la fitxa",
 "en inglés": "en anglés",
+"en catalán": "en català",
 "Tema": "Tema",
 "Todos los temas": "Tots els temes",
 "¿Echas en falta algún recurso?": "Trobes a faltar algun recurs?",
@@ -55,6 +56,7 @@ Object.assign(VA.ui, {
  "Castellano": "Castellà",
  "Castellano e inglés": "Castellà i anglés",
  "Inglés": "Anglés",
+ "Catalán": "Català",
  "Sin idioma (visual o sonoro)": "Sense idioma (visual o sonor)",
  "Descripción": "Descripció",
  "¿Para qué lo usas en el aula?": "Per a què l'uses a l'aula?",
@@ -69,6 +71,7 @@ Object.assign(VA.ui, {
  "💬 Castellano": "💬 Castellà",
  "💬 Castellano e inglés": "💬 Castellà i anglés",
  "💬 Inglés": "💬 Anglés",
+ "💬 Catalán": "💬 Català",
  "🌍 Sin idioma": "🌍 Sense idioma",
  "Bachillerato y FP": "Batxillerat i FP",
  "No cumple el filtro «{x}».": "No complix el filtre «{x}».",
@@ -503,6 +506,10 @@ VA.recursos = {
   "nombre": "Code INTEF · Pensament computacional i IA",
   "desc": "Portal del Ministeri (INTEF) amb propostes didàctiques de programació, robòtica i IA en castellà, el programa Código Escuela 4.0, formació docent i l'Observatori de la IA.",
   "idea": "Consulta les propostes didàctiques de la teua etapa abans de programar una situació d'aprenentatge amb pensament computacional."
+ },
+ "codi-escola-4-0-illes-balears": {
+  "desc": "Repositori del Govern de les Illes Balears amb propostes de pensament computacional i robòtica per a Infantil, Primària i ESO: programació desendollada, robòtica educativa, electrònica i impressió 3D. Està en català i cada proposta es descarrega completa. No tracta la IA: és el pas previ.",
+  "idea": "Tria una proposta desendollada (sense pantalles ni robots) per a treballar les instruccions pas a pas i tanca amb una pregunta: i com aprén una màquina a la qual ningú li dona les instruccions? És un bon pont cap a Quick, Draw! o Teachable Machine."
  },
  "pensamiento-critico-en-la-era-de-la-ia": {
   "nombre": "Pensament crític en l'era de la IA",

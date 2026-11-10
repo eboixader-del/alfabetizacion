@@ -689,6 +689,7 @@
           <option value="es" selected>Castellano</option>
           <option value="mix">Castellano e inglés</option>
           <option value="en">Inglés</option>
+          <option value="ca">Catalán</option>
           <option value="sin">Sin idioma (visual o sonoro)</option>
         </select>
       </div>
@@ -749,12 +750,12 @@ try{
 }catch(e){}
 function nuevoParaTi(fecha){ return !!visitaPrev && !!fecha && fecha>visitaPrev; }
 
-const IDIOMAS = {es:tr('💬 Castellano'), mix:tr('💬 Castellano e inglés'), en:tr('💬 Inglés'), sin:tr('🌍 Sin idioma')};
+const IDIOMAS = {es:tr('💬 Castellano'), mix:tr('💬 Castellano e inglés'), en:tr('💬 Inglés'), ca:tr('💬 Catalán'), sin:tr('🌍 Sin idioma')};
 
 /* Cada recurso:
    etapa  infantil | primaria | eso | bach | proyecto      nombre, icon, cat, edad, desc, links:[{txt,url,alt?}]
    alta   fecha en que se añadió (AAAA-MM-DD): da la etiqueta NUEVO durante 60 días y lo pone en «Novedades»
-   idea   propuesta de uso en el aula (ficha)               idioma  es | mix | en | sin
+   idea   propuesta de uso en el aula (ficha)               idioma  es | mix | en | ca | sin
    necesita  ['camara'|'micro'|'desenchufada'] (opcional)  */
 const RECURSOS = [
   // ══════════ INFANTIL (3-6 años) ══════════
@@ -902,6 +903,9 @@ const RECURSOS = [
   {etapa:'proyecto', icon:'🇪🇸', nombre:'Code INTEF · Pensamiento computacional e IA', alta:'2026-10-11', idea:"Consulta las propuestas didácticas de tu etapa antes de programar una situación de aprendizaje con pensamiento computacional.", idioma:'es', cat:'Pensamiento computacional', edad:'Infantil a Bachillerato',
    desc:'Portal del Ministerio (INTEF) con propuestas didácticas de programación, robótica e IA en castellano, el programa Código Escuela 4.0, formación docente y el Observatorio de la IA.',
    links:[{txt:'Propuestas didácticas', url:'https://code.intef.es/recursos/?recurso=prop_didacticas'},{txt:'Portal', url:'https://code.intef.es/', alt:true}]},
+  {etapa:'proyecto', icon:'🏝️', nombre:'Codi Escola 4.0 · Illes Balears', alta:'2026-11-10', idea:"Elige una propuesta desenchufada (sin pantallas ni robots) para trabajar las instrucciones paso a paso y cierra con una pregunta: ¿y cómo aprende una máquina a la que nadie le da las instrucciones? Es un buen puente hacia Quick, Draw! o Teachable Machine.", idioma:'ca', cat:'Pensamiento computacional', edad:'Infantil a ESO',
+   desc:'Repositorio del Govern de les Illes Balears con propuestas de pensamiento computacional y robótica para Infantil, Primaria y ESO: programación desenchufada, robótica educativa, electrónica e impresión 3D. Está en catalán y cada propuesta se descarga completa. No trata la IA: es el paso previo.',
+   links:[{txt:'Abrir', url:'https://escola40.caib.es/'}]},
   {etapa:'proyecto', icon:'🧠', nombre:'Pensamiento crítico en la era de la IA', alta:'2026-10-11', idea:"Elige una actividad de 10-15 minutos como rutina semanal y termina siempre con la nota reflexiva del alumnado.", idioma:'es', cat:'Alfabetización en IA', edad:'Primaria a Bachillerato y profesorado',
    desc:'13 actividades prácticas (10-30 min) para que el alumnado cuestione, verifique y debata lo que produce la IA: detective de alucinaciones, preguntas socráticas, debate a favor y en contra, comparación a ciegas… Traducidas y adaptadas de Med Kharbach (CC BY-NC-SA).',
    links:[{txt:'Ver actividades', url:'pensamiento-critico.html'}]},
@@ -1439,7 +1443,7 @@ function pasaEtapa(r,et=etapaActiva){
 }
 const ES_KEY='soloCastellano';
 let soloEs=false; try{ soloEs=localStorage.getItem(ES_KEY)==='1'; }catch(e){}
-function pasaIdioma(r){ return !soloEs || r.idioma!=='en'; }
+function pasaIdioma(r){ return !soloEs || (r.idioma!=='en' && r.idioma!=='ca'); }
 
 /* Datos de los catálogos (Code.org, Raspberry Pi…) compartidos con el recomendador */
 let _ext=null;
@@ -1543,7 +1547,7 @@ function render(){
           <div class="meta">
             <span class="badge etapa">${ETAPAS[r.etapa]}</span>${flag}
             ${r.edad?`<span class="edad-txt">${esc(edadTxt(r.edad))}</span>`:''}
-            ${r.idioma==='en'?`<span class="edad-txt">· ${tr('en inglés')}</span>`:''}
+            ${r.idioma==='en'?`<span class="edad-txt">· ${tr('en inglés')}</span>`:r.idioma==='ca'?`<span class="edad-txt">· ${tr('en catalán')}</span>`:''}
           </div>
         </div>
       </div>
@@ -2047,7 +2051,7 @@ fichaDesdeHash();
   }
   function propios(){
     return allRecursos().filter(r=>r.links&&r.links[0]&&!/^(codeorg|raspberrypi|pensamiento-critico|verificacion-ia)\.html/.test(r.links[0].url))
-      .map(r=>({t:r.nombre,d:r.desc,u:r.links[0].url,f:'mis',e:etapasDe(r),o:objsDe(r),r:r.etapa==='proyecto'?'semanas':'sesion',x:edadTxt(r.edad||''),es:r.idioma==='en'?0:1}));
+      .map(r=>({t:r.nombre,d:r.desc,u:r.links[0].url,f:'mis',e:etapasDe(r),o:objsDe(r),r:r.etapa==='proyecto'?'semanas':'sesion',x:edadTxt(r.edad||''),es:(r.idioma==='en'||r.idioma==='ca')?0:1}));
   }
   const ESPECIALES=[
     {t:tr('Rúbricas de idoneidad de IA'),d:tr('Valora si una herramienta de IA es adecuada para una edad y si una actividad con IA está bien planteada, con dictamen final tipo semáforo.'),accion:'rubricas',f:'mis',e:['doc'],o:['docente','critico','seguridad'],r:'sesion',x:tr('Dentro de esta web'),es:1}
