@@ -267,7 +267,8 @@ Object.assign(VA.ui, {
  "Materiales": "Materials",
  "Propuestas didácticas": "Propostes didàctiques",
  "Ver actividades": "Veure les activitats",
- "Ver catálogo": "Veure el catàleg"
+ "Ver catálogo": "Veure el catàleg",
+ "Descargar el kit": "Descarregar el kit"
 });
 Object.assign(VA.html, {
  "rubIntro": "Dos rúbriques complementàries que s'apliquen en orde. Primer es valida <strong>l'eina</strong> (aspectes legals, de dades i d'edat mínima) i, després, <strong>l'activitat concreta</strong> que es vol fer amb ella (aspectes pedagògics). Marca les caselles i el semàfor calcula el dictamen automàticament.",
@@ -510,6 +511,11 @@ VA.recursos = {
  "codi-escola-4-0-illes-balears": {
   "desc": "Repositori del Govern de les Illes Balears amb propostes de pensament computacional i robòtica per a Infantil, Primària i ESO: programació desendollada, robòtica educativa, electrònica i impressió 3D. Està en català i cada proposta es descarrega completa. No tracta la IA: és el pas previ.",
   "idea": "Tria una proposta desendollada (sense pantalles ni robots) per a treballar les instruccions pas a pas i tanca amb una pregunta: i com aprén una màquina a la qual ningú li dona les instruccions? És un bon pont cap a Quick, Draw! o Teachable Machine."
+ },
+ "kit-de-bienvenida-codigo-escuela-4-0": {
+  "nombre": "Kit de benvinguda · Código Escuela 4.0",
+  "desc": "Guia de l'INTEF (versió 2, octubre de 2026) per a integrar el pensament computacional, la programació i la robòtica: marc curricular, orientacions per etapa, formacions per al professorat (amb una secció dedicada a la IA), 24 situacions d'aprenentatge d'Infantil a Batxillerat i recursos desendollats. Llicència CC BY-SA.",
+  "idea": "Ves directament a les situacions d'aprenentatge de la teua etapa: cadascuna porta una fitxa resum i l'enllaç a la SA completa. Per a treballar la IA, mira «Geometr-IA» i «Aprendiendo con robots» (3r cicle de Primària) o «Cómo entrenar a tu IA» (ESO); en Infantil, les rutines i els contes com a algorismes desendollats."
  },
  "pensamiento-critico-en-la-era-de-la-ia": {
   "nombre": "Pensament crític en l'era de la IA",
